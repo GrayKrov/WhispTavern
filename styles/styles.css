@@ -121,7 +121,36 @@ body {
 }
 
 .sidebar-list {
-  list-style: square inside;
+  list-style: none;
+  padding-left: 0;
+}
+
+.sidebar-list li::before {
+  content: "» ";
+  color: var(--accent-gold);
+  padding-right: 4px;
+}
+
+.main ul {
+  list-style: none;
+  padding-left: 0;
+  margin-bottom: 1.5rem;
+}
+
+.main ul li::before {
+  content: "› ";
+  color: var(--accent-gold);
+  padding-right: 6px;
+}
+
+a {
+  color: var(--forest-green);
+  text-decoration: underline;
+}
+
+a:hover {
+  color: var(--accent-gold);
+  text-decoration: none;
 }
 
 .cta-button {
