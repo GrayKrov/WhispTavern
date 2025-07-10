@@ -1,12 +1,13 @@
 @import url("https://fonts.googleapis.com/css2?family=IM+Fell+English+SC&family=Merriweather&display=swap");
 
 :root {
-  --bg-base: #3b2a23;
-  --bg-panel: #f3e9d2;
-  --text-main: #2c1a0f;
-  --accent-gold: #c5a76d;
-  --highlight-glow: #ffd98f;
-  --shadow: rgba(0, 0, 0, 0.5);
+  --bg-base: #ede2ce;
+  --bg-panel: #f9f4e8;
+  --text-main: #2e1f0f;
+  --accent-gold: #c59e65;
+  --highlight-glow: #ffe9b3;
+  --shadow: rgba(90, 61, 43, 0.5);
+  --forest-green: #3b4d36;
 }
 
 * {
@@ -19,13 +20,9 @@ body {
   font-family: "Merriweather", serif;
   background-color: var(--bg-base);
   color: var(--text-main);
-  background-image: url("/images/darkwood.jpg");
-  background-size: cover;
-  background-attachment: fixed;
   padding: 20px;
 }
 
-/* Layout */
 .grid-container {
   display: grid;
   grid-template-areas:
@@ -63,18 +60,26 @@ body {
   box-shadow: 0 6px 12px var(--shadow);
 }
 
-/* Banner */
-.banner-img {
-  width: 150px;
-  height: auto;
-  border-radius: 10px;
+.banner-top {
+  padding: 0;
+  border: none;
+  background: none;
+  box-shadow: none;
 }
 
-/* Navigation */
+.banner-img {
+  width: 100%;
+  height: 320px;
+  object-fit: cover;
+  object-position: center;
+  border-radius: 12px;
+  display: block;
+}
+
 .nav {
-  background-color: #4a3425;
-  box-shadow: inset 0 -2px 0 var(--accent-gold);
+  background-color: var(--forest-green);
   padding: 10px 0;
+  border-bottom: 2px solid var(--accent-gold);
 }
 
 .nav-list {
@@ -82,6 +87,7 @@ body {
   justify-content: center;
   gap: 2rem;
   list-style: none;
+  flex-wrap: wrap;
 }
 
 .nav-list a {
@@ -90,8 +96,8 @@ body {
   font-size: 1.2rem;
   text-decoration: none;
   padding: 8px 16px;
-  transition: background 0.3s ease, color 0.3s ease;
   border-radius: 6px;
+  transition: background 0.3s ease, color 0.3s ease;
 }
 
 .nav-list a:hover,
@@ -100,11 +106,10 @@ body {
   color: var(--text-main);
 }
 
-/* Content Styling */
 .main h1,
 .sidebar h2 {
   font-family: "IM Fell English SC", serif;
-  font-size: 2.4rem;
+  font-size: 2.2rem;
   margin-bottom: 1rem;
   text-shadow: 1px 1px 2px var(--shadow);
 }
@@ -115,17 +120,15 @@ body {
   margin-bottom: 1rem;
 }
 
-/* Sidebar */
 .sidebar-list {
   list-style: square inside;
 }
 
-/* CTA Button */
 .cta-button {
   display: inline-block;
   padding: 0.75rem 1.5rem;
   background-color: var(--accent-gold);
-  color: #2b1b10;
+  color: var(--text-main);
   font-weight: bold;
   text-decoration: none;
   border-radius: 8px;
@@ -135,14 +138,13 @@ body {
 
 .cta-button:hover {
   transform: scale(1.05);
-  background-color: #e6c87c;
+  background-color: var(--highlight-glow);
 }
 
-/* Footer */
 .footer {
   text-align: center;
   font-size: 0.9rem;
-  background-color: #4a3425;
+  background-color: var(--forest-green);
   color: var(--accent-gold);
   padding: 15px;
   border-radius: 10px;
@@ -166,20 +168,62 @@ body {
   }
 }
 
-/* Fantasy Enhancements */
-.scroll-panel {
-  background-image: url("/images/parchment-texture.jpg");
-  background-size: cover;
-  background-repeat: no-repeat;
-  border: 4px double var(--accent-gold);
-  padding: 20px;
-  border-radius: 10px;
+@media (max-width: 720px) {
+  .nav-list {
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+  }
+  .banner-img {
+    height: 220px;
+  }
+  .main h1 {
+    font-size: 1.8rem;
+  }
+  .main p {
+    font-size: 1rem;
+  }
 }
 
-.fantasy-border {
-  border-image-source: url("/images/fantasy-border.png");
-  border-image-slice: 30;
-  border-image-repeat: round;
-  border-width: 12px;
-  border-style: solid;
+@media (max-width: 480px) {
+  .grid-item {
+    padding: 16px;
+  }
+  .banner-img {
+    height: 180px;
+  }
+  .nav-list a {
+    font-size: 1rem;
+    padding: 6px 12px;
+  }
+  .main h1 {
+    font-size: 1.5rem;
+  }
+  .main p,
+  .sidebar li {
+    font-size: 0.95rem;
+  }
+  .cta-button {
+    padding: 0.5rem 1rem;
+    font-size: 0.95rem;
+  }
+}
+
+@media (max-width: 320px) {
+  .banner-img {
+    height: 140px;
+  }
+  .main h1 {
+    font-size: 1.2rem;
+  }
+  .main p {
+    font-size: 0.85rem;
+  }
+  .nav-list a {
+    font-size: 0.9rem;
+  }
+  .cta-button {
+    font-size: 0.85rem;
+    padding: 0.4rem 0.8rem;
+  }
 }
