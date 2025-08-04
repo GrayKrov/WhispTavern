@@ -12,11 +12,12 @@ export default {
 
 <style scoped lang="scss">
 .footer {
-  background-color: #6b4e35;
-  color: #f5f1ea;
-  padding: 1rem;
+  background-color: #3c2f2f; // deep brown for contrast
+  color: #f1eae0;
   text-align: center;
-  font-size: 0.9rem;
-  margin-top: auto;
+  padding: 1rem;
+  font-size: 0.95rem;
+  font-family: "Georgia", serif;
+  box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
 }
 </style>

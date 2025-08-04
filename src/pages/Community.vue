@@ -4,10 +4,8 @@
     <div class="card-grid">
       <CommunityCard
         name="Krov"
-        avatar="/krov-avatar.png"
-        link1="/krov"
-        link2="#"
-        link3="#"
+        :avatar="require('@/assets/avatars/Krov.jpg')"
+        :links="[{ label: 'Twitch', url: 'https://twitch.tv/graykrov' }]"
       />
     </div>
   </div>

@@ -6,15 +6,24 @@
       alt="Community Banner"
     />
     <section class="about">
-      <h1>About Us</h1>
+      <h1>About Us & Our Mission</h1>
       <p>
-        Welcome to WhispTavern — where communities gather, stories are shared,
-        and creators thrive.
+        WhispTavern is a cozy, all-in-one community built around friendship,
+        creativity, and shared passions. From late-night gaming sessions and
+        immersive roleplay worlds to collaborative storytelling and custom
+        creations, we’re a home for those who thrive in good company and deep
+        lore.
       </p>
-      <h2>Our Mission</h2>
       <p>
-        To provide a cozy, supportive platform for creators and communities to
-        express, connect, and grow.
+        Our community comes together around games like REPO, League of Legends,
+        Among Us, and a rotating mix of party and co-op games—whatever brings
+        the most laughs and good times. Whether it’s a one-shot D&D night or a
+        new group discovery, there’s always something brewing.
+      </p>
+      <p class="mission">
+        <strong>Our mission is simple:</strong><br />
+        Foster meaningful connections through games, stories, and shared
+        imagination—while keeping it real, cozy, and fun.
       </p>
     </section>
   </div>
@@ -27,16 +36,49 @@ export default {
 </script>
 
 <style scoped lang="scss">
+.home-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-bottom: 2rem;
+}
+
 .banner {
   display: block;
-  margin: 2rem auto;
-  max-width: 90%;
-  height: auto;
+  margin: 1.5rem auto 1rem;
+  max-width: 85%;
+  max-height: 220px;
   border-radius: 1rem;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
+
 .about {
-  padding: 2rem;
+  max-width: 720px;
+  padding: 1.5rem 1rem;
+  background-color: #f7f3e9;
+  border-radius: 1rem;
+  box-shadow: 0 0 6px rgba(0, 0, 0, 0.05);
+  font-family: "Georgia", serif;
+  color: #3a2b1c;
+  line-height: 1.6;
   text-align: center;
+
+  h1 {
+    font-size: 1.75rem;
+    margin-bottom: 1rem;
+    font-family: "Palatino Linotype", "Book Antiqua", serif;
+    color: #4e3a27;
+  }
+
+  p {
+    margin-bottom: 1rem;
+    font-size: 1rem;
+  }
+
+  .mission {
+    font-style: italic;
+    font-size: 1.05rem;
+    color: #3e2a1c;
+  }
 }
 </style>

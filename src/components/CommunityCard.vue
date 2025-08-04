@@ -1,36 +1,131 @@
 <template>
-  <div class="creator-card">
-    <img :src="avatar" alt="Avatar" />
-    <h2>{{ name }}</h2>
-    <div class="links">
-      <a :href="link1">Page</a>
-      <a :href="link2">Link 2</a>
-      <a :href="link3">Link 3</a>
+  <div class="community-card" :class="{ inactive: status !== 'active' }">
+    <div class="avatar-frame">
+      <img :src="avatar" :alt="name" class="avatar" />
+    </div>
+    <div class="creator-info">
+      <h3 class="creator-name">{{ name }}</h3>
+      <p class="bio" v-if="bio">{{ bio }}</p>
+      <div class="quick-links">
+        <a
+          v-for="(link, index) in links"
+          :key="index"
+          :href="link.url"
+          target="_blank"
+          rel="noopener"
+        >
+          <i :class="link.icon"></i>
+          <span>{{ link.label }}</span>
+        </a>
+      </div>
+      <div class="status-tag" v-if="status !== 'active'">{{ status }}</div>
     </div>
   </div>
 </template>
 
 <script>
 export default {
-  props: ["name", "avatar", "link1", "link2", "link3"],
+  name: "CommunityCard",
+  props: {
+    name: String,
+    avatar: String,
+    bio: String,
+    links: Array, // [{ icon: 'fab fa-discord', label: 'Discord', url: '#' }]
+    status: {
+      type: String,
+      default: "active", // or 'coming soon'
+    },
+  },
 };
 </script>
 
-<style scoped>
-.creator-card {
-  border: 1px solid #ccc;
+<style scoped lang="scss">
+.community-card {
+  background: #f5e8d8;
+  border: 2px solid #8b5e3c;
   border-radius: 1rem;
-  padding: 1rem;
-  max-width: 200px;
-  background-color: #fff;
-}
-img {
-  width: 100%;
-  border-radius: 1rem;
-}
-.links a {
-  display: block;
-  margin-top: 0.25rem;
-  color: #2e2b28;
+  padding: 1.5rem;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.25);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  position: relative;
+
+  &.inactive {
+    opacity: 0.6;
+    pointer-events: none;
+  }
+
+  &:hover {
+    transform: scale(1.02);
+    box-shadow: 0 0 25px rgba(139, 94, 60, 0.6);
+  }
+
+  .avatar-frame {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 4px solid #8b5e3c;
+    margin-bottom: 1rem;
+
+    .avatar {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+  }
+
+  .creator-info {
+    text-align: center;
+
+    .creator-name {
+      font-family: "Cinzel", serif;
+      font-size: 1.5rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .bio {
+      font-size: 0.9rem;
+      color: #444;
+      margin-bottom: 1rem;
+    }
+
+    .quick-links {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      margin-bottom: 0.5rem;
+
+      a {
+        color: #5a3a24;
+        text-decoration: none;
+        display: flex;
+        align-items: center;
+        gap: 0.3rem;
+        font-size: 0.9rem;
+        transition: color 0.2s;
+
+        &:hover {
+          color: #c49a6c;
+        }
+
+        i {
+          font-size: 1.2rem;
+        }
+      }
+    }
+
+    .status-tag {
+      background-color: #b3936f;
+      color: white;
+      padding: 0.3rem 0.6rem;
+      border-radius: 0.4rem;
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      margin-top: 0.5rem;
+    }
+  }
 }
 </style>
