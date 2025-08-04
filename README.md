@@ -2,7 +2,7 @@
 
 A cozy, fantasy-themed Vue Single Page Application (SPA) that serves as the official website for the **Whispering Woods Tavern** community.
 
-![Banner](./src/assets/images/BannerTop.png)
+![Banner Image](https://github.com/GrayKrov/whisptavern/blob/main/src/assets/images/BannerTop.jpg?raw=true)
 
 ---
 
