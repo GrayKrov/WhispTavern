@@ -28,5 +28,5 @@ whisptavern/
 │   ├── assets/styles/            # SCSS styling per page
 │   ├── App.vue                   # Main Vue shell
 │   └── main.js                   # Vue entry point
-├── package.json                 # Project metadata and dependencies
-└── README.md                    # You're reading it!
+├── package.json                  # Project metadata and dependencies
+└── README.md                     # You're reading it!
