@@ -1,26 +1,40 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <div id="app" class="layout">
+    <NavBar :isCreatorPage="isCreatorPage" />
+    <router-view />
+    <AppFooter v-if="!isCreatorPage" />
+  </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import NavBar from "./components/NavBar.vue";
+import AppFooter from "./components/AppFooter.vue";
 
 export default {
-  name: 'App',
+  name: "AppRoot",
   components: {
-    HelloWorld
-  }
-}
+    NavBar,
+    AppFooter,
+  },
+  computed: {
+    isCreatorPage() {
+      return (
+        this.$route.path.startsWith("/creator") || this.$route.name === "Krov"
+      );
+    },
+  },
+};
 </script>
 
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+<style lang="scss">
+.layout {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background-color: #f5f1ea;
+}
+
+router-view {
+  flex: 1;
 }
 </style>
