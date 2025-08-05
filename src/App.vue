@@ -1,22 +1,33 @@
 <template>
   <div id="app">
-    <Navbar />
+    <Navbar :isCreatorPage="isCCPage" />
     <main class="main-content">
       <router-view />
     </main>
-    <AppFooter />
+    <AppFooter v-if="!isCCPage" :isTransparent="isCCPage" />
   </div>
 </template>
 
 <script>
-import Navbar from "/src/components/NavBar.vue";
-import AppFooter from "/src/components/AppFooter.vue";
+import { useRoute } from "vue-router";
+import { computed } from "vue";
+import Navbar from "@/components/NavBar.vue";
+import AppFooter from "@/components/AppFooter.vue";
 
 export default {
   name: "AppLayout",
   components: {
     Navbar,
     AppFooter,
+  },
+  setup() {
+    const route = useRoute();
+
+    const isCCPage = computed(() => /^\/(krov|cc-)/i.test(route.path));
+
+    return {
+      isCCPage,
+    };
   },
 };
 </script>

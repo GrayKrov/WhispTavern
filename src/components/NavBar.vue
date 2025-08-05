@@ -1,5 +1,5 @@
 <template>
-  <nav :class="['navbar', { 'creator-style': isCreatorPage }]">
+  <nav :class="['navbar', { 'transparent-nav': isCreatorPage }]">
     <div
       class="menu-wrapper"
       @mouseover="showMenu = true"
@@ -38,12 +38,17 @@ export default {
 .navbar {
   font-family: "Inter", sans-serif;
   padding: 1rem;
-  background-color: transparent;
+  background-color: #f5f1ea;
+  transition: background-color 0.3s ease;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 9999;
 }
 
-.creator-style {
-  background-color: #1f1c1a;
-  color: #f5f1ea;
+.transparent-nav {
+  background-color: transparent !important;
+  box-shadow: none;
 }
 
 .menu-wrapper {

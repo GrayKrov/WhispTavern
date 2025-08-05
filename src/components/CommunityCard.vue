@@ -1,26 +1,18 @@
 <template>
-  <div class="community-card" :class="{ inactive: status !== 'active' }">
+  <component
+    :is="routerLink ? 'router-link' : 'div'"
+    :to="routerLink"
+    class="community-card"
+    :class="{ inactive: status !== 'active' }"
+  >
     <div class="avatar-frame">
       <img :src="avatar" :alt="name" class="avatar" />
     </div>
     <div class="creator-info">
       <h3 class="creator-name">{{ name }}</h3>
-      <p class="bio" v-if="bio">{{ bio }}</p>
-      <div class="quick-links">
-        <a
-          v-for="(link, index) in links"
-          :key="index"
-          :href="link.url"
-          target="_blank"
-          rel="noopener"
-        >
-          <i :class="link.icon"></i>
-          <span>{{ link.label }}</span>
-        </a>
-      </div>
-      <div class="status-tag" v-if="status !== 'active'">{{ status }}</div>
     </div>
-  </div>
+    <div class="status-tag" v-if="status !== 'active'">{{ status }}</div>
+  </component>
 </template>
 
 <script>
@@ -29,8 +21,10 @@ export default {
   props: {
     name: String,
     avatar: String,
-    bio: String,
-    links: Array, // [{ icon: 'fab fa-discord', label: 'Discord', url: '#' }]
+    routerLink: {
+      type: String,
+      default: null,
+    },
     status: {
       type: String,
       default: "active", // or 'coming soon'
@@ -51,6 +45,9 @@ export default {
   align-items: center;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
   position: relative;
+  text-decoration: none;
+  color: inherit;
+  cursor: pointer;
 
   &.inactive {
     opacity: 0.6;
@@ -85,47 +82,17 @@ export default {
       font-size: 1.5rem;
       margin-bottom: 0.5rem;
     }
+  }
 
-    .bio {
-      font-size: 0.9rem;
-      color: #444;
-      margin-bottom: 1rem;
-    }
-
-    .quick-links {
-      display: flex;
-      justify-content: center;
-      gap: 1rem;
-      margin-bottom: 0.5rem;
-
-      a {
-        color: #5a3a24;
-        text-decoration: none;
-        display: flex;
-        align-items: center;
-        gap: 0.3rem;
-        font-size: 0.9rem;
-        transition: color 0.2s;
-
-        &:hover {
-          color: #c49a6c;
-        }
-
-        i {
-          font-size: 1.2rem;
-        }
-      }
-    }
-
-    .status-tag {
-      background-color: #b3936f;
-      color: white;
-      padding: 0.3rem 0.6rem;
-      border-radius: 0.4rem;
-      font-size: 0.75rem;
-      text-transform: uppercase;
-      margin-top: 0.5rem;
-    }
+  .status-tag {
+    background-color: #b3936f;
+    color: white;
+    padding: 0.3rem 0.6rem;
+    border-radius: 0.4rem;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    margin-top: 0.5rem;
+    text-align: center;
   }
 }
 </style>

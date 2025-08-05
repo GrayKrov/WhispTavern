@@ -5,7 +5,7 @@
       <CommunityCard
         name="Krov"
         :avatar="require('@/assets/avatars/Krov.jpg')"
-        :links="[{ label: 'Twitch', url: 'https://twitch.tv/graykrov' }]"
+        routerLink="/krov"
       />
     </div>
   </div>
