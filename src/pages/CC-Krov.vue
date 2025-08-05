@@ -1,11 +1,20 @@
 <template>
   <div class="cc-krov-root">
     <section class="intro">
-      <h1 class="logo-name">KROV</h1>
-      <p class="tagline">Architect of Gray. Builder in Silence.</p>
+      <img :src="logo" alt="Krov Sigil" class="krov-sigil" />
+      <p class="sigil-caption">The Architect’s Mark</p>
+
       <a href="https://github.com/graykrov" target="_blank" class="github-link">
         View the Code →
       </a>
+
+      <div class="sigil-meaning">
+        <p>
+          Forged in grayscale, the sigil embodies duality — wisdom and silence,
+          logic and chaos, creation and solitude. A crow perched upon twin
+          pillars: the Architect’s path, the Builder’s oath.
+        </p>
+      </div>
     </section>
 
     <section class="projects" v-if="projects.length">
@@ -21,11 +30,14 @@
 </template>
 
 <script>
+import KrovLogo from "@/assets/logos/krov-logo.png";
+
 export default {
   name: "CCKrovPage",
   data() {
     return {
       projects: [],
+      logo: KrovLogo,
     };
   },
   mounted() {
