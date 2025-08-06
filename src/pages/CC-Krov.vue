@@ -1,6 +1,8 @@
 <template>
   <div class="cc-krov-root">
     <section class="intro">
+      <h1 class="name-header">KROV</h1>
+
       <img :src="logo" alt="Krov Sigil" class="krov-sigil" />
       <p class="sigil-caption">The Architect’s Mark</p>
 

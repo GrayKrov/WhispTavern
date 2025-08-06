@@ -40,7 +40,7 @@ export default {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding-bottom: 2rem;
+  padding: 4.5rem 1rem 2rem; // ✅ increased top padding to clear fixed navbar
 }
 
 .banner {
@@ -79,6 +79,51 @@ export default {
     font-style: italic;
     font-size: 1.05rem;
     color: #3e2a1c;
+  }
+}
+
+@media (max-width: 768px) {
+  .banner {
+    max-width: 95%;
+    max-height: 180px;
+  }
+
+  .about {
+    padding: 1.25rem 1rem;
+
+    h1 {
+      font-size: 1.5rem;
+    }
+
+    p {
+      font-size: 0.95rem;
+    }
+
+    .mission {
+      font-size: 1rem;
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  .banner {
+    max-height: 150px;
+  }
+
+  .about {
+    padding: 1rem 0.75rem;
+
+    h1 {
+      font-size: 1.35rem;
+    }
+
+    p {
+      font-size: 0.9rem;
+    }
+
+    .mission {
+      font-size: 0.95rem;
+    }
   }
 }
 </style>

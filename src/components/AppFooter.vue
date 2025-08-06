@@ -32,4 +32,18 @@ export default {
   background-color: transparent !important;
   box-shadow: none;
 }
+
+@media (max-width: 768px) {
+  .footer {
+    font-size: 0.9rem;
+    padding: 0.75rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .footer {
+    font-size: 0.85rem;
+    padding: 0.65rem;
+  }
+}
 </style>

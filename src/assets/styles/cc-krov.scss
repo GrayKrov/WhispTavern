@@ -22,6 +22,14 @@
     text-align: center;
     margin-bottom: 5rem;
 
+    .name-header {
+      font-size: 3.75rem;
+      font-family: "Playfair Display", serif;
+      letter-spacing: 0.3rem;
+      margin-bottom: 2rem;
+      color: #111;
+    }
+
     .krov-sigil {
       width: 240px;
       max-width: 95%;
@@ -148,5 +156,76 @@
   to {
     opacity: 1;
     transform: translateY(0);
+  }
+}
+
+@media (max-width: 768px) {
+  .cc-krov-root {
+    padding: 3rem 1.5rem;
+
+    .intro {
+      .name-header {
+        font-size: 2.75rem;
+      }
+
+      .krov-sigil {
+        width: 200px;
+        padding: 1rem;
+      }
+
+      .sigil-caption {
+        font-size: 0.9rem;
+      }
+
+      .sigil-meaning {
+        font-size: 0.9rem;
+        padding: 1.2rem;
+      }
+    }
+
+    .projects {
+      h2 {
+        font-size: 1.5rem;
+      }
+
+      .project-item a {
+        font-size: 1rem;
+      }
+
+      .project-item p {
+        font-size: 0.9rem;
+      }
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  .cc-krov-root {
+    padding: 2rem 1rem;
+
+    .intro {
+      .name-header {
+        font-size: 2.2rem;
+      }
+
+      .krov-sigil {
+        width: 180px;
+        padding: 0.85rem;
+      }
+
+      .sigil-caption {
+        font-size: 0.85rem;
+      }
+
+      .sigil-meaning {
+        font-size: 0.85rem;
+      }
+    }
+
+    .projects {
+      h2 {
+        font-size: 1.3rem;
+      }
+    }
   }
 }

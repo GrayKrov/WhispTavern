@@ -43,7 +43,9 @@ export default {
   position: fixed;
   top: 0;
   left: 0;
+  width: 100%; // ✅ Add this line to ensure it stretches across screen
   z-index: 9999;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05); // ✅ Light shadow for visual separation
 }
 
 .transparent-nav {
@@ -101,5 +103,32 @@ export default {
 .fade-enter-from,
 .fade-leave-to {
   opacity: 0;
+}
+
+@media (max-width: 768px) {
+  .navbar {
+    padding: 0.75rem;
+  }
+
+  .menu-icon {
+    font-size: 1.1rem;
+  }
+
+  .dropdown {
+    min-width: 160px;
+    font-size: 0.95rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .dropdown {
+    min-width: 140px;
+    padding: 0.5rem 0.75rem;
+
+    a,
+    router-link {
+      font-size: 0.9rem;
+    }
+  }
 }
 </style>

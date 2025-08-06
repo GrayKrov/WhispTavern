@@ -68,9 +68,11 @@ export default {
     margin-bottom: 1rem;
 
     .avatar {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
+      width: 120px;
+      height: 120px;
+      object-fit: contain;
+      margin: 0 auto;
+      display: block;
     }
   }
 
@@ -93,6 +95,27 @@ export default {
     text-transform: uppercase;
     margin-top: 0.5rem;
     text-align: center;
+  }
+}
+
+@media (max-width: 768px) {
+  .community-card {
+    max-width: 300px;
+  }
+}
+
+@media (max-width: 480px) {
+  .community-card {
+    max-width: 90%;
+    padding: 1rem;
+
+    .creator-name {
+      font-size: 1.1rem;
+    }
+
+    .quick-links a {
+      font-size: 0.9rem;
+    }
   }
 }
 </style>
