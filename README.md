@@ -70,7 +70,7 @@ whisptavern/
 
 ---
 
-##🛠️ Technologies & Architecture
+###🛠️ Technologies & Architecture
 Vue 3 + Composition API (<script setup>)
 
 Vue Router for client-side routing
@@ -83,7 +83,7 @@ Fetch GitHub API for “Recent Work” sections on creator pages
 
 ---
 
-##✨ Customization
+####✨ Customization
 To add a new creator, create:
 
 src/assets/styles/creators/<name>/<name>.scss
