@@ -68,7 +68,9 @@ whisptavern/
 └── README.md # This file
 ```
 
-🛠️ Technologies & Architecture
+---
+
+##🛠️ Technologies & Architecture
 Vue 3 + Composition API (<script setup>)
 
 Vue Router for client-side routing
@@ -79,7 +81,9 @@ Dynamic theming for creator pages via route meta fields
 
 Fetch GitHub API for “Recent Work” sections on creator pages
 
-✨ Customization
+---
+
+##✨ Customization
 To add a new creator, create:
 
 src/assets/styles/creators/<name>/<name>.scss
