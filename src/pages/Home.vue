@@ -1,10 +1,6 @@
 <template>
   <div class="home-page">
-    <img
-      src="@/assets/images/BannerTop.jpg"
-      class="banner"
-      alt="Community Banner"
-    />
+    <img :src="bannerImage" alt="Community Banner" class="banner" />
     <section class="about">
       <h1>About Us & Our Mission</h1>
       <p>
@@ -16,9 +12,8 @@
       </p>
       <p>
         Our community comes together around games like REPO, League of Legends,
-        Among Us, and a rotating mix of party and co-op games—whatever brings
-        the most laughs and good times. Whether it’s a one-shot D&D night or a
-        new group discovery, there’s always something brewing.
+        Among Us, and other party and co-op titles—whatever brings the most
+        laughs and good times.
       </p>
       <p class="mission">
         <strong>Our mission is simple:</strong><br />
@@ -30,99 +25,114 @@
 </template>
 
 <script>
-export default {
+import { defineComponent } from "vue";
+import bannerImage from "@/assets/images/BannerTop.jpg";
+
+export default defineComponent({
   name: "HomePage",
-};
+  data() {
+    return {
+      bannerImage,
+    };
+  },
+});
 </script>
 
-<style scoped lang="scss">
+<style lang="scss" scoped>
+@use "sass:color";
+@use "@/assets/styles/vars" as *;
+@use "@/assets/styles/mixins" as *;
+
 .home-page {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 4.5rem 1rem 2rem; // ✅ increased top padding to clear fixed navbar
-}
+  padding: calc(3rem + #{$sp-2}) $sp-2 $sp-3;
 
-.banner {
-  display: block;
-  margin: 1.5rem auto 1rem;
-  max-width: 85%;
-  max-height: 220px;
-  border-radius: 1rem;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-}
-
-.about {
-  max-width: 720px;
-  padding: 1.5rem 1rem;
-  background-color: #f7f3e9;
-  border-radius: 1rem;
-  box-shadow: 0 0 6px rgba(0, 0, 0, 0.05);
-  font-family: "Georgia", serif;
-  color: #3a2b1c;
-  line-height: 1.6;
-  text-align: center;
-
-  h1 {
-    font-size: 1.75rem;
-    margin-bottom: 1rem;
-    font-family: "Palatino Linotype", "Book Antiqua", serif;
-    color: #4e3a27;
-  }
-
-  p {
-    margin-bottom: 1rem;
-    font-size: 1rem;
-  }
-
-  .mission {
-    font-style: italic;
-    font-size: 1.05rem;
-    color: #3e2a1c;
-  }
-}
-
-@media (max-width: 768px) {
   .banner {
-    max-width: 95%;
-    max-height: 180px;
+    /* unified banner size */
+    width: 100%;
+    max-width: 800px;
+    height: 150px;
+    display: block;
+    margin: 0 auto $sp-3;
+    border-radius: 0.75rem;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    object-fit: cover;
   }
 
   .about {
-    padding: 1.25rem 1rem;
+    max-width: 700px;
+    margin: 0 auto $sp-4;
+    padding: $sp-3;
+    background: color.adjust($color-neutral, $lightness: 2%);
+    border-radius: 0.75rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    line-height: 1.6;
+    text-align: left;
 
     h1 {
-      font-size: 1.5rem;
+      margin-bottom: $sp-2;
+      font-size: 1.875rem;
+      text-align: center;
     }
 
     p {
-      font-size: 0.95rem;
+      margin-bottom: $sp-2;
+      font-size: $fs-base;
     }
 
     .mission {
-      font-size: 1rem;
+      margin-top: $sp-3;
+      font-size: $fs-lg;
+      text-align: center;
     }
   }
 }
 
-@media (max-width: 480px) {
-  .banner {
-    max-height: 150px;
+@include respond(md) {
+  .home-page {
+    padding: calc(3rem + #{$sp-2}) $sp-2 $sp-2;
+
+    .banner {
+      max-height: 130px;
+    }
+
+    .about {
+      padding: $sp-2;
+
+      p {
+        font-size: 0.95rem;
+      }
+
+      .mission {
+        font-size: 1.125rem;
+      }
+    }
   }
+}
 
-  .about {
-    padding: 1rem 0.75rem;
+@include respond(sm) {
+  .home-page {
+    padding: calc(3rem + #{$sp-2}) $sp-2 $sp-2;
 
-    h1 {
-      font-size: 1.35rem;
+    .banner {
+      max-height: 110px;
+      border-radius: 0.5rem;
     }
 
-    p {
-      font-size: 0.9rem;
-    }
+    .about {
+      margin-bottom: $sp-3;
+      padding: $sp-2;
 
-    .mission {
-      font-size: 0.95rem;
+      h1 {
+        font-size: 1.5rem;
+      }
+
+      p {
+        font-size: 0.9rem;
+      }
+
+      .mission {
+        font-size: 1rem;
+      }
     }
   }
 }

@@ -3,17 +3,9 @@
     "target": "es5",
     "module": "esnext",
     "baseUrl": "./",
+    "paths": { "@/*": ["src/*"] },
     "moduleResolution": "node",
-    "paths": {
-      "@/*": [
-        "src/*"
-      ]
-    },
-    "lib": [
-      "esnext",
-      "dom",
-      "dom.iterable",
-      "scripthost"
-    ]
-  }
+    "lib": ["esnext", "dom", "dom.iterable", "scripthost"]
+  },
+  "include": ["src/**/*"]
 }

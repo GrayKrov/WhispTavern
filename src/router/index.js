@@ -1,19 +1,30 @@
+// src/router/index.js
 import { createRouter, createWebHistory } from "vue-router";
-import Home from "@/pages/Home.vue";
-import Community from "@/pages/Community.vue";
-import Creator from "@/pages/Creator.vue";
-import CCKrov from "@/pages/CC-Krov.vue"; // ✅ Correct import
+
+import HomePage from "@/pages/Home.vue";
+import CommunityPage from "@/pages/Community.vue";
+import CreatorKrovPage from "@/pages/creator/CreatorKrov.vue";
 
 const routes = [
-  { path: "/", name: "Home", component: Home },
-  { path: "/community", name: "Community", component: Community },
-  { path: "/creator", name: "Creator", component: Creator },
-  { path: "/krov", name: "Krov", component: CCKrov }, // ✅ Using correct reference
+  {
+    path: "/",
+    name: "HomePage",
+    component: HomePage,
+  },
+  {
+    path: "/community",
+    name: "CommunityPage",
+    component: CommunityPage,
+  },
+  {
+    path: "/krov",
+    name: "CreatorKrovPage",
+    component: CreatorKrovPage,
+    meta: { creator: "krov" },
+  },
 ];
 
-const router = createRouter({
+export default createRouter({
   history: createWebHistory(),
   routes,
 });
-
-export default router;

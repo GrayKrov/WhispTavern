@@ -1,7 +1,17 @@
+// src/assets/styles/main.scss
+@use "./vars";
+@use "./mixins";
+@use "./functions";
+
+/* Global resets & base typography */
+* {
+  box-sizing: border-box;
+}
+
 body {
   margin: 0;
   padding: 0;
-  background-color: #f5f1ea; // same tone as dropdown
+  background-color: #f5f1ea; // old site beige
   font-family: "Inter", sans-serif;
   min-height: 100vh;
   display: flex;

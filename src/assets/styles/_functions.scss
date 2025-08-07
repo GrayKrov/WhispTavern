@@ -1,0 +1,7 @@
+@function strip-unit($value) {
+  @return $value / ($value * 0 + 1);
+}
+
+@function rem($px, $base: 16) {
+  @return #{strip-unit($px) / $base} * 1rem;
+}

@@ -1,45 +1,13 @@
+@use "./vars" as *;
+@use "./mixins" as *;
+
 .community-page {
-  padding: 4.5rem 2rem 2rem; // default desktop spacing
+  padding: 6rem $sp-2 $sp-2;
   text-align: center;
 
-  h1 {
-    font-size: 2.5rem;
-
-    @media (max-width: 768px) {
-      font-size: 1.8rem;
-    }
-
-    @media (max-width: 480px) {
-      font-size: 1.6rem;
-    }
-  }
-
-  .card-grid {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 2rem;
-  }
-}
-
-@media (max-width: 768px) {
-  .community-page {
-    padding: 6rem 1.5rem 2rem; // extra top padding for navbar
-
-    .card-grid {
-      gap: 1.5rem;
-    }
-  }
-}
-
-@media (max-width: 480px) {
-  .community-page {
-    padding: 6rem 1rem 2rem; // matching top padding on small devices
-
-    .card-grid {
-      flex-direction: column;
-      align-items: center;
-      gap: 1rem;
-    }
+  .banner {
+    width: 100%;
+    display: block;
+    margin-bottom: $sp-4;
   }
 }

@@ -1,0 +1,30 @@
+// src/assets/styles/_mixins.scss
+
+@use "sass:map"; // bring in the Sass map module
+@use "./vars" as *; // your breakpoint variables
+
+// Breakpoint helper: @include respond(md) { … }
+@mixin respond($bp) {
+  $breakpoints: (
+    sm: $bp-sm,
+    md: $bp-md,
+    lg: $bp-lg,
+  );
+  @if map.has-key($breakpoints, $bp) {
+    @media (max-width: map.get($breakpoints, $bp)) {
+      @content;
+    }
+  }
+}
+
+// Flex centering
+@mixin flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+// Transition shorthand
+@mixin transition($props: all, $dur: 0.3s, $fn: ease) {
+  transition: $props $dur $fn;
+}
