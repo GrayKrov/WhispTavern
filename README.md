@@ -79,16 +79,11 @@ Dynamic theming for creator pages via route meta fields
 
 Fetch GitHub API for “Recent Work” sections on creator pages
 
-<<<<<<< HEAD
-**## ✨ Customization**
-=======
 
 ---
 
-✨ Customization
-
-> > > > > > > e05149e7e52a9e95a0d386a137d8a135172acfc4
-> > > > > > > To add a new creator, create:
+**## ✨ Customization**
+To add a new creator, create:
 
 src/assets/styles/creators/<name>/<name>.scss
 
