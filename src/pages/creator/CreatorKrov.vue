@@ -1,12 +1,12 @@
 <!-- src/pages/creator/CreatorKrov.vue -->
 <script setup>
+// disable single-word rule for this file
 /* eslint-disable vue/multi-word-component-names */
+
 import KrovNavBar from "@/features/creators/krov/KrovNavBar.vue";
 import KrovFooter from "@/features/creators/krov/KrovFooter.vue";
-import KrovLogo from "@/assets/logos/krov-logo.png";
 import { ref, onMounted } from "vue";
 
-const logo = KrovLogo;
 const projects = ref([]);
 
 onMounted(async () => {
@@ -23,21 +23,14 @@ onMounted(async () => {
 </script>
 
 <template>
+  <!-- 1) bespoke Krov navbar on the top-left -->
   <KrovNavBar />
 
-  <div class="cc-krov-root">
-    <section class="intro-container intro">
-      <h1 class="name-header">KROV</h1>
-      <img :src="logo" alt="Krov Sigil" class="krov-sigil" />
+  <main class="cc-krov-root">
+    <!-- 3) main intro section, now only has the tagline & meaning -->
+    <!-- intro -->
+    <section class="intro-container">
       <p class="sigil-caption">The Architect’s Mark</p>
-      <a
-        href="https://github.com/graykrov"
-        target="_blank"
-        rel="noopener"
-        class="github-link"
-      >
-        View the Code →
-      </a>
       <div class="sigil-meaning">
         <p>
           Forged in grayscale, the sigil embodies duality — wisdom and silence,
@@ -46,7 +39,8 @@ onMounted(async () => {
       </div>
     </section>
 
-    <section class="projects" v-if="projects.length">
+    <!-- 4) list of recent GitHub projects -->
+    <section v-if="projects.length" class="projects">
       <h2>Recent Work</h2>
       <ul class="project-list">
         <li v-for="project in projects" :key="project.id" class="project-item">
@@ -57,8 +51,9 @@ onMounted(async () => {
         </li>
       </ul>
     </section>
-  </div>
+  </main>
 
+  <!-- 5) bespoke Krov footer -->
   <KrovFooter />
 </template>
 

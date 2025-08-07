@@ -1,12 +1,15 @@
 <!-- src/features/creators/krov/KrovFooter.vue -->
 <template>
   <footer class="krov-footer">
-    <p>© 2025 Krov. All rights reserved.</p>
+    <blockquote class="quote">
+      “Imagination builds worlds; code gives them life.”<br />
+      — Krov
+    </blockquote>
   </footer>
 </template>
 
 <script setup>
-// no props
+// nothing needed here
 </script>
 
 <style lang="scss" scoped>
@@ -14,22 +17,20 @@
 @use "@/assets/styles/mixins" as *;
 
 .krov-footer {
-  background: #111;
-  color: #ccc;
+  background: $color-dark;
+  color: $color-neutral;
   text-align: center;
-  padding: $sp-3 $sp-2;
-  font-family: "Georgia", serif;
+  padding: $sp-4 $sp-2;
+  font-style: italic;
+  font-family: serif;
+  position: relative;
+  margin-top: $sp-4;
 
-  p {
-    margin: 0;
-    font-size: $fs-base;
-  }
-}
-
-@include respond(sm) {
-  .krov-footer {
-    font-size: 0.9rem;
-    padding: $sp-2 $sp-1;
+  .quote {
+    max-width: 800px;
+    margin: 0 auto;
+    font-size: $fs-lg;
+    line-height: 1.4;
   }
 }
 </style>

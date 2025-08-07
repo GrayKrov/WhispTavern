@@ -1,152 +1,46 @@
-@use "/src/assets/styles/vars" as *;
-@use "/src/assets/styles/mixins" as *;
+// src/assets/styles/creators/krov/creatorkrov.scss
+@use "../../vars" as *;
+@use "../../mixins" as *;
 
 .cc-krov-root {
+  position: relative;
   background: #f7f7f7;
   color: #1a1a1a;
   min-height: 100vh;
-
-  // top / sides / bottom padding
-  padding: $sp-4 $sp-2 $sp-4;
-
-  // contain any bottom-margins so they don't collapse into the body
-  overflow: auto;
-
+  padding: 6rem 2rem 4rem; // leave room for navbar at top
   font-family: "Inter", sans-serif;
   line-height: 1.6;
 }
 
-// ——— Navbar overrides ———
-
-.navbar {
-  background: #222 !important;
-  color: #eee;
-  border-bottom: none;
-  box-shadow: none;
-  padding: $sp-2 $sp-3;
-
-  .menu-icon {
-    color: #eee;
-  }
-
-  .dropdown {
-    background: #333;
-    min-width: 10rem;
-
-    > * + * {
-      margin-top: $sp-2;
-    }
-
-    a,
-    RouterLink {
-      color: #eee;
-      padding: $sp-2 0;
-      font-weight: 500;
-
-      &:hover {
-        color: #fff;
-      }
-    }
-  }
-}
-
-// ——— Footer overrides ———
-
-.app-footer {
-  background: #222 !important;
-  color: #eee !important;
-  border-top: none;
-  box-shadow: none;
-  padding: $sp-3 0;
-
-  &__inner {
-    max-width: 800px;
-    margin: 0 auto;
-  }
-}
-
-// ——— Krov-specific layout ———
-
 .intro-container {
   max-width: 800px;
-  margin: 0 auto;
+  margin: 0 auto 3rem;
   padding: 0 $sp-2;
-}
-
-.intro {
   text-align: center;
-  margin-bottom: 5rem;
-
-  .name-header {
-    font-size: 3.75rem;
-    font-family: "Playfair Display", serif;
-    letter-spacing: 0.3rem;
-    margin-bottom: 2rem;
-    color: #111;
-  }
-
-  .krov-sigil {
-    width: 240px;
-    max-width: 95%;
-    margin: 0 auto 2rem;
-    padding: 1.2rem;
-    background: #fdfdfd;
-    border: 2px solid #c4c4c4;
-    border-radius: 1rem;
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.12),
-      inset 0 0 8px rgba(0, 0, 0, 0.05);
-    position: relative;
-
-    &::after {
-      content: "";
-      position: absolute;
-      bottom: -1.5rem;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 60%;
-      height: 4px;
-      background: radial-gradient(
-        ellipse at center,
-        rgba(0, 0, 0, 0.2),
-        transparent
-      );
-      border-radius: 50%;
-      z-index: -1;
-    }
-  }
 
   .sigil-caption {
-    font-size: 0.95rem;
-    color: #777;
-    margin: -1.5rem auto 2rem;
-    font-style: italic;
-    letter-spacing: 0.1rem;
+    font-size: $fs-base;
+    color: #555;
+    margin-bottom: $sp-3;
   }
 
   .sigil-meaning {
-    max-width: 640px;
-    margin: 2rem auto 0;
-    padding: 1.5rem;
-    font-size: 0.95rem;
-    color: #444;
-    background: #f0f0f0;
+    background: #e5e5e5;
+    padding: $sp-3;
     border-left: 4px solid #999;
     font-style: italic;
-    line-height: 1.7;
   }
 }
 
 .projects {
   max-width: 800px;
-  margin: 0 auto 2rem;
+  margin: 0 auto;
   padding: 0 $sp-2;
 
   h2 {
-    font-size: 1.7rem;
-    font-weight: 600;
+    font-size: 2rem;
+    margin-bottom: $sp-3;
     text-align: center;
-    margin-bottom: 2rem;
-    color: #333;
   }
 
   .project-list {
@@ -154,88 +48,44 @@
     padding: 0;
 
     .project-item {
-      margin-bottom: 2rem;
-      padding-bottom: 1rem;
-      border-bottom: 1px solid #ddd;
-      opacity: 0;
-      transform: translateY(20px);
-      animation: fadeSlideIn 0.6s ease forwards;
+      margin-bottom: $sp-3;
+      padding-bottom: $sp-2;
+      border-bottom: 1px solid #ccc;
 
       a {
         font-size: 1.1rem;
         font-weight: 600;
-        color: #2a2a2a;
+        color: $color-dark;
         text-decoration: none;
+
+        &:hover {
+          color: $color-primary;
+        }
       }
 
       p {
-        font-size: 0.95rem;
-        color: #666;
-        margin-top: 0.4rem;
+        font-size: $fs-base;
+        color: #444;
+        margin-top: $sp-1;
       }
     }
   }
 }
 
-@keyframes fadeSlideIn {
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-// ─── Responsive tweaks ──────────────────────────────────────────────────────
 @include respond(md) {
   .cc-krov-root {
-    padding: 3rem 1.5rem 3rem;
-    .intro {
-      .name-header {
-        font-size: 2.75rem;
-      }
-      .krov-sigil {
-        width: 200px;
-        padding: 1rem;
-      }
-      .sigil-caption,
-      .sigil-meaning {
-        font-size: 0.9rem;
-        padding: 1.2rem;
-      }
-    }
-    .projects {
-      h2 {
-        font-size: 1.5rem;
-      }
-      .project-item a {
-        font-size: 1rem;
-      }
-      .project-item p {
-        font-size: 0.9rem;
-      }
-    }
+    padding: 5rem 1.5rem 3rem;
+  }
+  .intro-container .name-header {
+    font-size: 2.5rem;
   }
 }
 
 @include respond(sm) {
   .cc-krov-root {
-    padding: 2rem 1rem 2rem;
-    .intro {
-      .name-header {
-        font-size: 2.2rem;
-      }
-      .krov-sigil {
-        width: 180px;
-        padding: 0.85rem;
-      }
-      .sigil-caption,
-      .sigil-meaning {
-        font-size: 0.85rem;
-      }
-    }
-    .projects {
-      h2 {
-        font-size: 1.3rem;
-      }
-    }
+    padding: 4rem 1rem 2rem;
+  }
+  .intro-container .name-header {
+    font-size: 2rem;
   }
 }
