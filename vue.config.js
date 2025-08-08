@@ -1,14 +1,12 @@
 // vue.config.js
-const path = require("path");
-
 module.exports = {
   css: {
     loaderOptions: {
       scss: {
         additionalData: `
-          @use "/src/assets/styles/_vars.scss"      as *;
-          @use "/src/assets/styles/_mixins.scss"    as *;
-          @use "/src/assets/styles/_functions.scss" as *;
+          @use "@/assets/styles/_vars.scss" as *;
+          @use "@/assets/styles/_mixins.scss" as *;
+          @use "@/assets/styles/_functions.scss" as *;
         `,
       },
     },

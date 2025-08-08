@@ -32,7 +32,6 @@ whisptavern/
 │ │ └── creatorkrov.scss # Krov’s custom navbar, footer, layout
 │ │
 │ ├── components/ # Shared UI components
-│ │ ├── BackToTop.vue # “Back to Top” button
 │ │ └── CommunityBanner.vue # Banner for Community page
 │ │
 │ ├── features/
