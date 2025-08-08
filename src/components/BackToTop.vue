@@ -18,7 +18,10 @@ function handleScroll() {
   visible.value = window.scrollY > 300;
 }
 
-onMounted(() => window.addEventListener("scroll", handleScroll));
+onMounted(() => {
+  window.addEventListener("scroll", handleScroll);
+  handleScroll();
+});
 onUnmounted(() => window.removeEventListener("scroll", handleScroll));
 
 function scrollTop() {
