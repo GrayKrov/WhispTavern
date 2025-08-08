@@ -6,7 +6,6 @@
 
 <script setup>
 import CommunityCard from "./CommunityCard.vue";
-// Import the actual image so Webpack bundles it
 import krovAvatar from "@/assets/avatars/Krov.jpg";
 </script>
 

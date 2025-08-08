@@ -1,8 +1,6 @@
 <!-- src/pages/creator/CreatorKrov.vue -->
 <script setup>
-// disable single-word rule for this file
 /* eslint-disable vue/multi-word-component-names */
-
 import KrovNavBar from "@/features/creators/krov/KrovNavBar.vue";
 import KrovFooter from "@/features/creators/krov/KrovFooter.vue";
 import { ref, onMounted } from "vue";
@@ -23,12 +21,9 @@ onMounted(async () => {
 </script>
 
 <template>
-  <!-- 1) bespoke Krov navbar on the top-left -->
   <KrovNavBar />
 
   <main class="cc-krov-root">
-    <!-- 3) main intro section, now only has the tagline & meaning -->
-    <!-- intro -->
     <section class="intro-container">
       <p class="sigil-caption">The Architect’s Mark</p>
       <div class="sigil-meaning">
@@ -39,7 +34,6 @@ onMounted(async () => {
       </div>
     </section>
 
-    <!-- 4) list of recent GitHub projects -->
     <section v-if="projects.length" class="projects">
       <h2>Recent Work</h2>
       <ul class="project-list">
@@ -53,7 +47,6 @@ onMounted(async () => {
     </section>
   </main>
 
-  <!-- 5) bespoke Krov footer -->
   <KrovFooter />
 </template>
 

@@ -1,42 +1,34 @@
 <template>
   <RouterLink
-    v-if="props.routerLink"
-    :to="props.routerLink"
+    v-if="routerLink"
+    :to="routerLink"
     class="community-card"
-    :class="{ inactive: props.status !== 'active' }"
+    :class="{ inactive: status !== 'active' }"
   >
     <div class="avatar-frame">
-      <img :src="props.avatarSrc" :alt="props.name" class="avatar" />
+      <img :src="avatarSrc" :alt="name" class="avatar" />
     </div>
     <div class="creator-info">
-      <h3 class="creator-name">{{ props.name }}</h3>
+      <h3 class="creator-name">{{ name }}</h3>
     </div>
-    <div v-if="props.status !== 'active'" class="status-tag">
-      {{ props.status }}
-    </div>
+    <div v-if="status !== 'active'" class="status-tag">{{ status }}</div>
   </RouterLink>
-  <div
-    v-else
-    class="community-card"
-    :class="{ inactive: props.status !== 'active' }"
-  >
+
+  <div v-else class="community-card" :class="{ inactive: status !== 'active' }">
     <div class="avatar-frame">
-      <img :src="props.avatarSrc" :alt="props.name" class="avatar" />
+      <img :src="avatarSrc" :alt="name" class="avatar" />
     </div>
     <div class="creator-info">
-      <h3 class="creator-name">{{ props.name }}</h3>
+      <h3 class="creator-name">{{ name }}</h3>
     </div>
-    <div v-if="props.status !== 'active'" class="status-tag">
-      {{ props.status }}
-    </div>
+    <div v-if="status !== 'active'" class="status-tag">{{ status }}</div>
   </div>
 </template>
 
 <script setup>
-import { defineProps } from "vue";
+/* global defineProps */
 import { RouterLink } from "vue-router";
-
-const props = defineProps({
+defineProps({
   name: { type: String, required: true },
   avatarSrc: { type: String, required: true },
   routerLink: { type: String, default: null },
@@ -53,14 +45,14 @@ const props = defineProps({
   border: 2px solid $color-secondary;
   border-radius: 1rem;
   padding: $sp-3;
-  box-shadow: 0 0 15px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
   display: flex;
   flex-direction: column;
   align-items: center;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
   text-decoration: none;
   color: inherit;
   position: relative;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
 
   &.inactive {
     opacity: 0.6;
@@ -68,8 +60,8 @@ const props = defineProps({
   }
 
   &:hover {
-    transform: scale(1.02);
-    box-shadow: 0 0 25px rgba(0, 0, 0, 0.2);
+    transform: translateY(-2px);
+    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.16);
   }
 
   .avatar-frame {
@@ -90,7 +82,7 @@ const props = defineProps({
   .creator-info .creator-name {
     font-size: $fs-lg;
     font-family: "Cinzel", serif;
-    margin-bottom: $sp-2;
+    margin-bottom: $sp-1;
   }
 
   .status-tag {

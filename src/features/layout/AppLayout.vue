@@ -1,11 +1,9 @@
 <template>
   <div id="app-layout">
     <NavBar />
-
     <main class="content">
       <slot />
     </main>
-
     <AppFooter />
     <BackToTop />
   </div>
@@ -19,22 +17,21 @@ import BackToTop from "@/components/BackToTop.vue";
 
 <style lang="scss" scoped>
 @use "@/assets/styles/vars" as *;
-@use "@/assets/styles/mixins" as *;
 
+/* page scaffold */
 #app-layout {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
 }
 
-/* ensure main content sits below the fixed navbar */
+/* ensure content clears the fixed navbar (matches $nav-h) */
 .content {
   flex: 1;
-  padding: 4rem $sp-3 $sp-3; /* top padding >= navbar height */
+  padding: 3.5rem $sp-3 $sp-3;
   background: $color-neutral;
 }
 
-/* footer spans full width */
 .app-footer {
   width: 100%;
 }

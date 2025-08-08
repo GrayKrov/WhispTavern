@@ -5,17 +5,13 @@
       @mouseenter="showMenu = true"
       @mouseleave="showMenu = false"
     >
-      <div class="menu-icon">☰</div>
+      <div class="menu-icon" aria-label="Open menu" role="button">☰</div>
       <transition name="fade">
         <div v-if="showMenu" class="dropdown">
           <RouterLink to="/">Home</RouterLink>
-          <a
-            href="https://discord.gg/YOURSERVER"
-            target="_blank"
-            rel="noopener"
+          <a href="https://discord.gg/YOURSERVER" target="_blank" rel="noopener"
+            >Discord</a
           >
-            Discord
-          </a>
           <RouterLink to="/community">Community</RouterLink>
         </div>
       </transition>
@@ -36,21 +32,23 @@ const theme = computed(() => route.meta.creator || "default");
 @use "@/assets/styles/vars" as *;
 @use "@/assets/styles/mixins" as *;
 
-/* Base navbar styles */
+$nav-h: 52px;
+
 .navbar {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
-  padding: $sp-1 $sp-2;
+  height: $nav-h;
+  padding: 0 $sp-2;
   display: flex;
   align-items: center;
   z-index: 9999;
 
-  /* default colors */
-  background: $color-neutral;
+  background: $color-neutral; /* default theme */
   box-shadow: none;
   border-bottom: none;
+
   .menu-icon {
     color: $color-dark;
   }
@@ -63,28 +61,21 @@ const theme = computed(() => route.meta.creator || "default");
   }
 }
 
-/* Krov page: light gray background, dark text */
-.navbar--krov {
-  background: #f7f7f7;
-
-  .menu-icon {
-    color: #1a1a1a;
-  }
-  .dropdown {
-    background: #f7f7f7;
-    a,
-    RouterLink {
-      color: #1a1a1a;
-    }
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  }
-}
-
+/* menu hover bridge to remove hitching */
 .menu-wrapper {
   position: relative;
   margin-left: $sp-2;
   padding: $sp-1 $sp-2;
   cursor: pointer;
+
+  &::before {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: -$sp-1;
+    width: calc(100% + #{$sp-2});
+    height: $sp-3;
+  }
 }
 
 .menu-icon {
@@ -92,16 +83,15 @@ const theme = computed(() => route.meta.creator || "default");
   user-select: none;
 }
 
-/* Roomier dropdown */
 .dropdown {
   position: absolute;
-  top: 100%;
+  top: calc(100% - 1px);
   left: 0;
-  margin-top: -1px;
   border-radius: 0.5rem;
   padding: $sp-3;
   min-width: 12rem;
   white-space: nowrap;
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.12);
 
   > * + * {
     margin-top: $sp-2;
@@ -124,7 +114,7 @@ const theme = computed(() => route.meta.creator || "default");
 
 .fade-enter-active,
 .fade-leave-active {
-  transition: opacity 0.2s ease-in-out;
+  transition: opacity 0.18s ease;
 }
 .fade-enter-from,
 .fade-leave-to {

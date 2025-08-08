@@ -1,10 +1,10 @@
-<!-- src/pages/Community.vue -->
 <!-- eslint-disable vue/multi-word-component-names -->
-
 <template>
   <div class="community-page">
     <CommunityBanner />
-    <CommunityList />
+    <section class="list-wrap">
+      <CommunityList />
+    </section>
   </div>
 </template>
 
@@ -14,10 +14,7 @@ import CommunityList from "@/features/community/CommunityList.vue";
 
 export default {
   name: "CommunityPage",
-  components: {
-    CommunityBanner,
-    CommunityList,
-  },
+  components: { CommunityBanner, CommunityList },
 };
 </script>
 
@@ -32,14 +29,11 @@ export default {
   padding: $sp-4 $sp-3;
 }
 
-.community-banner {
-  /* push the card down by 1.5rem */
-  margin-bottom: $sp-4;
-}
-
-.community-list {
+/* A simple wrapper so the banner and cards breathe nicely */
+.list-wrap {
   width: 100%;
   display: flex;
   justify-content: center;
+  padding-top: $sp-2; /* space below banner */
 }
 </style>
