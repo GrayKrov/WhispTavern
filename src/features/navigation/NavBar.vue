@@ -9,9 +9,6 @@
       <transition name="fade">
         <div v-if="showMenu" class="dropdown">
           <RouterLink to="/">Home</RouterLink>
-          <a href="https://discord.gg/YOURSERVER" target="_blank" rel="noopener"
-            >Discord</a
-          >
           <RouterLink to="/community">Community</RouterLink>
         </div>
       </transition>
@@ -22,7 +19,6 @@
 <script setup>
 import { ref, computed } from "vue";
 import { useRoute, RouterLink } from "vue-router";
-
 const showMenu = ref(false);
 const route = useRoute();
 const theme = computed(() => route.meta.creator || "default");
@@ -30,85 +26,89 @@ const theme = computed(() => route.meta.creator || "default");
 
 <style lang="scss" scoped>
 @use "@/assets/styles/vars" as *;
-@use "@/assets/styles/mixins" as *;
 
 $nav-h: 52px;
 
 .navbar {
   position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
+  inset: 0 0 auto 0;
   height: $nav-h;
-  padding: 0 $sp-2;
+  z-index: 9999;
   display: flex;
   align-items: center;
-  z-index: 9999;
-
-  background: $color-neutral; /* default theme */
-  box-shadow: none;
-  border-bottom: none;
+  padding: 0 $sp-2;
+  background: rgba(245, 241, 234, 0.7);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
 
   .menu-icon {
     color: $color-dark;
-  }
-  .dropdown {
-    background: $color-neutral;
-    a,
-    RouterLink {
-      color: $color-dark;
-    }
+    font-size: 1.6rem;
   }
 }
 
-/* menu hover bridge to remove hitching */
 .menu-wrapper {
   position: relative;
   margin-left: $sp-2;
   padding: $sp-1 $sp-2;
   cursor: pointer;
-
-  &::before {
-    content: "";
-    position: absolute;
-    top: 100%;
-    left: -$sp-1;
-    width: calc(100% + #{$sp-2});
-    height: $sp-3;
-  }
 }
-
-.menu-icon {
-  font-size: 1.5rem;
-  user-select: none;
+.menu-wrapper::before {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: -$sp-1;
+  width: calc(100% + #{$sp-2});
+  height: $sp-3;
 }
 
 .dropdown {
   position: absolute;
   top: calc(100% - 1px);
   left: 0;
-  border-radius: 0.5rem;
+  min-width: 13rem;
   padding: $sp-3;
-  min-width: 12rem;
-  white-space: nowrap;
-  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.12);
+  border-radius: 0.7rem;
+  box-shadow: 0 14px 30px rgba(0, 0, 0, 0.18);
+  background: linear-gradient(
+        rgba(255, 255, 255, 0.7),
+        rgba(255, 255, 255, 0.6)
+      )
+      padding-box,
+    linear-gradient(140deg, rgba(120, 93, 68, 0.35), rgba(180, 150, 120, 0.35))
+      border-box;
+  border: 1px solid transparent;
+  backdrop-filter: blur(12px);
 
-  > * + * {
-    margin-top: $sp-2;
-  }
-
-  a,
-  RouterLink {
+  a {
     display: block;
-    font-size: $fs-base;
-    font-weight: 600;
+    font-weight: 700;
     text-decoration: none;
+    color: $color-dark;
     padding: $sp-2 0;
-    @include transition(color);
-
-    &:hover {
-      color: $color-primary;
-    }
+    position: relative;
+    transition: color 0.18s ease;
+  }
+  a::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: 6px;
+    height: 2px;
+    width: 0;
+    background: linear-gradient(
+      90deg,
+      rgba(120, 93, 68, 1),
+      rgba(180, 150, 120, 1)
+    );
+    transition: width 0.18s ease;
+  }
+  a:hover {
+    color: $color-primary;
+  }
+  a:hover::after {
+    width: 100%;
   }
 }
 

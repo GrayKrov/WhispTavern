@@ -1,279 +1,185 @@
 <!-- src/features/creators/krov/KrovNavBar.vue -->
 <template>
-  <nav class="krov-navbar" :class="{ 'is-open': open }">
-    <!-- Menu on the LEFT -->
-    <div
-      class="menu-wrapper"
-      @mouseenter="open = true"
-      @mouseleave="open = false"
-    >
-      <button
-        class="menu-icon"
-        :aria-expanded="open ? 'true' : 'false'"
-        aria-haspopup="true"
-        @click="toggle"
-        @keydown.down.prevent="open = true"
-      >
-        ☰
-      </button>
+  <nav class="krov-navbar" :class="{ scrolled }">
+    <div class="inner">
+      <!-- Brand (no longer a link) -->
+      <div class="brand">
+        <img
+          class="sigil"
+          src="@/assets/logos/krov-logo.png"
+          alt="Krov Sigil"
+        />
+        <span class="title" aria-hidden="true">KROV</span>
+      </div>
 
-      <transition name="fade-slide">
-        <ul
-          v-if="open"
-          class="links"
-          role="menu"
-          ref="menuEl"
-          @keyup.esc.prevent="open = false"
-        >
-          <li role="none">
-            <RouterLink role="menuitem" to="/">Home</RouterLink>
-          </li>
-          <li role="none">
-            <RouterLink role="menuitem" to="/community">Community</RouterLink>
-          </li>
-          <li role="none">
-            <a
-              role="menuitem"
-              href="https://github.com/graykrov"
-              target="_blank"
-              rel="noopener"
-              >GitHub</a
-            >
-          </li>
-        </ul>
-      </transition>
-    </div>
-
-    <!-- Brand on the RIGHT of the menu (NOT a link anymore) -->
-    <div class="brand" aria-label="Krov">
-      <img src="@/assets/logos/krov-logo.png" alt="Krov Sigil" class="sigil" />
-      <span class="title" aria-hidden="true">KROV</span>
+      <!-- Links -->
+      <ul class="nav-links" role="menubar">
+        <li role="none">
+          <RouterLink role="menuitem" to="/">Home</RouterLink>
+        </li>
+        <li role="none">
+          <RouterLink role="menuitem" to="/community">Community</RouterLink>
+        </li>
+        <li role="none">
+          <a
+            role="menuitem"
+            href="https://github.com/graykrov"
+            target="_blank"
+            rel="noopener"
+            >GitHub</a
+          >
+        </li>
+      </ul>
     </div>
   </nav>
 </template>
 
 <script setup>
-import { ref, onMounted, onBeforeUnmount } from "vue";
 import { RouterLink } from "vue-router";
+import { ref, onMounted, onBeforeUnmount } from "vue";
 
-const open = ref(false);
-const menuEl = ref(null);
+const scrolled = ref(false);
+const onScroll = () => {
+  scrolled.value = window.scrollY > 4;
+};
 
-function toggle() {
-  open.value = !open.value;
-}
-
-function onDocClick(e) {
-  if (!open.value) return;
-  // close if clicking outside the menu wrapper
-  const wrapper = e.target.closest(".menu-wrapper");
-  if (!wrapper) open.value = false;
-}
-
-onMounted(() => document.addEventListener("click", onDocClick));
-onBeforeUnmount(() => document.removeEventListener("click", onDocClick));
+onMounted(() => window.addEventListener("scroll", onScroll, { passive: true }));
+onBeforeUnmount(() => window.removeEventListener("scroll", onScroll));
 </script>
 
 <style lang="scss" scoped>
 @use "@/assets/styles/vars" as *;
-@use "@/assets/styles/mixins" as *;
 
-/* ------- NAV WRAPPER ------- */
+/* Taller navbar for a larger sigil */
+$krov-nav-h: 92px;
+
 .krov-navbar {
   position: fixed;
   inset: 0 0 auto 0;
-  height: 3.25rem;
-  display: flex;
-  align-items: center;
-  justify-content: flex-start; /* menu then brand left-to-right */
-  gap: $sp-3;
-  padding: 0 $sp-3;
+  height: $krov-nav-h;
   z-index: 1000;
-
   background: #111;
-  color: #e8e8e8;
-  isolation: isolate;
+  color: #eee;
+  transition: box-shadow 180ms ease;
 
-  &::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    opacity: 0.06;
-    background: repeating-linear-gradient(
-        to right,
-        #fff 0,
-        #fff 1px,
-        transparent 1px,
-        transparent 12px
-      ),
-      repeating-linear-gradient(
-        to bottom,
-        #fff 0,
-        #fff 1px,
-        transparent 1px,
-        transparent 12px
-      );
-    pointer-events: none;
+  &.scrolled {
+    box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.04) inset,
+      0 8px 22px rgba(0, 0, 0, 0.22);
+  }
+
+  .inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    height: 100%;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: center;
+    gap: $sp-3;
+    padding: 0 $sp-3;
   }
 }
 
-/* ------- BRAND ------- */
+/* Brand */
 .brand {
   display: inline-flex;
   align-items: center;
   gap: $sp-2;
-  text-decoration: none;
   color: inherit;
-
-  .sigil {
-    height: 2rem;
-    width: auto;
-    display: block;
-    filter: grayscale(1) contrast(1.1) brightness(1.1);
-  }
-
-  .title {
-    font-family: "Playfair Display", serif;
-    letter-spacing: 0.15rem;
-    font-size: 1.15rem;
-    color: #efefef;
-  }
-}
-
-/* ------- MENU ------- */
-.menu-wrapper {
-  position: relative;
-
-  /* Invisible hover bridge to prevent “gap drop” while moving cursor down */
-  &::after {
-    content: "";
-    position: absolute;
-    left: -6px;
-    right: -6px;
-    top: 100%;
-    height: 12px; /* the bridge thickness */
-    background: transparent;
-    z-index: 1; /* behind the dropdown; still inside wrapper */
-  }
-}
-
-.menu-icon {
-  position: relative;
-  display: inline-block;
-  background: transparent;
-  border: 0;
-  color: #efefef;
-  font-size: 1.6rem;
-  line-height: 1;
-  cursor: pointer;
-  padding: $sp-1 $sp-2;
+  pointer-events: none; /* ensures no accidental click behavior */
   user-select: none;
 
-  &::after {
-    content: "";
-    position: absolute;
-    left: $sp-2;
-    right: $sp-2;
-    bottom: $sp-1 - 0.125rem;
-    height: 1px;
-    background: currentColor;
-    transform: scaleX(0);
-    transform-origin: left;
-    transition: transform 180ms ease-out;
-    opacity: 0.55;
+  .sigil {
+    height: 64px;
+    width: auto;
+    display: block;
+    filter: grayscale(1) contrast(1.05);
   }
-
-  .is-open &::after,
-  &:hover::after {
-    transform: scaleX(1);
+  .title {
+    font-weight: 800;
+    letter-spacing: 0.16rem;
+    font-size: 1.1rem;
+    color: #f3f3f3;
   }
 }
 
-.links {
+/* Links */
+.nav-links {
   list-style: none;
   margin: 0;
   padding: 0;
+  display: inline-flex;
+  gap: $sp-3;
+  align-items: center;
 
-  position: absolute;
-  top: calc(100% + 12px); /* sits right below the 12px hover bridge */
-  left: 0; /* align under the icon on the LEFT */
-  right: auto;
-
-  background: rgba(17, 17, 17, 0.9);
-  backdrop-filter: blur(6px);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 10px;
-
-  min-width: 12rem;
-  padding: $sp-2 $sp-3;
-
-  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.35),
-    inset 0 0 0 1px rgba(255, 255, 255, 0.02);
-
-  z-index: 2; /* above the hover bridge */
-
-  li + li {
-    margin-top: $sp-1;
-    padding-top: $sp-1;
-    border-top: 1px solid rgba(255, 255, 255, 0.06);
-  }
-
-  a,
-  .router-link,
-  .router-link-active {
-    display: block;
-    text-decoration: none;
-    color: #f0f0f0;
-    padding: $sp-2 0;
-    font-weight: 600;
-    letter-spacing: 0.02em;
-    font-size: 0.975rem;
+  a {
     position: relative;
-    @include transition(color);
+    text-decoration: none;
+    color: #f1f1f1;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    font-size: 0.98rem;
+    padding: 0.25rem 0;
+    transition: color 140ms ease;
 
-    &:before {
+    &::after {
       content: "";
       position: absolute;
-      left: -$sp-2;
-      top: 50%;
-      transform: translateY(-50%) scaleY(0);
-      width: 2px;
-      height: 70%;
-      background: linear-gradient(#fff, #bbb);
-      transition: transform 160ms ease-out;
-      border-radius: 1px;
-      opacity: 0.9;
+      left: 0;
+      right: 0;
+      bottom: -2px;
+      height: 1px;
+      background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(255, 255, 255, 0.55),
+        transparent
+      );
+      transform: scaleX(0);
+      transform-origin: 50% 50%;
+      transition: transform 160ms ease;
+      opacity: 0.6;
     }
     &:hover,
     &:focus-visible {
-      color: #ffffff;
+      color: #fff;
+      outline: none;
     }
-    &:hover:before,
-    &:focus-visible:before {
-      transform: translateY(-50%) scaleY(1);
+    &:hover::after,
+    &:focus-visible::after {
+      transform: scaleX(1);
     }
   }
 }
 
-/* transitions */
-.fade-slide-enter-active,
-.fade-slide-leave-active {
-  transition: opacity 140ms ease, transform 140ms ease;
-}
-.fade-slide-enter-from,
-.fade-slide-leave-to {
-  opacity: 0;
-  transform: translateY(-6px);
-}
-
-/* responsive tweak */
-@include respond(sm) {
-  .krov-navbar {
+@media (max-width: 768px) {
+  .krov-navbar .inner {
     padding: 0 $sp-2;
     gap: $sp-2;
-    .title {
-      display: none;
+  }
+  .brand .title {
+    display: none;
+  }
+  .nav-links {
+    gap: $sp-2;
+    a {
+      font-size: 0.95rem;
     }
+  }
+  .brand .sigil {
+    height: 56px;
+  }
+}
+
+@media (max-width: 480px) {
+  .nav-links {
+    gap: $sp-1;
+    a {
+      font-weight: 600;
+      font-size: 0.9rem;
+    }
+  }
+  .brand .sigil {
+    height: 50px;
   }
 }
 </style>

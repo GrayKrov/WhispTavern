@@ -15,4 +15,17 @@ body {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+
+  /* faint room vignette for depth */
+  background-image: radial-gradient(
+      1200px 400px at 50% -200px,
+      rgba(255, 210, 120, 0.1),
+      transparent 70%
+    ),
+    radial-gradient(
+      800px 240px at 50% 100%,
+      rgba(0, 0, 0, 0.05),
+      transparent 70%
+    );
+  background-attachment: fixed, scroll;
 }

@@ -16,21 +16,25 @@ import AppFooter from "@/features/layout/Footer.vue";
 <style lang="scss" scoped>
 @use "@/assets/styles/vars" as *;
 
-/* page scaffold */
 #app-layout {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
 }
 
-/* ensure content clears the fixed navbar (matches $nav-h) */
 .content {
   flex: 1;
   padding: 3.5rem $sp-3 $sp-3;
-  background: $color-neutral;
-}
-
-.app-footer {
-  width: 100%;
+  background: radial-gradient(
+      1200px 380px at 50% -200px,
+      rgba(255, 210, 120, 0.1),
+      transparent 70%
+    ),
+    radial-gradient(
+      900px 260px at 50% 100%,
+      rgba(0, 0, 0, 0.06),
+      transparent 70%
+    );
+  background-attachment: fixed, scroll;
 }
 </style>

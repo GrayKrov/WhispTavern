@@ -22,22 +22,24 @@ export default {
 
 <style lang="scss" scoped>
 @use "@/assets/styles/vars" as *;
-@use "@/assets/styles/mixins" as *;
 
 .app-footer {
   text-align: center;
   padding: $sp-3;
   font-size: $fs-base;
   font-family: "Georgia", serif;
+
+  /* parchment top fade */
+  background: linear-gradient(0deg, rgba(120, 93, 68, 0.12), transparent 60%) 0
+      0/100% 100% no-repeat,
+    $color-dark;
+  color: $color-neutral;
   box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.08);
 
   &__inner {
     max-width: 1200px;
     margin: 0 auto;
   }
-
-  background: $color-dark;
-  color: $color-neutral;
 }
 
 .app-footer--krov {
@@ -45,13 +47,13 @@ export default {
   color: #1a1a1a;
 }
 
-@include respond(md) {
+@media (max-width: 768px) {
   .app-footer {
     font-size: 0.9rem;
     padding: $sp-2;
   }
 }
-@include respond(sm) {
+@media (max-width: 480px) {
   .app-footer {
     font-size: 0.85rem;
     padding: $sp-1;

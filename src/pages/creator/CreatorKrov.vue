@@ -1,12 +1,17 @@
 <script setup>
+/* eslint-disable no-console */
+import { ref, onMounted, computed } from "vue";
 import KrovNavBar from "@/features/creators/krov/KrovNavBar.vue";
 import KrovFooter from "@/features/creators/krov/KrovFooter.vue";
 import ProjectCard from "@/features/creators/krov/ProjectCard.vue";
-import { ref, onMounted, computed, onBeforeUnmount } from "vue";
 
 const projects = ref([]);
 const loading = ref(true);
-const rootRef = ref(null);
+/* tiny counter to replay the evolution */
+const evoKey = ref(0);
+function replayEvolution() {
+  evoKey.value += 1;
+}
 
 onMounted(async () => {
   try {
@@ -15,36 +20,14 @@ onMounted(async () => {
       { headers: { Accept: "application/vnd.github+json" } }
     );
     const data = await res.json();
-    projects.value = data
+    projects.value = (Array.isArray(data) ? data : [])
       .filter((r) => !r.fork)
-      .slice(0, 6)
-      .map((r) => ({ ...r, topics: r.topics || [] }));
+      .slice(0, 6);
   } catch (err) {
     console.error("GitHub fetch error:", err);
   } finally {
     loading.value = false;
   }
-
-  // Halo micro-interaction
-  const el = document.querySelector(".sigil-caption");
-  if (el && !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-    const onScroll = () => {
-      const y = Math.min(1, window.scrollY / 400);
-      el.style.setProperty("--haloScale", String(1 + y * 0.06));
-      el.style.setProperty("--haloOpacity", String(0.8 - y * 0.25));
-    };
-    window.addEventListener("scroll", onScroll, { passive: true });
-    onBeforeUnmount(() => window.removeEventListener("scroll", onScroll));
-  }
-
-  // Crow mode toggle
-  const onKey = (e) => {
-    if (e.key.toLowerCase() === "k" && !e.metaKey && !e.ctrlKey) {
-      rootRef.value?.classList.toggle("crow-mode");
-    }
-  };
-  window.addEventListener("keydown", onKey);
-  onBeforeUnmount(() => window.removeEventListener("keydown", onKey));
 });
 
 const skeletons = computed(() => Array.from({ length: 6 }));
@@ -52,19 +35,27 @@ const skeletons = computed(() => Array.from({ length: 6 }));
 
 <template>
   <KrovNavBar />
-  <a class="visually-sr" href="#krov-main">Skip to content</a>
+  <a class="sr-only" href="#krov-main">Skip to content</a>
 
-  <main ref="rootRef" id="krov-main" class="cc-krov-root">
-    <div class="grain" aria-hidden="true"></div>
+  <main id="krov-main" class="cc-krov-root" :key="evoKey">
+    <!-- CONTAINED CHAOS → MINIMAL (layered) -->
+    <div class="bg-layer bg-vignette" aria-hidden="true"></div>
+    <div class="bg-layer bg-mesh" aria-hidden="true"></div>
+    <div class="bg-layer bg-orbits" aria-hidden="true"></div>
+    <div class="bg-layer bg-guides" aria-hidden="true"></div>
+    <div class="bg-layer bg-dots" aria-hidden="true"></div>
+    <div class="bg-layer bg-noise" aria-hidden="true"></div>
 
-    <section class="intro-container">
-      <p class="sigil-caption">The Architect’s Mark</p>
-      <div class="sigil-meaning">
-        <p>
-          Forged in grayscale, the sigil embodies duality — wisdom and silence,
-          logic and chaos, creation and solitude…
-        </p>
-      </div>
+    <section class="hero">
+      <p class="hero-sub">Complex roots. Minimal outcomes.</p>
+      <button
+        class="replay"
+        type="button"
+        @click="replayEvolution"
+        aria-label="Replay background evolution"
+      >
+        Replay Evolution
+      </button>
     </section>
 
     <section
@@ -72,7 +63,7 @@ const skeletons = computed(() => Array.from({ length: 6 }));
       aria-live="polite"
       :aria-busy="loading ? 'true' : 'false'"
     >
-      <h2>Recent Work</h2>
+      <h2 class="section-title">Recent Work</h2>
       <div class="project-grid">
         <template v-if="loading">
           <ProjectCard
@@ -106,7 +97,7 @@ const skeletons = computed(() => Array.from({ length: 6 }));
 />
 
 <style scoped>
-.visually-sr {
+.sr-only {
   position: absolute;
   left: -9999px;
   top: auto;
@@ -114,7 +105,7 @@ const skeletons = computed(() => Array.from({ length: 6 }));
   height: 1px;
   overflow: hidden;
 }
-.visually-sr:focus {
+.sr-only:focus {
   position: fixed;
   left: 1rem;
   top: 1rem;
