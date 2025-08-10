@@ -3,10 +3,13 @@
     <!-- HERO -->
     <section class="hero" :style="heroStyle">
       <div class="hero__overlay">
+        <p class="kicker">A cozy corner of the internet</p>
         <h1>Welcome to WhispTavern</h1>
         <p class="tagline">
-          A cozy haven for games, stories, and creators—pull up a chair.
+          Games, stories, and creator spaces—crafted by people who care about
+          the vibe.
         </p>
+
         <div class="hero__ctas">
           <a
             class="btn btn--primary"
@@ -19,8 +22,14 @@
             >Meet the Creators</RouterLink
           >
         </div>
+
+        <!-- trust chips -->
+        <ul class="trust">
+          <li>Kind & inclusive</li>
+          <li>Creator-friendly</li>
+          <li>Low pressure, high camaraderie</li>
+        </ul>
       </div>
-      <!-- embers removed -->
     </section>
 
     <!-- ABOUT (parchment) -->
@@ -73,12 +82,18 @@
       </ul>
     </section>
 
-    <!-- FEATURED (horizontal scroll) -->
-    <section class="featured">
-      <h2>Featured in the Tavern</h2>
-      <div class="strip">
-        <CommunityCard name="Krov" :avatarSrc="krovAvatar" routerLink="/krov" />
-        <!-- Add more cards here as you grow -->
+    <!-- INVITE PANEL -->
+    <section class="invite">
+      <div class="invite__card">
+        <h3>Pull up a chair.</h3>
+        <p>Jump in for game nights, creator collabs, and good company.</p>
+        <a
+          class="btn btn--primary btn--wide"
+          href="https://discord.com/invite/JfMh3P57zh"
+          target="_blank"
+          rel="noopener"
+          >Join the Tavern</a
+        >
       </div>
     </section>
   </div>
@@ -88,15 +103,12 @@
 import { defineComponent } from "vue";
 import { RouterLink } from "vue-router";
 import bannerImage from "@/assets/images/BannerTop.jpg";
-import CommunityCard from "@/features/community/CommunityCard.vue";
-import krovAvatar from "@/assets/avatars/Krov.jpg";
 
 export default defineComponent({
   name: "HomePage",
-  components: { RouterLink, CommunityCard },
+  components: { RouterLink },
   data() {
     return {
-      krovAvatar,
       // CSS var powers blurred-cover + crisp-contain layering in CSS
       heroStyle: { "--hero-url": `url(${bannerImage})` },
     };
@@ -118,14 +130,13 @@ export default defineComponent({
     position: relative;
     width: 100%;
     max-width: 1080px;
-    height: clamp(160px, 26vw, 240px);
+    height: clamp(170px, 28vw, 260px);
     margin: 0 auto ($sp-4 + $sp-2);
-    border-radius: 0.9rem;
+    border-radius: 1rem;
     overflow: hidden;
-    box-shadow: 0 14px 30px rgba(0, 0, 0, 0.16);
+    box-shadow: 0 18px 38px rgba(0, 0, 0, 0.16);
     background: #f5f1ea;
   }
-
   /* blurred cover layer */
   .hero::before {
     content: "";
@@ -134,10 +145,9 @@ export default defineComponent({
     background-image: var(--hero-url);
     background-size: cover;
     background-position: center;
-    filter: blur(14px) saturate(0.95) brightness(0.95);
+    filter: blur(16px) saturate(0.95) brightness(0.95);
     transform: scale(1.08);
   }
-
   /* crisp contain layer */
   .hero::after {
     content: "";
@@ -149,7 +159,7 @@ export default defineComponent({
     background-position: center;
   }
 
-  /* overlay (full-bleed) with lantern glow */
+  /* overlay (full-bleed) with lantern glow + silky sheen (no jump) */
   .hero__overlay {
     position: absolute;
     inset: 0;
@@ -164,9 +174,16 @@ export default defineComponent({
       rgba(50, 35, 24, 0.48)
     );
   }
+  .hero__overlay .kicker {
+    margin: 0 0 $sp-1;
+    color: rgba(255, 255, 255, 0.85);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    font-size: 0.8rem;
+  }
   .hero__overlay h1 {
     color: $color-neutral;
-    font-size: clamp(1.6rem, 2.2vw, 2rem);
+    font-size: clamp(1.8rem, 2.6vw, 2.25rem);
     margin: 0 0 $sp-2;
     text-shadow: 0 2px 6px rgba(0, 0, 0, 0.5);
     letter-spacing: 0.02em;
@@ -174,8 +191,8 @@ export default defineComponent({
   .hero__overlay .tagline {
     color: rgba(255, 255, 255, 0.9);
     margin: 0 auto $sp-2;
-    max-width: 720px;
-    font-size: clamp(0.95rem, 1.1vw, 1.05rem);
+    max-width: 760px;
+    font-size: clamp(0.95rem, 1.2vw, 1.08rem);
     text-shadow: 0 1px 3px rgba(0, 0, 0, 0.45);
   }
   .hero__overlay .hero__ctas {
@@ -184,24 +201,56 @@ export default defineComponent({
     flex-wrap: wrap;
     justify-content: center;
   }
+  /* Lantern glow */
   .hero__overlay::before {
-    /* lantern glow */
     content: "";
     position: absolute;
     left: 50%;
     transform: translateX(-50%);
-    bottom: -6px;
+    bottom: -8px;
     width: 78%;
-    height: 86px;
+    height: 90px;
     background: radial-gradient(
       60% 120% at 50% 0%,
       rgba(255, 222, 160, 0.6),
-      rgba(255, 200, 120, 0.4) 40%,
+      rgba(255, 200, 120, 0.42) 40%,
       transparent 72%
     );
     filter: blur(16px);
     pointer-events: none;
     z-index: -1;
+  }
+  /* Super-soft drifting sheen (ping-pong, no jump) */
+  .hero__overlay::after {
+    content: "";
+    position: absolute;
+    left: -25%;
+    top: 0;
+    width: 150%;
+    height: 100%;
+    background: linear-gradient(
+      90deg,
+      transparent 0%,
+      rgba(255, 230, 180, 0.06) 46%,
+      rgba(255, 230, 180, 0.13) 50%,
+      rgba(255, 230, 180, 0.06) 54%,
+      transparent 100%
+    );
+    filter: blur(10px);
+    transform: translateX(-10%) skewX(-2deg);
+    animation: sweepAlt 16s ease-in-out infinite alternate;
+    pointer-events: none;
+    will-change: transform, opacity;
+  }
+  @keyframes sweepAlt {
+    from {
+      transform: translateX(-10%) skewX(-2deg);
+      opacity: 0.9;
+    }
+    to {
+      transform: translateX(10%) skewX(-2deg);
+      opacity: 0.9;
+    }
   }
 
   /* Buttons */
@@ -216,12 +265,31 @@ export default defineComponent({
     transition: transform 0.12s ease, box-shadow 0.12s ease,
       background 0.12s ease, color 0.12s ease;
     will-change: transform;
+    position: relative;
+    overflow: hidden;
+  }
+  .btn::after {
+    content: "";
+    position: absolute;
+    inset: 0 -30%;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(255, 255, 255, 0.25),
+      transparent
+    );
+    transform: translateX(-100%);
+    transition: transform 0.45s ease;
+    pointer-events: none;
+  }
+  .btn:hover::after {
+    transform: translateX(100%);
   }
 
   /* Primary: warm amber gradient */
   .btn--primary {
     background: linear-gradient(140deg, #b98a5e, #d9b793);
-    color: #2b241c; /* dark cocoa text */
+    color: #2b241c;
     border-color: rgba(0, 0, 0, 0.06);
   }
   .btn--primary:hover {
@@ -229,7 +297,7 @@ export default defineComponent({
     box-shadow: 0 12px 26px rgba(0, 0, 0, 0.22);
   }
 
-  /* Ghost: glassy, on top of the hero overlay */
+  /* Ghost: glassy over the hero */
   .btn--ghost {
     background: rgba(255, 255, 255, 0.18);
     color: #fff;
@@ -240,11 +308,29 @@ export default defineComponent({
     transform: translateY(-2px);
     box-shadow: 0 12px 26px rgba(0, 0, 0, 0.22);
   }
+  .btn--wide {
+    padding: $sp-2 ($sp-4 + $sp-2);
+  }
 
-  /* Accessibility focus */
-  .btn:focus-visible {
-    outline: 2px solid rgba(255, 224, 173, 0.9);
-    outline-offset: 2px;
+  /* Trust chips */
+  .trust {
+    list-style: none;
+    display: flex;
+    gap: $sp-2;
+    padding: 0;
+    margin: $sp-3 0 0;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+  .trust li {
+    padding: $sp-1 $sp-2;
+    border-radius: 999px;
+    font-weight: 600;
+    font-size: 0.85rem;
+    color: #2b241c;
+    background: rgba(255, 255, 255, 0.75);
+    border: 1px solid rgba(0, 0, 0, 0.06);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
   }
 
   /* ABOUT parchment */
@@ -304,37 +390,42 @@ export default defineComponent({
     }
   }
 
-  /* FEATURED STRIP */
-  .featured {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 $sp-3;
-
-    h2 {
-      text-align: center;
-      margin-bottom: $sp-3;
-      letter-spacing: 0.02em;
-    }
-
-    .strip {
-      display: grid;
-      grid-auto-flow: column;
-      grid-auto-columns: minmax(220px, 260px);
-      gap: $sp-3;
-      overflow-x: auto;
-      padding-bottom: $sp-2;
-      scroll-snap-type: x mandatory;
-    }
-    .strip > * {
-      scroll-snap-align: start;
-    }
+  /* INVITE PANEL */
+  .invite {
+    display: grid;
+    place-items: center;
+    padding: ($sp-4 + $sp-2) $sp-3 $sp-4;
+  }
+  .invite__card {
+    width: 100%;
+    max-width: 980px;
+    text-align: center;
+    padding: ($sp-4 + $sp-2) $sp-3;
+    border-radius: 1rem;
+    background: radial-gradient(
+        120% 120% at 50% 0%,
+        rgba(255, 220, 170, 0.25),
+        transparent 60%
+      ),
+      linear-gradient(140deg, #f9f5ee, #f7f1e8);
+    border: 1px solid rgba(120, 93, 68, 0.28);
+    box-shadow: 0 16px 36px rgba(0, 0, 0, 0.14);
+  }
+  .invite__card h3 {
+    margin: 0 0 $sp-2;
+    font-size: clamp(1.4rem, 2.1vw, 1.8rem);
+    letter-spacing: 0.02em;
+  }
+  .invite__card p {
+    margin: 0 0 $sp-3;
+    color: #4b3f33;
   }
 }
 
 /* small tweak */
 @include respond(sm) {
   .home-page .hero {
-    border-radius: 0.8rem;
+    border-radius: 0.9rem;
   }
 }
 </style>

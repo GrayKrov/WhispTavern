@@ -1,7 +1,7 @@
 <template>
   <section class="community-list">
     <CommunityCard name="Krov" :avatarSrc="krovAvatar" routerLink="/krov" />
-    <!-- Add more creators as you like -->
+    <!-- Add more CommunityCard entries as you grow -->
   </section>
 </template>
 
@@ -15,10 +15,9 @@ import krovAvatar from "@/assets/avatars/Krov.jpg";
 
 .community-list {
   width: 100%;
-  max-width: 1080px;
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-  gap: $sp-4;
-  padding: 0 $sp-2 $sp-4;
+  gap: $sp-3;
+  padding: $sp-2;
 }
 </style>

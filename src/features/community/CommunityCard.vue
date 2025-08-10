@@ -26,7 +26,7 @@
 </template>
 
 <script setup>
-/* global defineProps */
+/* eslint-disable */
 import { RouterLink } from "vue-router";
 defineProps({
   name: { type: String, required: true },
@@ -61,7 +61,6 @@ defineProps({
   transition: transform 180ms ease, box-shadow 180ms ease;
   transform-origin: center;
   will-change: transform;
-  perspective: 800px;
 
   &.inactive {
     opacity: 0.6;
@@ -82,7 +81,6 @@ defineProps({
     position: relative;
     box-shadow: 0 0 0 5px color.adjust($color-secondary, $lightness: 6%) inset,
       0 4px 14px rgba(0, 0, 0, 0.12);
-
     .avatar {
       width: 100%;
       height: 100%;

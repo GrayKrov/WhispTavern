@@ -3,10 +3,8 @@
     <div class="inner">
       <div class="rule"></div>
       <figure class="epigraph">
-        <blockquote>
-          Imagination builds worlds; code gives them life.
-        </blockquote>
-        <figcaption>— Krov</figcaption>
+        <blockquote>“Do one thing well.”</blockquote>
+        <figcaption>— Doug McIlroy</figcaption>
       </figure>
     </div>
   </footer>

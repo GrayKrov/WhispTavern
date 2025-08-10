@@ -20,8 +20,9 @@
       </div>
     </section>
 
+    <!-- Grid -->
     <section class="list-wrap">
-      <!-- Optional pinned CTA card at the start of the grid -->
+      <!-- Pinned CTA tile -->
       <div class="cta-card">
         <h3>Become a Creator</h3>
         <p>
@@ -62,7 +63,7 @@ export default {
   padding: $sp-4 $sp-3;
 }
 
-/* intro block */
+/* Intro */
 .intro {
   max-width: 900px;
   text-align: center;
@@ -79,6 +80,7 @@ export default {
   }
 }
 
+/* Buttons (match Home) */
 .btn {
   display: inline-block;
   padding: $sp-2 $sp-3;
@@ -89,7 +91,28 @@ export default {
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.18);
   transition: transform 0.12s ease, box-shadow 0.12s ease, background 0.12s ease,
     color 0.12s ease;
+  will-change: transform;
+  position: relative;
+  overflow: hidden;
 }
+.btn::after {
+  content: "";
+  position: absolute;
+  inset: 0 -30%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.25),
+    transparent
+  );
+  transform: translateX(-100%);
+  transition: transform 0.45s ease;
+  pointer-events: none;
+}
+.btn:hover::after {
+  transform: translateX(100%);
+}
+
 .btn--primary {
   background: linear-gradient(140deg, #b98a5e, #d9b793);
   color: #2b241c;
@@ -110,6 +133,7 @@ export default {
   box-shadow: 0 12px 26px rgba(0, 0, 0, 0.18);
 }
 
+/* Grid */
 .list-wrap {
   width: 100%;
   max-width: 1200px;
@@ -118,7 +142,7 @@ export default {
   gap: $sp-3;
 }
 
-/* pinned CTA card styled like a feature tile */
+/* CTA tile */
 .cta-card {
   background: linear-gradient(#f9f5ee, #f7f1e8);
   border: 1px solid rgba(120, 93, 68, 0.28);
