@@ -2,13 +2,8 @@
 <template>
   <nav class="krov-navbar" :class="{ scrolled }">
     <div class="inner">
-      <!-- Brand (no longer a link) -->
       <div class="brand">
-        <img
-          class="sigil"
-          src="@/assets/logos/krov-logo.png"
-          alt="Krov Sigil"
-        />
+        <img class="sigil" :src="krovLogo" alt="Krov Sigil" />
         <span class="title" aria-hidden="true">KROV</span>
       </div>
 
@@ -35,14 +30,14 @@
 </template>
 
 <script setup>
-import { RouterLink } from "vue-router";
 import { ref, onMounted, onBeforeUnmount } from "vue";
+/* ✅ import the asset so bundler resolves it deterministically */
+import krovLogo from "@/assets/logos/krov-logo.png";
 
 const scrolled = ref(false);
 const onScroll = () => {
   scrolled.value = window.scrollY > 4;
 };
-
 onMounted(() => window.addEventListener("scroll", onScroll, { passive: true }));
 onBeforeUnmount(() => window.removeEventListener("scroll", onScroll));
 </script>

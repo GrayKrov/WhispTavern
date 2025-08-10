@@ -130,7 +130,7 @@ export default defineComponent({
     position: relative;
     width: 100%;
     max-width: 1080px;
-    height: clamp(170px, 28vw, 260px);
+    height: clamp(170px, 28vw, 300px);
     margin: 0 auto ($sp-4 + $sp-2);
     border-radius: 1rem;
     overflow: hidden;

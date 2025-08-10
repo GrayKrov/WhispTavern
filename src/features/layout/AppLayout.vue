@@ -17,13 +17,13 @@ import AppFooter from "@/features/layout/Footer.vue";
 @use "@/assets/styles/vars" as *;
 
 #app-layout {
+  min-height: 100vh; /* page fills the viewport */
   display: flex;
-  flex-direction: column;
-  min-height: 100vh;
+  flex-direction: column; /* stack: NavBar, content, Footer */
 }
 
 .content {
-  flex: 1;
+  flex: 1 0 auto;
   padding: 3.5rem $sp-3 $sp-3;
   background: radial-gradient(
       1200px 380px at 50% -200px,

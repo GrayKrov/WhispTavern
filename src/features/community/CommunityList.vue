@@ -7,7 +7,7 @@
 
 <script setup>
 import CommunityCard from "./CommunityCard.vue";
-import krovAvatar from "@/assets/avatars/Krov.jpg";
+import krovAvatar from "@/assets/avatars/Krov.jpg"; // ✅ correct
 </script>
 
 <style lang="scss" scoped>

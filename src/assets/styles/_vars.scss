@@ -1,21 +1,50 @@
-// Colors
+/* --- WhispTavern SCSS variables (backwards-compatible superset) --- */
+
+/* COLORS (kept the ones you already use; added a few safe helpers) */
 $color-primary: #4a2f2f;
 $color-secondary: #a68f7f;
 $color-neutral: #f5f1ea;
 $color-dark: #222;
+$color-white: #fff;
+$color-black: #000;
 
-// Spacing
-$sp-1: 0.25rem;
-$sp-2: 0.5rem;
-$sp-3: 1rem;
-$sp-4: 1.5rem;
+/* SPACING SCALE (extends what you already had) */
+/* rem values respect user font-size settings */
+$sp-1: 0.25rem; /*  4px */
+$sp-2: 0.5rem; /*  8px */
+$sp-3: 1rem; /* 16px */
+$sp-4: 1.5rem; /* 24px */
+$sp-5: 2rem; /* 32px */
+$sp-6: 2.5rem; /* 40px */
+$sp-8: 3rem; /* 48px */
+$sp-10: 3.5rem; /* 56px */
+$sp-12: 4rem; /* 64px */
 
-// Typography
+/* TYPOGRAPHY (keeps your existing sizes; adds optional fluid mixins) */
 $font-sans: "Helvetica Neue", Arial, sans-serif;
+$fs-sm: 0.875rem;
 $fs-base: 1rem;
 $fs-lg: 1.25rem;
 
-// Breakpoints
+/* Opt-in fluid headings (use only where you want) */
+@mixin type-h1() {
+  font-size: clamp(1.6rem, 2.5vw, 2.2rem);
+  line-height: 1.15;
+  letter-spacing: 0.01em;
+}
+@mixin type-h2() {
+  font-size: clamp(1.25rem, 1.5vw, 1.5rem);
+  line-height: 1.2;
+}
+@mixin type-h3() {
+  font-size: clamp(1.125rem, 1.3vw, 1.35rem);
+  line-height: 1.25;
+}
+
+/* BREAKPOINTS (used by your respond() mixin) */
 $bp-sm: 480px;
 $bp-md: 768px;
 $bp-lg: 1024px;
+
+/* CONTAINER WIDTH helper */
+$container-max: 1100px;
