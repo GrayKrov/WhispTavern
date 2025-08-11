@@ -11,7 +11,7 @@ A cozy, fantasy-themed Vue 3 Single-Page Application (SPA) that serves as the of
 
 ## 📂 Project Structure
 
-```graphql
+```Bash
 whisptavern/
 ├─ public/
 │  └─ index.html                     # Base HTML template (preconnect/prefetch)
