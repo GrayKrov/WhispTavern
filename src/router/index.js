@@ -1,53 +1,61 @@
 import { createRouter, createWebHistory } from "vue-router";
 
-// Use Vue CLI's BASE_URL when available
-const base = process.env.BASE_URL || "/";
+// pages
+import Home from "@/pages/Home.vue";
+import Community from "@/pages/Community.vue";
+import CreatorKrov from "@/pages/creator/CreatorKrov.vue";
+import CreatorPlaceholder from "@/pages/creator/CreatorPlaceholder.vue";
+
+// data
+import creators from "@/content/creators.json";
+
+const routes = [
+  { path: "/", name: "home", component: Home, meta: { title: "WhispTavern" } },
+  {
+    path: "/community",
+    name: "community",
+    component: Community,
+    meta: { title: "Community – WhispTavern" },
+  },
+
+  // bespoke creator page(s)
+  {
+    path: "/krov",
+    name: "krov",
+    component: CreatorKrov,
+    // mark as a "creator" page so App.vue can choose special layout if desired
+    meta: { title: "Krov – WhispTavern", creator: "krov" },
+  },
+
+  // dynamic placeholder for other creators (keep this LAST so it doesn't swallow other routes)
+  {
+    path: "/:slug",
+    name: "creator-placeholder",
+    component: CreatorPlaceholder,
+    meta: { title: "Creator – WhispTavern" },
+    beforeEnter: (to) => {
+      const slug = String(to.params.slug || "").toLowerCase();
+      // allow only slugs defined in creators.json
+      const exists = creators.some(
+        (c) => String(c.slug || "").toLowerCase() === slug
+      );
+      if (!exists) return { path: "/community" };
+      // for krov we already have a bespoke page
+      if (slug === "krov") return { path: "/krov" };
+      return true;
+    },
+  },
+];
 
 const router = createRouter({
-  history: createWebHistory(base),
-  routes: [
-    {
-      path: "/",
-      name: "HomePage", // keep your existing names if they differ
-      component: () =>
-        import(/* webpackChunkName: "home" */ "@/pages/Home.vue"),
-    },
-    {
-      path: "/community",
-      name: "CommunityPage",
-      component: () =>
-        import(/* webpackChunkName: "community" */ "@/pages/Community.vue"),
-    },
-    {
-      path: "/krov",
-      name: "CreatorKrovPage",
-      // If your file lives at "@/pages/creator/CreatorKrov.vue", keep this line.
-      // If it's somewhere else (e.g. "@/features/creators/krov/CreatorKrov.vue"),
-      // change the path below to match your actual file.
-      component: () =>
-        import(
-          /* webpackChunkName: "creator-krov" */ "@/pages/creator/CreatorKrov.vue"
-        ),
-      // Keep any meta you already had here:
-      meta: { creator: "krov" },
-    },
-
-    // If you’ve got other routes, repeat the same pattern:
-    // { path: "/example", name: "Example", component: () => import("@/pages/Example.vue") },
-  ],
-  scrollBehavior(to, _from, saved) {
-    if (saved) return saved;
-    if (to.hash) return { el: to.hash, behavior: "smooth" };
-    return { top: 0 };
-  },
+  history: createWebHistory(process.env.BASE_URL),
+  routes,
 });
 
-// Optional: simple per-route title (safe JS, no TS features)
-// Add meta: { title: "Your Title" } to any route to customize.
+// simple document.title support
 router.afterEach((to) => {
-  const title =
-    (to && to.meta && to.meta.title && String(to.meta.title)) || "WhispTavern";
-  if (typeof document !== "undefined") document.title = title;
+  const title = (to.meta && to.meta.title) || "WhispTavern";
+  if (title) document.title = title;
 });
 
 export default router;

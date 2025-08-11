@@ -1,13 +1,26 @@
 <template>
+  <!-- Skip link: first focusable element -->
+  <a class="skip-link" href="#main">Skip to content</a>
+
   <nav :class="['navbar', `navbar--${theme}`]">
     <div
       class="menu-wrapper"
       @mouseenter="showMenu = true"
       @mouseleave="showMenu = false"
     >
-      <div class="menu-icon" aria-label="Open menu" role="button">☰</div>
+      <!-- button = keyboard + screen reader friendly -->
+      <button
+        class="menu-icon"
+        type="button"
+        :aria-expanded="showMenu ? 'true' : 'false'"
+        aria-controls="primary-menu"
+        @click="showMenu = !showMenu"
+      >
+        ☰
+      </button>
+
       <transition name="fade">
-        <div v-if="showMenu" class="dropdown">
+        <div v-if="showMenu" id="primary-menu" class="dropdown">
           <RouterLink to="/">Home</RouterLink>
           <RouterLink to="/community">Community</RouterLink>
         </div>
@@ -29,6 +42,23 @@ const theme = computed(() => route.meta.creator || "default");
 
 $nav-h: 52px;
 
+/* Accessible skip link — hidden until keyboard focus */
+.skip-link {
+  position: absolute;
+  left: -9999px;
+  top: auto;
+  z-index: 9999;
+}
+.skip-link:focus {
+  left: 1rem;
+  top: 1rem;
+  background: #fff;
+  color: #000;
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  outline: 2px solid #000;
+}
+
 .navbar {
   position: fixed;
   inset: 0 0 auto 0;
@@ -43,6 +73,10 @@ $nav-h: 52px;
   border-bottom: 1px solid rgba(0, 0, 0, 0.08);
 
   .menu-icon {
+    /* reset button defaults; keep your look */
+    background: none;
+    border: 0;
+    padding: 0;
     color: $color-dark;
     font-size: 1.6rem;
   }

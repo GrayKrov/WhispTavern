@@ -1,0 +1,13 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://whisptavern/schema/announcement.schema.json",
+  "title": "Announcement",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["date", "title", "body"],
+  "properties": {
+    "date": { "type": "string", "format": "date" },
+    "title": { "type": "string", "minLength": 1, "maxLength": 120 },
+    "body": { "type": "string", "minLength": 1, "maxLength": 1000 }
+  }
+}

@@ -2,7 +2,7 @@
   <div class="community-page">
     <CommunityBanner />
 
-    <!-- Intro + CTA -->
+    <!-- Intro -->
     <section class="intro">
       <p>
         Meet the creators, collaborators, and friends who make our tavern
@@ -20,11 +20,10 @@
       </div>
     </section>
 
-    <!-- Grid -->
-    <section class="list-wrap">
-      <!-- Pinned CTA tile -->
+    <!-- Standalone CTA (no lantern accent) -->
+    <section class="cta" aria-labelledby="cta-title">
       <div class="cta-card">
-        <h3>Become a Creator</h3>
+        <h2 id="cta-title">Become a Creator</h2>
         <p>
           Want a custom page that matches your vibe? We’ll build it with you.
         </p>
@@ -36,7 +35,10 @@
           >Start Here</a
         >
       </div>
+    </section>
 
+    <!-- Grid below -->
+    <section class="list-wrap">
       <CommunityList />
     </section>
   </div>
@@ -53,7 +55,7 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
+<style scoped lang="scss">
 @use "@/assets/styles/vars" as *;
 
 .community-page {
@@ -67,7 +69,7 @@ export default {
 .intro {
   max-width: 900px;
   text-align: center;
-  margin: 0 auto ($sp-4 + $sp-2);
+  margin: 0 auto $sp-3;
   p {
     margin-bottom: $sp-2;
     line-height: 1.8;
@@ -80,7 +82,33 @@ export default {
   }
 }
 
-/* Buttons (match Home) */
+/* CTA section */
+.cta {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto $sp-3;
+  position: relative;
+  z-index: 0;
+}
+.cta-card {
+  background: linear-gradient(#f9f5ee, #f7f1e8);
+  border: 1px solid rgba(120, 93, 68, 0.28);
+  border-radius: 1rem;
+  padding: $sp-3;
+  box-shadow: 0 10px 26px rgba(0, 0, 0, 0.14);
+  text-align: center;
+  display: grid;
+  place-content: center;
+}
+.cta-card h2 {
+  margin: 0 0 $sp-2;
+  letter-spacing: 0.02em;
+}
+.cta-card p {
+  margin: 0 0 $sp-3;
+}
+
+/* Buttons */
 .btn {
   display: inline-block;
   padding: $sp-2 $sp-3;
@@ -91,7 +119,6 @@ export default {
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.18);
   transition: transform 0.12s ease, box-shadow 0.12s ease, background 0.12s ease,
     color 0.12s ease;
-  will-change: transform;
   position: relative;
   overflow: hidden;
 }
@@ -112,7 +139,6 @@ export default {
 .btn:hover::after {
   transform: translateX(100%);
 }
-
 .btn--primary {
   background: linear-gradient(140deg, #b98a5e, #d9b793);
   color: #2b241c;
@@ -133,31 +159,13 @@ export default {
   box-shadow: 0 12px 26px rgba(0, 0, 0, 0.18);
 }
 
-/* Grid */
+/* Grid container — make a new stacking context and sit above previous sections */
 .list-wrap {
   width: 100%;
   max-width: 1200px;
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-  gap: $sp-3;
-}
-
-/* CTA tile */
-.cta-card {
-  background: linear-gradient(#f9f5ee, #f7f1e8);
-  border: 1px solid rgba(120, 93, 68, 0.28);
-  border-radius: 1rem;
-  padding: $sp-3;
-  box-shadow: 0 10px 26px rgba(0, 0, 0, 0.14);
-  text-align: center;
-  display: grid;
-  place-content: center;
-}
-.cta-card h3 {
-  margin: 0 0 $sp-2;
-  letter-spacing: 0.02em;
-}
-.cta-card p {
-  margin: 0 0 $sp-3;
+  margin: 0 auto;
+  position: relative;
+  isolation: isolate; /* new paint/stacking context */
+  z-index: 5; /* above intro/cta decorative layers */
 }
 </style>

@@ -1,0 +1,90 @@
+@use "sass:color";
+@use "./vars" as *; // reuse your existing spacing + base colors
+
+/* ——— Palette ——— */
+$c-parchment: $color-neutral; /* light parchment */
+$c-wood: $color-primary; /* deep wood */
+$c-amber-1: #b98a5e; /* warm amber */
+$c-amber-2: #d9b793; /* light amber */
+$c-bg: #f7f7f7; /* app background */
+
+/* ——— Radii ——— */
+$radius-sm: 0.5rem;
+$radius-md: 0.75rem;
+$radius-lg: 1rem;
+$radius-2xl: 1.25rem;
+
+/* ——— Shadows ——— */
+$shadow-soft: 0 10px 26px rgba(0, 0, 0, 0.12);
+$shadow-lift: 0 12px 26px rgba(0, 0, 0, 0.18);
+$shadow-hard: 0 18px 38px rgba(0, 0, 0, 0.16);
+
+/* ——— Spacing aliases (map to your existing $sp-*) ——— */
+$space-1: $sp-1;
+$space-2: $sp-2;
+$space-3: $sp-3;
+$space-4: $sp-4;
+$space-5: $sp-5;
+$space-6: $sp-6;
+$space-8: $sp-8;
+$space-10: $sp-10;
+$space-12: $sp-12;
+
+/* ——— Mixins ——— */
+@mixin parchment($tone: 2%) {
+  $paper: color.adjust($c-parchment, $lightness: $tone);
+  background: linear-gradient($paper, $paper) padding-box,
+    linear-gradient(140deg, rgba(120, 93, 68, 0.28), rgba(180, 150, 120, 0.28))
+      border-box;
+  border: 1px solid transparent;
+  border-radius: $radius-lg;
+  box-shadow: $shadow-soft;
+}
+
+/* Adds a subtle “paper noise” as a pseudo-element */
+@mixin noise($opacity1: 0.015, $opacity2: 0.01) {
+  position: relative;
+  overflow: hidden;
+  &::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    /* two staggered dot fields for gentle grain */
+    background-image: radial-gradient(
+        rgba(0, 0, 0, $opacity1) 1px,
+        transparent 1.5px
+      ),
+      radial-gradient(rgba(0, 0, 0, $opacity2) 1px, transparent 1.5px);
+    background-size: 4px 4px, 6px 6px;
+    background-position: 0 0, 3px 2px;
+    border-radius: inherit;
+    pointer-events: none;
+  }
+}
+
+@mixin lantern($width: 72%) {
+  position: relative;
+  &::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    bottom: -8px;
+    width: $width;
+    height: 90px;
+    background: radial-gradient(
+      60% 120% at 50% 0%,
+      rgba(255, 222, 160, 0.6),
+      rgba(255, 200, 120, 0.42) 40%,
+      transparent 72%
+    );
+    filter: blur(16px);
+    pointer-events: none;
+    z-index: -1;
+  }
+}
+
+@mixin focus-ring() {
+  outline: 2px solid rgba(255, 255, 255, 0.85);
+  outline-offset: 2px;
+}

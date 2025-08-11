@@ -1,13 +1,15 @@
-<!-- src/features/creators/krov/KrovNavBar.vue -->
 <template>
+  <!-- skip to Krov main content -->
+  <a class="skip-link" href="#krov-main">Skip to content</a>
+
   <nav class="krov-navbar" :class="{ scrolled }">
     <div class="inner">
       <div class="brand">
-        <img class="sigil" :src="krovLogo" alt="Krov Sigil" />
-        <span class="title" aria-hidden="true">KROV</span>
+        <!-- Decorative since the word KROV is visible -->
+        <img class="sigil" :src="krovLogo" alt="" role="presentation" />
+        <span class="title" aria-hidden="false">KROV</span>
       </div>
 
-      <!-- Links -->
       <ul class="nav-links" role="menubar">
         <li role="none">
           <RouterLink role="menuitem" to="/">Home</RouterLink>
@@ -31,7 +33,7 @@
 
 <script setup>
 import { ref, onMounted, onBeforeUnmount } from "vue";
-/* ✅ import the asset so bundler resolves it deterministically */
+import { RouterLink } from "vue-router";
 import krovLogo from "@/assets/logos/krov-logo.png";
 
 const scrolled = ref(false);
@@ -45,7 +47,24 @@ onBeforeUnmount(() => window.removeEventListener("scroll", onScroll));
 <style lang="scss" scoped>
 @use "@/assets/styles/vars" as *;
 
-/* Taller navbar for a larger sigil */
+/* Skip link (same pattern) */
+.skip-link {
+  position: absolute;
+  left: -9999px;
+  top: auto;
+  z-index: 1001;
+}
+.skip-link:focus {
+  left: 1rem;
+  top: 1rem;
+  background: #fff;
+  color: #000;
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  outline: 2px solid #000;
+}
+
+/* (rest unchanged) */
 $krov-nav-h: 92px;
 
 .krov-navbar {
@@ -74,13 +93,12 @@ $krov-nav-h: 92px;
   }
 }
 
-/* Brand */
 .brand {
   display: inline-flex;
   align-items: center;
   gap: $sp-2;
   color: inherit;
-  pointer-events: none; /* ensures no accidental click behavior */
+  pointer-events: none;
   user-select: none;
 
   .sigil {
@@ -97,7 +115,6 @@ $krov-nav-h: 92px;
   }
 }
 
-/* Links */
 .nav-links {
   list-style: none;
   margin: 0;

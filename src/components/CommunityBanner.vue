@@ -1,7 +1,6 @@
 <template>
   <div class="community-banner" :style="styleVars">
     <div class="overlay">
-      <!-- Crest (mark enlarged) -->
       <div class="crest" aria-hidden="true">
         <svg viewBox="0 0 64 64" class="crest__svg">
           <defs>
@@ -10,9 +9,7 @@
               <stop offset="100%" stop-color="rgba(255,222,160,0)" />
             </radialGradient>
           </defs>
-          <!-- soft halo behind the mark -->
           <circle cx="32" cy="40" r="20" fill="url(#glow)" />
-          <!-- crow mark scaled up around center -->
           <g transform="translate(32,32) scale(1.22) translate(-32,-32)">
             <path
               d="M12 38c10-8 24-12 36-10-7 1-11 5-12 8 6-2 9-1 13 2-9 0-14 3-16 7-5-7-12-7-21-7z"
@@ -36,14 +33,17 @@
 
 <script>
 import { defineComponent, computed } from "vue";
-import bannerImage from "@/assets/images/BannerTop.jpg";
+import bannerJpg from "@/assets/images/BannerTop.jpg";
+import bannerWebp from "@/assets/images/BannerTop.webp";
+import bannerAvif from "@/assets/images/BannerTop.avif";
 
 export default defineComponent({
   name: "CommunityBanner",
   setup() {
-    // Static image only (no parallax)
     const styleVars = computed(() => ({
-      "--img": `url(${bannerImage})`,
+      "--img-jpg": `url(${bannerJpg})`,
+      "--img-webp": `url(${bannerWebp})`,
+      "--img-avif": `url(${bannerAvif})`,
     }));
     return { styleVars };
   },
@@ -70,7 +70,12 @@ export default defineComponent({
     content: "";
     position: absolute;
     inset: -8%;
-    background-image: var(--img);
+    background-image: var(--img-jpg);
+    background-image: image-set(
+      var(--img-avif) type("image/avif") 1x,
+      var(--img-webp) type("image/webp") 1x,
+      var(--img-jpg) type("image/jpeg") 1x
+    );
     background-size: cover;
     background-position: center;
     filter: blur(16px) saturate(0.95) brightness(0.95);
@@ -83,13 +88,17 @@ export default defineComponent({
     content: "";
     position: absolute;
     inset: 0;
-    background-image: var(--img);
+    background-image: var(--img-jpg);
+    background-image: image-set(
+      var(--img-avif) type("image/avif") 1x,
+      var(--img-webp) type("image/webp") 1x,
+      var(--img-jpg) type("image/jpeg") 1x
+    );
     background-size: contain;
     background-repeat: no-repeat;
     background-position: center;
   }
 
-  /* Sheen: ultra-soft band ping-ponging (no visible seam) */
   .overlay::after {
     content: "";
     position: absolute;
@@ -111,7 +120,6 @@ export default defineComponent({
     pointer-events: none;
   }
 
-  /* Subtle bokeh orbs (very gentle, not "embers") */
   .overlay::before {
     content: "";
     position: absolute;
@@ -161,7 +169,6 @@ export default defineComponent({
   }
 }
 
-/* Overlay with lantern glow and content */
 .overlay {
   position: absolute;
   inset: 0;
@@ -177,7 +184,6 @@ export default defineComponent({
   );
 }
 
-/* Lantern glow (base) */
 .overlay .crest::after {
   content: "";
   position: absolute;
@@ -197,11 +203,10 @@ export default defineComponent({
   z-index: -1;
 }
 
-/* Crest (coin slightly larger) */
 .crest {
   position: relative;
-  width: 72px; /* was 68px */
-  height: 72px; /* was 68px */
+  width: 72px;
+  height: 72px;
   margin: 0 auto $sp-2;
   border-radius: 999px;
   background: linear-gradient(140deg, #d9b793, #b98a5e);
@@ -211,13 +216,12 @@ export default defineComponent({
   place-items: center;
 }
 .crest__svg {
-  width: 74%; /* gives the bigger mark some breathing room */
+  width: 74%;
   height: 74%;
   display: block;
   filter: drop-shadow(0 2px 2px rgba(0, 0, 0, 0.35));
 }
 
-/* Title + subtitle + chips */
 h1 {
   color: $color-neutral;
   font-size: clamp(1.6rem, 2.4vw, 2.1rem);

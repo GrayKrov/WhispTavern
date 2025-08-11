@@ -1,0 +1,66 @@
+[
+  {
+    "slug": "krov",
+    "name": "Krov",
+    "avatar": "Krov.jpg",
+    "links": [{ "label": "GitHub", "url": "https://github.com/graykrov" }],
+    "status": "live",
+    "tags": ["engineering", "minimalism"],
+    "blurb": "Systematic minimalism — engineered for impact."
+  },
+  {
+    "slug": "okami",
+    "name": "Okami",
+    "avatar": "@/assets/avatars/Placeholder.png",
+    "links": [],
+    "status": "coming-soon",
+    "tags": ["art", "design"],
+    "cardBg": "#f7f1e8",
+    "avatarBg": "#a68f7f",
+    "blurb": "Aesthetic-driven creations, coming soon."
+  },
+  {
+    "slug": "slaynagrey",
+    "name": "SlaynaGrey",
+    "avatar": "@/assets/avatars/Placeholder.png",
+    "links": [],
+    "status": "coming-soon",
+    "tags": ["creator"],
+    "cardBg": "#f7f1e8",
+    "avatarBg": "#b98a5e",
+    "blurb": "Creator page in progress."
+  },
+  {
+    "slug": "abelix",
+    "name": "Abelix",
+    "avatar": "@/assets/avatars/Placeholder.png",
+    "links": [],
+    "status": "coming-soon",
+    "tags": ["creator"],
+    "cardBg": "#f7f1e8",
+    "avatarBg": "#b98a5e",
+    "blurb": "Creator page in progress."
+  },
+  {
+    "slug": "kengaming",
+    "name": "KenGaming",
+    "avatar": "@/assets/avatars/Placeholder.png",
+    "links": [],
+    "status": "coming-soon",
+    "tags": ["gaming"],
+    "cardBg": "#f7f1e8",
+    "avatarBg": "#b98a5e",
+    "blurb": "Creator page in progress."
+  },
+  {
+    "slug": "bear1227",
+    "name": "Bear1227",
+    "avatar": "@/assets/avatars/Placeholder.png",
+    "links": [],
+    "status": "coming-soon",
+    "tags": ["creator"],
+    "cardBg": "#f7f1e8",
+    "avatarBg": "#b98a5e",
+    "blurb": "Creator page in progress."
+  }
+]

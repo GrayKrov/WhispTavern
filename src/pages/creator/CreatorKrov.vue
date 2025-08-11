@@ -32,7 +32,10 @@ const skeletons = computed(() => Array.from({ length: 6 }));
   <div class="krov-page">
     <KrovNavBar />
 
-    <main class="krov-main" id="krov-main">
+    <!-- Skip-link target + sr-only page title -->
+    <main class="krov-main" id="krov-main" tabindex="-1">
+      <h1 class="sr-only">Krov</h1>
+
       <section class="hero">
         <p class="hero-sub">Systematic minimalism — engineered for impact</p>
       </section>
@@ -76,21 +79,17 @@ const skeletons = computed(() => Array.from({ length: 6 }));
 <style lang="scss" scoped>
 @use "@/assets/styles/vars" as *;
 
-/* Page wrapper = flex column so footer locks to bottom */
+/* (styles unchanged) */
 .krov-page {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  background: #f7f7f7; /* neutral for Krov */
+  background: #f7f7f7;
 }
-
-/* Main grows to fill; add top pad to clear fixed KrovNavBar (92px) */
 .krov-main {
   flex: 1;
   padding: calc(92px + 2.25rem) $sp-2 $sp-4;
 }
-
-/* Simple hero */
 .hero {
   max-width: 1024px;
   margin: 0 auto $sp-3;
@@ -101,8 +100,6 @@ const skeletons = computed(() => Array.from({ length: 6 }));
   color: #4a4a4a;
   font-size: clamp(0.95rem, 0.9rem + 0.5vw, 1.15rem);
 }
-
-/* Projects section */
 .projects {
   max-width: 1100px;
   margin: 0 auto;
@@ -115,21 +112,16 @@ const skeletons = computed(() => Array.from({ length: 6 }));
   margin: 0 0 $sp-3 0;
   color: #222;
 }
-
-/* Grid that never lets a single card span full width */
 .project-grid {
   display: grid;
   gap: $sp-3;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
 }
-
-/* Cap every card and center it; no changes needed in ProjectCard.vue */
 .project-grid > * {
   width: 100%;
-  max-width: 560px; /* <- adjust to taste (520–600px works great) */
-  justify-self: center; /* centers within the grid cell */
+  max-width: 560px;
+  justify-self: center;
 }
-
 .empty {
   text-align: center;
   color: #666;
@@ -141,6 +133,4 @@ const skeletons = computed(() => Array.from({ length: 6 }));
     padding-top: calc(92px + 1.75rem);
   }
 }
-
-/* Footer sits at the bottom because .krov-page is a flex column and .krov-main flexes */
 </style>

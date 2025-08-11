@@ -1,0 +1,49 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://whisptavern/schema/creator.schema.json",
+  "title": "Creator",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "slug",
+    "name",
+    "avatar",
+    "links",
+    "status",
+    "tags",
+    "cardBg",
+    "avatarBg",
+    "blurb"
+  ],
+  "properties": {
+    "slug": { "type": "string", "pattern": "^[a-z0-9-]+$" },
+    "name": { "type": "string", "minLength": 1 },
+    "avatar": { "type": "string", "minLength": 1 },
+    "links": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["label", "url"],
+        "properties": {
+          "label": { "type": "string", "minLength": 1 },
+          "url": { "type": "string", "format": "uri" }
+        }
+      }
+    },
+    "status": {
+      "type": "string",
+      "enum": ["coming-soon", "in-progress", "live"]
+    },
+    "tags": { "type": "array", "items": { "type": "string" } },
+    "cardBg": {
+      "type": "string",
+      "pattern": "^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$"
+    },
+    "avatarBg": {
+      "type": "string",
+      "pattern": "^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$"
+    },
+    "blurb": { "type": "string", "minLength": 1, "maxLength": 280 }
+  }
+}
