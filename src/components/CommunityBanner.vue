@@ -65,16 +65,16 @@ export default defineComponent({
   box-shadow: 0 18px 38px rgba(0, 0, 0, 0.16);
   background: #f5f1ea;
 
-  /* Layer 1: blurred cover fill (guarantees full bleed) */
+  /* blurred cover fill */
   &::before {
     content: "";
     position: absolute;
     inset: -8%;
     background-image: var(--img-jpg);
     background-image: image-set(
-      var(--img-avif) type("image/avif") 1x,
-      var(--img-webp) type("image/webp") 1x,
-      var(--img-jpg) type("image/jpeg") 1x
+      var(--img-avif) type("image/avif"),
+      var(--img-webp) type("image/webp"),
+      var(--img-jpg) type("image/jpeg")
     );
     background-size: cover;
     background-position: center;
@@ -83,126 +83,39 @@ export default defineComponent({
     transition: filter 200ms ease;
   }
 
-  /* Layer 2: crisp contain layer (keeps smaller images sharp) */
+  /* crisp contain layer */
   &::after {
     content: "";
     position: absolute;
     inset: 0;
     background-image: var(--img-jpg);
     background-image: image-set(
-      var(--img-avif) type("image/avif") 1x,
-      var(--img-webp) type("image/webp") 1x,
-      var(--img-jpg) type("image/jpeg") 1x
+      var(--img-avif) type("image/avif"),
+      var(--img-webp) type("image/webp"),
+      var(--img-jpg) type("image/jpeg")
     );
     background-size: contain;
     background-repeat: no-repeat;
     background-position: center;
   }
 
-  .overlay::after {
-    content: "";
+  .overlay {
     position: absolute;
-    left: -25%;
-    top: 0;
-    width: 150%;
-    height: 100%;
+    inset: 0;
+    z-index: 2;
+    display: grid;
+    place-content: center;
+    text-align: center;
+    padding: 0 $sp-3;
     background: linear-gradient(
-      90deg,
-      transparent 0%,
-      rgba(255, 230, 180, 0.06) 46%,
-      rgba(255, 230, 180, 0.13) 50%,
-      rgba(255, 230, 180, 0.06) 54%,
-      transparent 100%
+      180deg,
+      rgba(74, 47, 47, 0.28),
+      rgba(74, 47, 47, 0.5)
     );
-    filter: blur(10px);
-    transform: translateX(-10%) skewX(-2deg);
-    animation: sweepAlt 16s ease-in-out infinite alternate;
-    pointer-events: none;
-  }
-
-  .overlay::before {
-    content: "";
-    position: absolute;
-    inset: -10% -6% -10% -6%;
-    background-repeat: no-repeat;
-    background-image: radial-gradient(
-        18px 18px at 12% 80%,
-        rgba(255, 240, 200, 0.18) 40%,
-        transparent 41%
-      ),
-      radial-gradient(
-        24px 24px at 28% 88%,
-        rgba(255, 230, 180, 0.14) 40%,
-        transparent 41%
-      ),
-      radial-gradient(
-        20px 20px at 78% 76%,
-        rgba(255, 230, 180, 0.16) 40%,
-        transparent 41%
-      ),
-      radial-gradient(
-        16px 16px at 62% 88%,
-        rgba(255, 220, 160, 0.14) 40%,
-        transparent 41%
-      );
-    animation: float 20s ease-in-out infinite alternate;
-    pointer-events: none;
-  }
-
-  @keyframes sweepAlt {
-    from {
-      transform: translateX(-10%) skewX(-2deg);
-      opacity: 0.9;
-    }
-    to {
-      transform: translateX(10%) skewX(-2deg);
-      opacity: 0.9;
-    }
-  }
-  @keyframes float {
-    from {
-      transform: translate(-1%, 1%);
-    }
-    to {
-      transform: translate(1%, -1%);
-    }
   }
 }
 
-.overlay {
-  position: absolute;
-  inset: 0;
-  z-index: 2;
-  display: grid;
-  place-content: center;
-  text-align: center;
-  padding: 0 $sp-3;
-  background: linear-gradient(
-    180deg,
-    rgba(74, 47, 47, 0.28),
-    rgba(74, 47, 47, 0.5)
-  );
-}
-
-.overlay .crest::after {
-  content: "";
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
-  bottom: -10px;
-  width: 78%;
-  height: 90px;
-  background: radial-gradient(
-    60% 120% at 50% 0%,
-    rgba(255, 222, 160, 0.6),
-    rgba(255, 200, 120, 0.42) 40%,
-    transparent 72%
-  );
-  filter: blur(16px);
-  pointer-events: none;
-  z-index: -1;
-}
-
+/* Crest */
 .crest {
   position: relative;
   width: 72px;
@@ -210,7 +123,7 @@ export default defineComponent({
   margin: 0 auto $sp-2;
   border-radius: 999px;
   background: linear-gradient(140deg, #d9b793, #b98a5e);
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.22),
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2),
     inset 0 1px 0 rgba(255, 255, 255, 0.6);
   display: grid;
   place-items: center;
@@ -230,7 +143,7 @@ h1 {
   letter-spacing: 0.02em;
 }
 .subtitle {
-  color: rgba(255, 255, 255, 0.9);
+  color: rgba(255, 255, 255, 0.92);
   margin: 0 auto $sp-2;
   max-width: 760px;
   font-size: clamp(0.95rem, 1.2vw, 1.06rem);
@@ -254,5 +167,32 @@ h1 {
   background: rgba(255, 255, 255, 0.78);
   border: 1px solid rgba(0, 0, 0, 0.06);
   box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+}
+
+/* ——— Mobile: drop the heavy filters for faster paint ——— */
+@media (max-width: 600px) {
+  .community-banner {
+    height: 180px;
+    box-shadow: 0 8px 18px rgba(0, 0, 0, 0.12);
+  }
+  .community-banner::before {
+    display: none;
+  }
+  .community-banner::after {
+    background-size: cover; /* single layer, cheaper to paint */
+  }
+  .overlay {
+    background: linear-gradient(
+      180deg,
+      rgba(50, 35, 24, 0.22),
+      rgba(50, 35, 24, 0.38)
+    );
+  }
+}
+/* 🔻 Hide chips on narrow screens to prevent clipping */
+@media (max-width: 520px) {
+  .chips {
+    display: none;
+  }
 }
 </style>

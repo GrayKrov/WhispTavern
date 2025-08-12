@@ -6,7 +6,15 @@
     <div class="inner">
       <div class="brand">
         <!-- Decorative since the word KROV is visible -->
-        <img class="sigil" :src="krovLogo" alt="" role="presentation" />
+        <img
+          class="sigil"
+          :src="krovLogo"
+          alt="Krov Sigil"
+          width="128"
+          height="128"
+          decoding="async"
+          fetchpriority="low"
+        />
         <span class="title" aria-hidden="false">KROV</span>
       </div>
 
@@ -33,8 +41,8 @@
 
 <script setup>
 import { ref, onMounted, onBeforeUnmount } from "vue";
-import { RouterLink } from "vue-router";
-import krovLogo from "@/assets/logos/krov-logo.png";
+/* ✅ use WebP for the sigil */
+import krovLogo from "@/assets/logos/krov-logo.webp";
 
 const scrolled = ref(false);
 const onScroll = () => {
@@ -68,6 +76,7 @@ onBeforeUnmount(() => window.removeEventListener("scroll", onScroll));
 $krov-nav-h: 92px;
 
 .krov-navbar {
+  box-shadow: none;
   position: fixed;
   inset: 0 0 auto 0;
   height: $krov-nav-h;
@@ -77,8 +86,7 @@ $krov-nav-h: 92px;
   transition: box-shadow 180ms ease;
 
   &.scrolled {
-    box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.04) inset,
-      0 8px 22px rgba(0, 0, 0, 0.22);
+    box-shadow: 0 8px 22px rgba(0, 0, 0, 0.18);
   }
 
   .inner {
@@ -183,6 +191,9 @@ $krov-nav-h: 92px;
 }
 
 @media (max-width: 480px) {
+  .krov-navbar.scrolled {
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.16);
+  }
   .nav-links {
     gap: $sp-1;
     a {

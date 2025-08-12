@@ -1,36 +1,68 @@
+/* src/assets/styles/_tokens.scss */
 @use "sass:color";
-@use "./vars" as *; // reuse your existing spacing + base colors
 
-/* ——— Palette ——— */
-$c-parchment: $color-neutral; /* light parchment */
-$c-wood: $color-primary; /* deep wood */
-$c-amber-1: #b98a5e; /* warm amber */
-$c-amber-2: #d9b793; /* light amber */
-$c-bg: #f7f7f7; /* app background */
+/* ===== Palette (canonical) ===== */
+$color-primary: #4a2f2f !default; /* deep wood */
+$color-secondary: #a68f7f !default; /* warm amber */
+$color-neutral: #f5f1ea !default; /* parchment */
+$color-dark: #222 !default;
+$color-white: #fff !default;
+$color-black: #000 !default;
 
-/* ——— Radii ——— */
-$radius-sm: 0.5rem;
-$radius-md: 0.75rem;
-$radius-lg: 1rem;
-$radius-2xl: 1.25rem;
+/* Helpful aliases (some components prefer these) */
+$c-parchment: $color-neutral !default;
+$c-wood: $color-primary !default;
+$c-amber-1: #b98a5e !default;
+$c-amber-2: #d9b793 !default;
+$c-bg: #f7f7f7 !default;
 
-/* ——— Shadows ——— */
-$shadow-soft: 0 10px 26px rgba(0, 0, 0, 0.12);
-$shadow-lift: 0 12px 26px rgba(0, 0, 0, 0.18);
-$shadow-hard: 0 18px 38px rgba(0, 0, 0, 0.16);
+/* ===== Spacing (rem scale) ===== */
+$sp-1: 0.25rem !default; /*  4px */
+$sp-2: 0.5rem !default; /*  8px */
+$sp-3: 1rem !default; /* 16px */
+$sp-4: 1.5rem !default; /* 24px */
+$sp-5: 2rem !default; /* 32px */
+$sp-6: 2.5rem !default; /* 40px */
+$sp-8: 3rem !default; /* 48px */
+$sp-10: 3.5rem !default; /* 56px */
+$sp-12: 4rem !default; /* 64px */
 
-/* ——— Spacing aliases (map to your existing $sp-*) ——— */
-$space-1: $sp-1;
-$space-2: $sp-2;
-$space-3: $sp-3;
-$space-4: $sp-4;
-$space-5: $sp-5;
-$space-6: $sp-6;
-$space-8: $sp-8;
-$space-10: $sp-10;
-$space-12: $sp-12;
+/* Spacing aliases for newer API */
+$space-1: $sp-1 !default;
+$space-2: $sp-2 !default;
+$space-3: $sp-3 !default;
+$space-4: $sp-4 !default;
+$space-5: $sp-5 !default;
+$space-6: $sp-6 !default;
+$space-8: $sp-8 !default;
+$space-10: $sp-10 !default;
+$space-12: $sp-12 !default;
 
-/* ——— Mixins ——— */
+/* ===== Type scale (light touch) ===== */
+$font-sans: "Helvetica Neue", Arial, sans-serif !default;
+$fs-sm: 0.875rem !default;
+$fs-base: 1rem !default;
+$fs-lg: 1.25rem !default;
+
+/* ===== Radii ===== */
+$radius-sm: 0.5rem !default;
+$radius-md: 0.75rem !default;
+$radius-lg: 1rem !default;
+$radius-2xl: 1.25rem !default;
+$radius-pill: 999px !default;
+
+/* ===== Shadows ===== */
+$shadow-soft: 0 10px 26px rgba(0, 0, 0, 0.12) !default;
+$shadow-lift: 0 12px 26px rgba(0, 0, 0, 0.18) !default;
+$shadow-hard: 0 18px 38px rgba(0, 0, 0, 0.16) !default;
+
+/* ===== Layout helpers ===== */
+$bp-sm: 480px !default;
+$bp-md: 768px !default;
+$bp-lg: 1024px !default;
+$container-max: 1100px !default;
+
+/* ===== Mixins (kept from your version) ===== */
 @mixin parchment($tone: 2%) {
   $paper: color.adjust($c-parchment, $lightness: $tone);
   background: linear-gradient($paper, $paper) padding-box,
@@ -41,7 +73,7 @@ $space-12: $sp-12;
   box-shadow: $shadow-soft;
 }
 
-/* Adds a subtle “paper noise” as a pseudo-element */
+/* subtle paper “noise” */
 @mixin noise($opacity1: 0.015, $opacity2: 0.01) {
   position: relative;
   overflow: hidden;
@@ -49,7 +81,6 @@ $space-12: $sp-12;
     content: "";
     position: absolute;
     inset: 0;
-    /* two staggered dot fields for gentle grain */
     background-image: radial-gradient(
         rgba(0, 0, 0, $opacity1) 1px,
         transparent 1.5px
@@ -87,4 +118,19 @@ $space-12: $sp-12;
 @mixin focus-ring() {
   outline: 2px solid rgba(255, 255, 255, 0.85);
   outline-offset: 2px;
+}
+
+/* Optional fluid heading helpers (kept from your vars) */
+@mixin type-h1() {
+  font-size: clamp(1.6rem, 2.5vw, 2.2rem);
+  line-height: 1.15;
+  letter-spacing: 0.01em;
+}
+@mixin type-h2() {
+  font-size: clamp(1.25rem, 1.5vw, 1.5rem);
+  line-height: 1.2;
+}
+@mixin type-h3() {
+  font-size: clamp(1.125rem, 1.3vw, 1.35rem);
+  line-height: 1.25;
 }

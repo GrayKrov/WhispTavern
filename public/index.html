@@ -3,11 +3,43 @@
   <head>
     <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="preconnect" href="https://api.github.com" />
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+
     <title>WhispTavern</title>
-    <!-- favicon, meta tags, etc. -->
+
+    <!-- Default SEO/OG (router updates these on navigation) -->
+    <meta name="description" content="A cozy, creator-friendly community." />
+    <link rel="canonical" href="/" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="WhispTavern" />
+    <meta
+      property="og:description"
+      content="A cozy, creator-friendly community."
+    />
+    <meta property="og:image" content="/og-default.jpg" />
+    <meta property="og:url" content="/" />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="WhispTavern" />
+    <meta
+      name="twitter:description"
+      content="A cozy, creator-friendly community."
+    />
+    <meta name="twitter:image" content="/og-default.jpg" />
+
+    <!-- Plausible Analytics (prod only) -->
+    <% if (process.env.NODE_ENV === 'production') { %>
+    <script
+      defer
+      data-domain="whisptavern.com"
+      data-spa="auto"
+      src="https://plausible.io/js/script.js"
+    ></script>
+    <% } %>
   </head>
   <body>
     <noscript>
@@ -15,6 +47,5 @@
       browser.
     </noscript>
     <div id="app"></div>
-    <!-- built scripts will be auto-injected here by Vue CLI -->
   </body>
 </html>

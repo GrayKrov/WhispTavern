@@ -7,7 +7,8 @@
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
     "validate:content": "node ./scripts/validate-content.cjs",
-    "images:build": "node ./scripts/build-images.cjs"
+    "images:build": "node ./scripts/build-images.cjs",
+    "sitemap": "node ./scripts/generate-sitemap.cjs --base=https://whisptavern.com"
   },
   "dependencies": {
     "core-js": "^3.8.3",

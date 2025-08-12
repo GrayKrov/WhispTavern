@@ -104,10 +104,9 @@ const formattedUpdated = computed(() => {
   transition: transform 160ms ease, border-color 160ms ease,
     box-shadow 160ms ease, background 160ms ease;
 
-  will-change: transform;
-
   &:hover,
   &:focus-visible {
+    will-change: transform;
     outline: none;
     transform: translateY(-2px);
     border-color: rgba(0, 0, 0, 0.16);
@@ -272,6 +271,15 @@ const formattedUpdated = computed(() => {
   }
   100% {
     background-position: 120% 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .is-loading .sk-line,
+  .is-loading .sk-pill,
+  .is-loading .sk-dot {
+    animation: none;
+    background: rgba(0, 0, 0, 0.12);
   }
 }
 

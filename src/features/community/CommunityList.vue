@@ -17,10 +17,10 @@ import { defineComponent, computed } from "vue";
 import CommunityCard from "./CommunityCard.vue";
 import creators from "@/content/creators.json";
 
-/** import a hard fallback */
-import placeholder from "@/assets/avatars/Placeholder.png";
+/* ✅ prefer webp placeholder */
+import placeholder from "@/assets/avatars/Placeholder.webp";
 
-/** load avatars that physically exist in /assets/avatars */
+/* load any file that physically exists in /assets/avatars */
 const ctx = require.context(
   "@/assets/avatars",
   false,
@@ -36,21 +36,13 @@ function fromAvatars(file) {
   }
 }
 
-/** robust resolution:
- *  - use exact filename in JSON if present
- *  - try common extensions if JSON gave a bare stem
- *  - otherwise use placeholder
- */
 function resolveAvatar(entry) {
   const val = entry.avatar && String(entry.avatar).trim();
   if (!val) return placeholder;
-
-  // exact match
   const exact = fromAvatars(val);
   if (exact) return exact;
-
-  // try stem + common extensions
   const stem = val.replace(/\.(png|jpe?g|webp|avif)$/i, "");
+  /* ✅ prefer webp, then avif, then png/jpg */
   return (
     fromAvatars(stem + ".webp") ||
     fromAvatars(stem + ".avif") ||

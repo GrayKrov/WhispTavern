@@ -1,54 +1,50 @@
-/* Build AVIF/WebP assets from JPG/PNG using sharp */
+/* scripts/build-images.cjs
+   Convert images in src/assets/{images,avatars,logos} to .webp and .avif.
+   Usage: npm run images:build
+*/
 const fs = require("fs");
 const path = require("path");
 const sharp = require("sharp");
 
-const ROOT = path.resolve(__dirname, "..");
-const DIRS = ["src/assets/images", "src/assets/avatars", "src/assets/logos"];
-const exts = new Set([".jpg", ".jpeg", ".png"]);
-const exists = (p) => fs.existsSync(p);
+const roots = ["src/assets/images", "src/assets/avatars", "src/assets/logos"];
 
-async function convertOne(absPath) {
-  const ext = path.extname(absPath).toLowerCase();
-  if (!exts.has(ext)) return;
+const exts = [".jpg", ".jpeg", ".png"];
 
-  const base = absPath.slice(0, -ext.length);
-  const avifOut = `${base}.avif`;
-  const webpOut = `${base}.webp`;
-  if (exists(avifOut) && exists(webpOut)) return;
+async function convert(file) {
+  const dir = path.dirname(file);
+  const name = path.basename(file, path.extname(file));
+  const webp = path.join(dir, `${name}.webp`);
+  const avif = path.join(dir, `${name}.avif`);
 
-  const isAvatar = /[/\\]avatars[/\\]/i.test(absPath);
-  const resize = isAvatar
-    ? { width: 512, height: 512, fit: "cover", withoutEnlargement: true }
-    : { width: 1920, withoutEnlargement: true };
-
-  const input = sharp(absPath).resize(resize);
-
-  if (!exists(avifOut)) {
-    await input
-      .clone()
-      .avif({ quality: isAvatar ? 50 : 45, effort: 6 })
-      .toFile(avifOut);
-    console.log("✔ AVIF", path.relative(ROOT, avifOut));
+  if (!fs.existsSync(webp)) {
+    await sharp(file).webp({ quality: 82 }).toFile(webp);
+    console.log("→ webp", webp);
   }
-  if (!exists(webpOut)) {
-    await input
-      .clone()
-      .webp({ quality: isAvatar ? 70 : 60 })
-      .toFile(webpOut);
-    console.log("✔ WEBP", path.relative(ROOT, webpOut));
+  if (!fs.existsSync(avif)) {
+    await sharp(file).avif({ quality: 50 }).toFile(avif);
+    console.log("→ avif", avif);
   }
 }
 
 function walk(dir) {
-  fs.readdirSync(dir, { withFileTypes: true }).forEach((d) => {
-    const p = path.join(dir, d.name);
-    if (d.isDirectory()) walk(p);
-    else convertOne(p).catch((e) => console.error("Image error:", e, p));
-  });
+  for (const entry of fs.readdirSync(dir)) {
+    const full = path.join(dir, entry);
+    const stat = fs.statSync(full);
+    if (stat.isDirectory()) walk(full);
+    else if (exts.includes(path.extname(full).toLowerCase())) queue.push(full);
+  }
 }
 
-for (const d of DIRS) {
-  const abs = path.join(ROOT, d);
-  if (exists(abs)) walk(abs);
-}
+const queue = [];
+roots.forEach((r) => fs.existsSync(r) && walk(r));
+
+(async () => {
+  for (const f of queue) {
+    try {
+      await convert(f);
+    } catch (e) {
+      console.error("✖", f, e.message);
+    }
+  }
+  console.log("Done.");
+})();

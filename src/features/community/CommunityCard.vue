@@ -1,100 +1,104 @@
 <template>
-  <!-- Clickable when live/active and a route is present -->
+  <!-- LIVE cards are links -->
   <RouterLink
-    v-if="isActive && routerLink"
+    v-if="routerLink && isLive"
     :to="routerLink"
     class="community-card"
-    :aria-label="`Open ${name}`"
   >
     <div class="avatar-frame">
-      <img :src="avatarSrc" :alt="name" class="avatar" />
+      <img
+        :src="avatarSrc"
+        :alt="name"
+        class="avatar"
+        loading="lazy"
+        decoding="async"
+      />
     </div>
     <div class="creator-info">
       <h3 class="creator-name">{{ name }}</h3>
     </div>
-    <div v-if="!isActive" class="status-tag">{{ status }}</div>
   </RouterLink>
 
-  <!-- Non-clickable when coming soon, etc. -->
-  <div v-else class="community-card inactive">
+  <!-- Not live: static card with status tag -->
+  <div v-else class="community-card">
     <div class="avatar-frame">
-      <img :src="avatarSrc" :alt="name" class="avatar" />
+      <img
+        :src="avatarSrc"
+        :alt="name"
+        class="avatar"
+        loading="lazy"
+        decoding="async"
+      />
     </div>
     <div class="creator-info">
       <h3 class="creator-name">{{ name }}</h3>
     </div>
-    <div class="status-tag">{{ status }}</div>
+    <div class="status-tag">{{ statusLabel }}</div>
   </div>
 </template>
 
 <script setup>
 import { computed } from "vue";
-import { RouterLink } from "vue-router";
 
 const props = defineProps({
   name: { type: String, required: true },
   avatarSrc: { type: String, required: true },
-  routerLink: { type: String, default: null }, // e.g. "/krov"
-  status: { type: String, default: "active" }, // e.g. "LIVE", "COMING-SOON"
+  routerLink: { type: String, default: null },
+  // Accept any casing; default to coming-soon
+  status: { type: String, default: "coming-soon" }, // 'live' | 'coming-soon' | 'in-progress'
 });
 
-/** Treat these as interactive */
-const LIVE_STATUSES = ["active", "live", "published", "open"];
-
-/** normalize and decide */
 const statusNorm = computed(() =>
-  String(props.status || "")
-    .trim()
-    .toLowerCase()
+  (props.status || "").toString().trim().toLowerCase()
 );
-const isActive = computed(() => LIVE_STATUSES.includes(statusNorm.value));
+const isLive = computed(() => statusNorm.value === "live");
+const statusLabel = computed(() => {
+  if (statusNorm.value === "in-progress") return "IN PROGRESS";
+  if (statusNorm.value === "coming-soon") return "COMING SOON";
+  // anything not live shows as Coming Soon (cleaner theme)
+  return "COMING SOON";
+});
 </script>
 
-<style scoped lang="scss">
+<style lang="scss" scoped>
 @use "sass:color";
 @use "@/assets/styles/vars" as *;
 
 .community-card {
-  display: block;
-  position: relative;
-  z-index: 10; /* keep above any decorative layers */
-  cursor: pointer;
-  text-decoration: none;
-  color: inherit;
-
   background: linear-gradient(
         color.adjust($color-neutral, $lightness: 2%),
         color.adjust($color-neutral, $lightness: 2%)
       )
       padding-box,
-    linear-gradient(140deg, rgba(120, 93, 68, 0.35), rgba(180, 150, 120, 0.35))
+    linear-gradient(140deg, rgba(120, 93, 68, 0.28), rgba(180, 150, 120, 0.28))
       border-box;
   border: 1px solid transparent;
   border-radius: 1rem;
   padding: $sp-3;
-  box-shadow: 0 10px 26px rgba(0, 0, 0, 0.14);
-  transition: transform 180ms ease, box-shadow 180ms ease;
+  box-shadow: 0 10px 22px rgba(0, 0, 0, 0.12);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-decoration: none;
+  color: inherit;
+  position: relative;
+  transition: transform 160ms ease, box-shadow 160ms ease;
+  will-change: transform;
 
   &:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 16px 34px rgba(0, 0, 0, 0.2);
-  }
-
-  &.inactive {
-    cursor: default;
-    pointer-events: none; /* <- only applied on the non-clickable branch */
-    opacity: 0.9;
+    transform: translateY(-3px);
+    box-shadow: 0 14px 26px rgba(0, 0, 0, 0.16);
   }
 
   .avatar-frame {
     width: 140px;
     height: 140px;
-    margin: 0 auto $sp-3;
+    margin-bottom: $sp-3;
     border-radius: 999px;
     overflow: hidden;
     position: relative;
-    box-shadow: 0 0 0 5px color.adjust($color-secondary, $lightness: 6%) inset,
-      0 4px 14px rgba(0, 0, 0, 0.12);
+    box-shadow: inset 0 0 0 5px rgba(185, 138, 94, 0.25),
+      0 4px 12px rgba(0, 0, 0, 0.1);
 
     .avatar {
       width: 100%;
@@ -102,47 +106,43 @@ const isActive = computed(() => LIVE_STATUSES.includes(statusNorm.value));
       object-fit: cover;
       display: block;
     }
-
-    /* glossy sweep */
-    &::after {
-      content: "";
-      position: absolute;
-      inset: -20%;
-      background: linear-gradient(
-        60deg,
-        transparent 40%,
-        rgba(255, 255, 255, 0.9) 50%,
-        transparent 60%
-      );
-      transform: translateX(-120%);
-      transition: transform 600ms ease;
-      mix-blend-mode: screen;
-      pointer-events: none;
-    }
-  }
-  &:hover .avatar-frame::after {
-    transform: translateX(120%);
   }
 
-  .creator-info {
-    text-align: center;
-  }
-  .creator-name {
+  .creator-info .creator-name {
     font-size: $fs-lg;
     font-family: "Cinzel", serif;
-    letter-spacing: 0.02em;
+    letter-spacing: 0.015em;
     margin-bottom: $sp-1;
+    text-align: center;
   }
 
   .status-tag {
-    display: inline-block;
-    background: $color-secondary;
-    color: $color-neutral;
+    background: #d8c8bb;
+    color: #2b241c;
     padding: $sp-1 $sp-2;
     border-radius: 0.4rem;
     font-size: 0.75rem;
     text-transform: uppercase;
     margin-top: $sp-1;
+    letter-spacing: 0.02em;
+  }
+}
+
+/* Mobile tweaks */
+@media (max-width: 600px) {
+  .community-card {
+    padding: $sp-2;
+    box-shadow: 0 8px 18px rgba(0, 0, 0, 0.1);
+  }
+  .community-card .avatar-frame {
+    width: 104px;
+    height: 104px;
+    margin-bottom: $sp-2;
+    box-shadow: inset 0 0 0 4px rgba(185, 138, 94, 0.22),
+      0 3px 8px rgba(0, 0, 0, 0.08);
+  }
+  .community-card .creator-info .creator-name {
+    font-size: 1.05rem;
   }
 }
 </style>

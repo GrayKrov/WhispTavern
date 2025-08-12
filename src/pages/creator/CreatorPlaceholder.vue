@@ -13,9 +13,9 @@
         </p>
 
         <div class="hero__ctas">
-          <LinkButton variant="ghost" :to="'/community'"
-            >Back to Community</LinkButton
-          >
+          <LinkButton variant="ghost" :to="'/community'">
+            Back to Community
+          </LinkButton>
           <LinkButton
             variant="primary"
             href="https://discord.com/invite/JfMh3P57zh"
@@ -31,6 +31,7 @@
     <!-- HEADER: avatar + blurb -->
     <header class="header">
       <div class="avatar-ring">
+        <!-- Single <img> for simplicity; resolver prefers webp/avif -->
         <img
           :src="avatarSrc"
           :alt="creator?.name || 'Creator avatar placeholder'"
@@ -83,9 +84,10 @@ import { useRoute, useRouter } from "vue-router";
 import creators from "@/content/creators.json";
 import LinkButton from "@/components/ui/LinkButton.vue";
 
-import placeholder from "@/assets/avatars/Placeholder.png";
+/* ✅ Prefer modern placeholder (keeps code simple) */
+import placeholder from "@/assets/avatars/Placeholder.webp";
 
-/* Default banner */
+/* Default banner (already optimized via image-set in CSS) */
 import bannerJpg from "@/assets/images/BannerTop.jpg";
 import bannerWebp from "@/assets/images/BannerTop.webp";
 import bannerAvif from "@/assets/images/BannerTop.avif";
@@ -110,7 +112,7 @@ function fromBanners(file) {
   }
 }
 
-/* Avatars */
+/* Avatars — prefer webp/avif, then png/jpg, else placeholder */
 const avatarsCtx = require.context(
   "@/assets/avatars",
   false,
@@ -139,6 +141,8 @@ function resolveAvatar(entry) {
     placeholder
   );
 }
+
+/* Banner resolver mirrors Home/Community style */
 function resolveBanner(entry) {
   const val = entry?.banner && String(entry.banner).trim();
   if (!val) {
@@ -374,6 +378,16 @@ const bannerVars = computed(() => ({
       background: rgba(0, 0, 0, 0.08);
       color: #2b241c;
     }
+  }
+}
+
+/* 📱 mobile: prevent overlay text from clipping the banner */
+@media (max-width: 520px) {
+  .hero {
+    height: 190px;
+  }
+  .hero__sub {
+    display: none;
   }
 }
 </style>
