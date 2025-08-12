@@ -13,58 +13,94 @@ A cozy, fantasy-themed Vue 3 Single-Page Application (SPA) that serves as the of
 
 ```Bash
 whisptavern/
-├── public/
-│ └── index.html # Base HTML template
+├─ public/
+│  └─ index.html                     # Base HTML template (preconnect/prefetch)
 │
-├── src/
-│ ├── assets/
-│ │ ├── avatars/ # Community avatars (e.g. Krov.jpg)
-│ │ ├── images/ # General images (e.g. BannerTop.jpg)
-│ │ ├── logos/ # Logos for creators (e.g. krov-logo.png)
-│ │ └── styles/ # SCSS modules and global styles
-│ │ ├── _vars.scss # Color, spacing, type, breakpoints
-│ │ ├── _mixins.scss # Reusable mixins (respond, flex-center, transition)
-│ │ ├── _functions.scss # Utility functions (strip-unit, rem)
-│ │ ├── main.scss # Global resets & base typography
-│ │ ├── community.scss # Community page overrides
-│ │ └── creators/ # Per-creator style folders
-│ │ └── krov/
-│ │ └── creatorkrov.scss # Krov’s custom navbar, footer, layout
-│ │
-│ ├── components/ # Shared UI components
-│ │ └── CommunityBanner.vue # Banner for Community page
-│ │
-│ ├── features/
-│ │ ├── community/
-│ │ │ ├── CommunityCard.vue # Single creator card
-│ │ │ └── CommunityList.vue # Grid of CommunityCards
-│ │ │
-│ │ ├── creators/
-│ │ │ └── krov/
-│ │ │ ├── KrovNavBar.vue # Krov-specific navbar overrides
-│ │ │ └── KrovFooter.vue # Krov-specific footer overrides
-│ │ │
-│ │ ├── layout/
-│ │ │ ├── AppLayout.vue # Wraps each “main” page with navbar, footer, back-to-top
-│ │ │ └── Footer.vue # Default footer (theme aware)
-│ │ │
-│ │ └── navigation/
-│ │ └── NavBar.vue # Default navbar (theme aware)
-│ │
-│ ├── pages/ # Vue Router views
-│ │ ├── Home.vue # Landing page
-│ │ ├── Community.vue # Community directory page
-│ │ └── creator/ # Creator-specific pages
-│ │ └── CreatorKrov.vue # Krov’s creator page
-│ │
-│ ├── router/
-│ │ └── index.js # Vue Router setup & route-level meta
-│ │
-│ ├── App.vue # Root component
-│ └── main.js # Application entry point
+├─ scripts/
+│  ├─ build-images.cjs               # (Optional) image pipeline helper (AVIF/WebP)
+│  └─ validate-content.cjs           # AJV validator for /src/content/*
 │
-├── package.json # Dependencies & scripts
-└── README.md # This file
+├─ src/
+│  ├─ assets/
+│  │  ├─ avatars/                    # Community avatars
+│  │  │  ├─ Krov.avif
+│  │  │  ├─ Krov.jpg
+│  │  │  ├─ Krov.webp
+│  │  │  ├─ Placeholder.avif
+│  │  │  ├─ Placeholder.png
+│  │  │  └─ Placeholder.webp
+│  │  ├─ images/                     # Shared hero/illustrations
+│  │  │  ├─ BannerTop.avif
+│  │  │  ├─ BannerTop.jpg
+│  │  │  └─ BannerTop.webp
+│  │  ├─ logos/
+│  │  │  ├─ krov-logo.avif
+│  │  │  ├─ krov-logo.png
+│  │  │  └─ krov-logo.webp
+│  │  ├─ styles/                     # SCSS tokens + globals
+│  │  │  ├─ _functions.scss
+│  │  │  ├─ _mixins.scss
+│  │  │  ├─ _tokens.scss             # Theme tokens (colors, radii, shadows, spacing)
+│  │  │  ├─ _vars.scss               # Legacy vars (still imported by components)
+│  │  │  ├─ community.scss
+│  │  │  ├─ main.scss                # Normalize/base + global typography
+│  │  │  └─ creators/
+│  │  │     └─ krov/
+│  │  │        └─ creatorkrov.scss   # Krov page theming
+│  │  └─ banners/                    # (Optional) per-creator hero images
+│  │
+│  ├─ components/                    # Reusable/shared components
+│  │  ├─ AnnouncementsList.vue
+│  │  ├─ CommunityBanner.vue
+│  │  └─ ui/
+│  │     ├─ AvatarRing.vue
+│  │     ├─ LinkButton.vue           # Consistent buttons (primary/ghost, <a>/<RouterLink>)
+│  │     ├─ SectionHeading.vue       # Section titles (optional lantern glow)
+│  │     └─ UiCard.vue               # Simple card wrapper (used selectively)
+│  │
+│  ├─ content/                       # Versioned data (no CMS)
+│  │  ├─ creators.json               # slug, name, avatar, status, links[], blurb, (optional banner)
+│  │  ├─ announcements.json          # date, title, body
+│  │  └─ schemas/                    # AJV JSON Schemas
+│  │     ├─ announcement.schema.json
+│  │     └─ creator.schema.json
+│  │
+│  ├─ features/                      # Feature-scoped components
+│  │  ├─ community/
+│  │  │  ├─ CommunityCard.vue
+│  │  │  └─ CommunityList.vue
+│  │  ├─ creators/
+│  │  │  └─ krov/
+│  │  │     ├─ KrovFooter.vue
+│  │  │     ├─ KrovNavBar.vue
+│  │  │     └─ ProjectCard.vue
+│  │  ├─ layout/
+│  │  │  ├─ AppLayout.vue            # Default shell (NavBar + Footer)
+│  │  │  └─ Footer.vue               # Default site footer
+│  │  └─ navigation/
+│  │     └─ NavBar.vue               # Site navbar (+ skip link)
+│  │
+│  ├─ pages/                         # Router views
+│  │  ├─ Home.vue
+│  │  ├─ Community.vue
+│  │  └─ creator/
+│  │     ├─ CreatorKrov.vue          # Bespoke creator page
+│  │     └─ CreatorPlaceholder.vue   # Dynamic placeholder for other creators
+│  │
+│  ├─ router/
+│  │  └─ index.js                    # Routes + meta (/:slug → placeholder unless bespoke)
+│  │
+│  ├─ App.vue                        # Root component
+│  └─ main.js                        # App entry, preconnect/prefetch, mount
+│
+├─ .gitignore
+├─ babel.config.json
+├─ jsconfig.json
+├─ package.json
+├─ package-lock.json
+├─ README.md
+└─ vue.config.js
+
 ```
 
 **🛠️ Technologies & Architecture**
