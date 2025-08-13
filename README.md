@@ -12,9 +12,14 @@ A cozy, fantasy-themed Vue 3 Single-Page Application (SPA) that serves as the of
 ## 📂 Project Structure
 
 ```Bash
+
 whisptavern/
 ├─ public/
-│  └─ index.html                     # Base HTML template (preconnect/prefetch)
+│  ├─ index.html                     # Base HTML template (preconnect/prefetch)
+│  ├─ og-default.jpg                 # Default Open Graph / Twitter share image
+│  ├─ robots.txt                     # Basic crawl rules
+│  ├─ sitemap.xml                    # Hand-maintained sitemap (update as routes go live)
+│  └─ .htaccess                      # (Optional) Apache SPA rewrites for cPanel/Apache
 │
 ├─ scripts/
 │  ├─ build-images.cjs               # (Optional) image pipeline helper (AVIF/WebP)
@@ -93,8 +98,11 @@ whisptavern/
 │  ├─ App.vue                        # Root component
 │  └─ main.js                        # App entry, preconnect/prefetch, mount
 │
+├─ docs/
+│  └─ lighthouse.md                  # (Optional) audit notes & fixes
+│
 ├─ .gitignore
-├─ babel.config.json
+├─ babel.config.js                   # (or babel.config.json in your setup)
 ├─ jsconfig.json
 ├─ package.json
 ├─ package-lock.json
