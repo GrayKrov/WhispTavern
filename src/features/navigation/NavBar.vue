@@ -1,24 +1,32 @@
 <!-- src/features/navigation/NavBar.vue -->
 <template>
+  <!-- Accessible skip link -->
   <a class="skip-link" href="#main">Skip to content</a>
 
-  <nav :class="['navbar', `navbar--${theme}`]" aria-label="Primary">
-    <div class="menu-wrapper" @mouseenter="onEnter" @mouseleave="onLeave">
+  <nav :class="['navbar', `navbar--${theme}`]">
+    <div
+      ref="wrapper"
+      class="menu-wrapper"
+      @pointerenter="onEnter"
+      @pointerleave="onLeave"
+      @focusin="onEnter"
+      @focusout="onFocusOut"
+    >
       <button
-        class="menu-icon"
-        aria-label="Open menu"
+        class="menu-trigger"
+        type="button"
+        aria-haspopup="menu"
         :aria-expanded="showMenu ? 'true' : 'false'"
-        @click="toggleMenu"
+        @click="onToggle"
       >
-        ☰
+        <span aria-hidden="true">☰</span>
+        <span class="sr-only">Open menu</span>
       </button>
 
       <transition name="fade">
         <div v-if="showMenu" class="dropdown" role="menu">
-          <RouterLink role="menuitem" to="/" @click="close">Home</RouterLink>
-          <RouterLink role="menuitem" to="/community" @click="close">
-            Community
-          </RouterLink>
+          <RouterLink role="menuitem" to="/">Home</RouterLink>
+          <RouterLink role="menuitem" to="/community">Community</RouterLink>
         </div>
       </transition>
     </div>
@@ -26,47 +34,73 @@
 </template>
 
 <script setup>
-import { ref, computed, watch } from "vue";
+import { ref, computed, onMounted, onBeforeUnmount } from "vue";
 import { useRoute, RouterLink } from "vue-router";
 
-const showMenu = ref(false);
 const route = useRoute();
 const theme = computed(() => route.meta.creator || "default");
 
-const supportsHover =
-  typeof window !== "undefined" &&
-  window.matchMedia &&
-  window.matchMedia("(hover: hover)").matches;
+const wrapper = ref(null);
+const showMenu = ref(false);
+const pinnedByClick = ref(false); // when true, stays open until click outside/toggle
 
-const onEnter = () => {
-  if (supportsHover) showMenu.value = true;
-};
-const onLeave = () => {
-  if (supportsHover) showMenu.value = false;
-};
-const toggleMenu = () => {
-  showMenu.value = !showMenu.value;
-};
-const close = () => {
-  showMenu.value = false;
-};
-
-watch(() => route.fullPath, close);
+function onEnter() {
+  showMenu.value = true; // open as soon as pointer/focus is within wrapper (button or dropdown)
+}
+function onLeave() {
+  if (!pinnedByClick.value) showMenu.value = false; // close only when leaving both, unless pinned
+}
+function onToggle() {
+  pinnedByClick.value = !pinnedByClick.value;
+  showMenu.value = pinnedByClick.value ? true : false;
+}
+function onFocusOut() {
+  // Close if focus leaves the wrapper entirely (not pinned)
+  setTimeout(() => {
+    if (
+      !pinnedByClick.value &&
+      wrapper.value &&
+      !wrapper.value.contains(document.activeElement)
+    ) {
+      showMenu.value = false;
+    }
+  }, 0);
+}
+function onDocClick(e) {
+  if (!wrapper.value) return;
+  if (!wrapper.value.contains(e.target)) {
+    pinnedByClick.value = false;
+    showMenu.value = false;
+  }
+}
+onMounted(() => document.addEventListener("click", onDocClick));
+onBeforeUnmount(() => document.removeEventListener("click", onDocClick));
 </script>
 
 <style lang="scss" scoped>
-@use "sass:color";
 @use "@/assets/styles/vars" as *;
 
-$nav-h-desktop: 52px;
-$nav-h-mobile: 46px;
+$nav-h: 52px;
 
-/* Accessible skip link */
+/* Screen-reader-only helper */
+.sr-only {
+  position: absolute !important;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Skip link */
 .skip-link {
   position: absolute;
   left: -9999px;
   top: auto;
-  z-index: 10000;
+  z-index: 10001;
 }
 .skip-link:focus {
   left: 1rem;
@@ -78,122 +112,121 @@ $nav-h-mobile: 46px;
   outline: 2px solid #000;
 }
 
+/* Navbar */
 .navbar {
-  --nav-h: #{$nav-h-desktop};
-
   position: fixed;
   inset: 0 0 auto 0;
-  height: var(--nav-h);
-  z-index: 1000;
+  height: $nav-h;
+  z-index: 10000;
   display: flex;
   align-items: center;
   padding: 0 $sp-2;
-
-  /* parchment gradient */
-  $p1: $color-neutral;
-  $p2: color.adjust($color-neutral, $lightness: -4%);
-  background: linear-gradient(180deg, rgba($p1, 0.96), rgba($p2, 0.96));
+  background: rgba(245, 241, 234, 0.7);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
   border-bottom: 1px solid rgba(0, 0, 0, 0.08);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-
-  .menu-icon {
-    color: $color-dark;
-    font-size: 1.6rem;
-    line-height: 1;
-    background: transparent;
-    border: 0;
-    padding: $sp-1 $sp-2;
-    cursor: pointer;
-  }
 }
 
+/* Wrapper encloses trigger + dropdown so hover stays continuous */
 .menu-wrapper {
   position: relative;
+  margin-left: $sp-2;
+  padding: $sp-1 $sp-2;
 }
 
-/* Desktop dropdown (anchored to wrapper) */
-.dropdown {
-  $paper: color.adjust($color-neutral, $lightness: 2%);
+/* Trigger */
+.menu-trigger {
+  background: transparent;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: 0.5rem;
+  padding: 0.35rem 0.6rem;
+  font-size: 1.15rem;
+  line-height: 1;
+  color: $color-dark;
+  cursor: pointer;
+}
+.menu-trigger:focus-visible {
+  outline: 2px solid rgba(0, 0, 0, 0.8);
+  outline-offset: 2px;
+}
 
+/* Dropdown */
+.dropdown {
   position: absolute;
   top: calc(100% + 6px);
   left: 0;
   min-width: 13rem;
-  padding: $sp-2 $sp-3;
-  z-index: 1100;
-
-  background: linear-gradient($paper, $paper) padding-box,
-    linear-gradient(140deg, rgba(120, 93, 68, 0.24), rgba(180, 150, 120, 0.24))
+  padding: $sp-3;
+  border-radius: 0.7rem;
+  box-shadow: 0 14px 30px rgba(0, 0, 0, 0.18);
+  background: linear-gradient(
+        rgba(255, 255, 255, 0.7),
+        rgba(255, 255, 255, 0.6)
+      )
+      padding-box,
+    linear-gradient(140deg, rgba(120, 93, 68, 0.35), rgba(180, 150, 120, 0.35))
       border-box;
   border: 1px solid transparent;
-  border-radius: 0.8rem;
-  box-shadow: 0 14px 30px rgba(0, 0, 0, 0.14);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(12px);
+  z-index: 10002;
+
+  /* invisible bridge to avoid any hover gap */
+  &::before {
+    content: "";
+    position: absolute;
+    bottom: 100%;
+    left: -$sp-1;
+    right: -$sp-1;
+    height: 8px;
+  }
 
   a {
     display: block;
-    margin: 0 calc(-1 * #{$sp-3}); /* full-width highlight on desktop */
-    padding: $sp-2 $sp-3;
     font-weight: 700;
     text-decoration: none;
     color: $color-dark;
-    border-radius: 0.6rem;
-    outline: none;
+    padding: $sp-2 0;
+    position: relative;
+    transition: color 0.18s ease;
+  }
+  a::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: 6px;
+    height: 2px;
+    width: 0;
+    background: linear-gradient(
+      90deg,
+      rgba(120, 93, 68, 1),
+      rgba(180, 150, 120, 1)
+    );
+    transition: width 0.18s ease;
   }
   a:hover {
-    background: rgba(185, 138, 94, 0.12);
+    color: $color-primary;
   }
-  a:focus-visible {
-    box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.35) inset;
+  a:hover::after {
+    width: 100%;
   }
 }
 
-/* Fade */
+/* Fade transition */
 .fade-enter-active,
 .fade-leave-active {
-  transition: opacity 0.18s ease;
+  transition: opacity 0.16s ease;
 }
 .fade-enter-from,
 .fade-leave-to {
   opacity: 0;
 }
 
-/* Mobile layout: fixed, full-width dropdown below the bar */
+/* Small screens: keep panel fully visible */
 @media (max-width: 600px) {
-  .navbar {
-    --nav-h: 46px;
-    padding: 0 $sp-1;
-    backdrop-filter: none;
-    -webkit-backdrop-filter: none;
-    background: $color-neutral;
-  }
-
-  /* Compact dropdown card on mobile */
   .dropdown {
-    position: fixed;
-    top: calc(var(--nav-h) + #{$sp-1});
-    /* anchor near the hamburger, not full width */
-    left: calc(env(safe-area-inset-left, 0px) + #{$sp-2});
+    left: 0;
     right: auto;
-
-    /* width never full-screen, but flexible */
-    width: clamp(220px, 80vw, 130px);
-
-    padding: $sp-2;
-    border-radius: 0.75rem;
-    box-shadow: 0 10px 22px rgba(0, 0, 0, 0.12);
-
-    /* handle tiny heights gracefully */
-    max-height: min(60vh, 360px);
-    overflow-y: auto;
-  }
-
-  .dropdown a {
-    margin: 0; /* no negative margins on mobile */
-    padding: $sp-2;
-    border-radius: 0.6rem;
+    transform: translateX(0);
   }
 }
 </style>

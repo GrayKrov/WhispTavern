@@ -1,70 +1,60 @@
 // src/utils/meta.js
-export function ensureMeta(selector, attrs) {
-  let el = document.head.querySelector(selector);
-  if (!el) {
-    el = document.createElement("meta");
-    Object.entries(attrs).forEach(([k, v]) => el.setAttribute(k, v));
-    document.head.appendChild(el);
-  }
-  return el;
-}
+export function updateHead(opts = {}) {
+  const { title, description, image, url, robots } = opts;
 
-export function setMetaContent(selector, content, attrsIfCreate) {
-  const el = ensureMeta(selector, attrsIfCreate);
-  el.setAttribute("content", content);
-}
-
-export function updateHead({ title, description, image, url }) {
-  // Title
   if (title) document.title = title;
 
-  // Description
-  if (description) {
-    setMetaContent('meta[name="description"]', description, {
-      name: "description",
-    });
-    setMetaContent('meta[property="og:description"]', description, {
-      property: "og:description",
-    });
-    setMetaContent('meta[name="twitter:description"]', description, {
-      name: "twitter:description",
-    });
-  }
-
-  // Open Graph
-  if (title)
-    setMetaContent('meta[property="og:title"]', title, {
-      property: "og:title",
-    });
-  setMetaContent('meta[property="og:type"]', "website", {
-    property: "og:type",
-  });
-  if (url)
-    setMetaContent('meta[property="og:url"]', url, { property: "og:url" });
-
-  // Image
-  if (image) {
-    setMetaContent('meta[property="og:image"]', image, {
-      property: "og:image",
-    });
-    setMetaContent('meta[name="twitter:image"]', image, {
-      name: "twitter:image",
-    });
-  }
-
-  // Twitter
-  setMetaContent('meta[name="twitter:card"]', "summary_large_image", {
-    name: "twitter:card",
-  });
-
-  // Canonical
-  if (url) {
-    let link = document.head.querySelector('link[rel="canonical"]');
-    if (!link) {
-      link = document.createElement("link");
-      link.setAttribute("rel", "canonical");
-      document.head.appendChild(link);
+  const ensure = (tag, attrs) => {
+    const sel =
+      tag +
+      Object.entries(attrs)
+        .map(([k, v]) => `[${k}="${v}"]`)
+        .join("");
+    let el = document.head.querySelector(sel);
+    if (!el) {
+      el = document.createElement(tag);
+      for (const [k, v] of Object.entries(attrs)) el.setAttribute(k, v);
+      document.head.appendChild(el);
     }
-    link.setAttribute("href", url);
+    return el;
+  };
+
+  const setMeta = (name, content) => {
+    if (!content) return;
+    const el = ensure("meta", { name });
+    el.setAttribute("content", content);
+  };
+  const setOG = (property, content) => {
+    if (!content) return;
+    const el = ensure("meta", { property });
+    el.setAttribute("content", content);
+  };
+  const setTwitter = (name, content) => setMeta(name, content);
+  const setLinkRel = (rel, href) => {
+    if (!href) return;
+    const el = ensure("link", { rel });
+    el.setAttribute("href", href);
+  };
+
+  // Standard
+  if (description) setMeta("description", description);
+  if (robots) setMeta("robots", robots); // 👈 here’s the robots line
+
+  if (url) {
+    setOG("og:url", url);
+    setLinkRel("canonical", url);
   }
+  if (title) {
+    setOG("og:title", title);
+    setTwitter("twitter:title", title);
+  }
+  if (description) {
+    setOG("og:description", description);
+    setTwitter("twitter:description", description);
+  }
+  if (image) {
+    setOG("og:image", image);
+    setTwitter("twitter:image", image);
+  }
+  setTwitter("twitter:card", "summary_large_image");
 }

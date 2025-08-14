@@ -8,7 +8,8 @@
     "lint": "vue-cli-service lint",
     "validate:content": "node ./scripts/validate-content.cjs",
     "images:build": "node ./scripts/build-images.cjs",
-    "sitemap": "node ./scripts/generate-sitemap.cjs --base=https://whisptavern.com"
+    "sitemap": "node ./scripts/generate-sitemap.cjs --base=https://whisptavern.com",
+    "qa:manual": "npm run lint && npm run validate:content && npm run build"
   },
   "dependencies": {
     "core-js": "^3.8.3",

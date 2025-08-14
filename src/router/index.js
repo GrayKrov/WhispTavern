@@ -1,5 +1,7 @@
+// src/router/index.js
 import { createRouter, createWebHistory } from "vue-router";
 import { updateHead } from "@/utils/meta";
+import { isAuthed } from "@/utils/auth";
 
 // pages
 import Home from "@/pages/Home.vue";
@@ -7,6 +9,8 @@ import Community from "@/pages/Community.vue";
 import CreatorKrov from "@/pages/creator/CreatorKrov.vue";
 import CreatorPlaceholder from "@/pages/creator/CreatorPlaceholder.vue";
 import NotFound from "@/pages/NotFound.vue";
+import InternalLogin from "@/pages/internal/InternalLogin.vue"; // <-- updated path
+import InternalIntake from "@/pages/internal/InternalIntake.vue"; // already multi-word
 
 // data
 import creators from "@/content/creators.json";
@@ -50,6 +54,41 @@ const routes = [
       creator: "krov",
     },
   },
+
+  // Internal tools: login + intake (guarded)
+  {
+    path: "/internal/login",
+    name: "internal-login",
+    component: InternalLogin,
+    meta: {
+      title: "Internal Login – WhispTavern",
+      description: "Sign in to view the internal intake dashboard.",
+      ogImage: OG_IMAGE,
+      robots: "noindex, nofollow",
+    },
+  },
+  {
+    path: "/internal/intake",
+    name: "internal-intake",
+    component: InternalIntake,
+    meta: {
+      title: "Creator Intake – WhispTavern",
+      description: "Overview of creator statuses, tags, and missing assets.",
+      ogImage: OG_IMAGE,
+      robots: "noindex, nofollow",
+    },
+    beforeEnter: (to) => {
+      if (!isAuthed()) {
+        return {
+          path: "/internal/login",
+          query: { redirect: to.fullPath },
+        };
+      }
+      return true;
+    },
+  },
+
+  // Dynamic creator placeholder
   {
     path: "/:slug",
     name: "creator-placeholder",
@@ -70,6 +109,8 @@ const routes = [
       return true;
     },
   },
+
+  // 404
   {
     path: "/:pathMatch(.*)*",
     name: "not-found",
@@ -87,6 +128,7 @@ const router = createRouter({
   routes,
 });
 
+// meta + analytics on nav
 router.afterEach((to) => {
   const meta = to.meta || {};
   const title = meta.title || BASE_TITLE;
@@ -94,10 +136,10 @@ router.afterEach((to) => {
   const image = meta.ogImage || OG_IMAGE;
   const url = window.location.origin + to.fullPath;
 
-  // Update head tags
-  updateHead({ title, description, image, url });
+  // Apply robots override if provided
+  updateHead({ title, description, image, url, robots: meta.robots });
 
-  // Plausible pageview (safe if script not present)
+  // Optional: Plausible pageview (safe if absent)
   if (window.plausible) {
     window.plausible("pageview", { u: url });
   }
