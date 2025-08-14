@@ -1,13 +1,14 @@
 <!-- src/App.vue -->
 <template>
-  <Transition name="fade" mode="out-in">
+  <!-- Overlapping, ultra-short crossfade -->
+  <Transition name="route-xfade">
     <!-- Default site shell -->
-    <AppLayout v-if="!isStandalone" :key="`shell:${route.fullPath}`">
+    <AppLayout v-if="!isStandalone">
       <RouterView />
     </AppLayout>
 
     <!-- Standalone creator pages (no site shell) -->
-    <RouterView v-else :key="`standalone:${route.fullPath}`" />
+    <RouterView v-else />
   </Transition>
 </template>
 
@@ -28,14 +29,29 @@ watch(isStandalone, applyBodyClass);
 </script>
 
 <style lang="scss">
-/* optional fade transition */
-.fade-enter-active,
-.fade-leave-active {
-  transition: opacity 0.16s ease;
+/* ---- Ultra-short overlap fade (no blank frame) ---- */
+.route-xfade-enter-active,
+.route-xfade-leave-active {
+  transition: opacity 80ms linear;
+  /* Stack so leaving view sits over entering view briefly (no flash) */
+  position: relative;
+  display: block;
 }
-.fade-enter-from,
-.fade-leave-to {
+.route-xfade-leave-active {
+  position: absolute;
+  inset: 0;
+}
+.route-xfade-enter-from,
+.route-xfade-leave-to {
   opacity: 0;
+}
+
+/* Respect reduced motion: zero animation */
+@media (prefers-reduced-motion: reduce) {
+  .route-xfade-enter-active,
+  .route-xfade-leave-active {
+    transition: none;
+  }
 }
 
 /* Focus defaults */
@@ -65,8 +81,16 @@ textarea:focus-visible {
   border: 0;
 }
 
-/* Example: global style hook for standalone creator pages */
+/* ---- Background stabilization (prevents white blink) ---- */
+/* Default site pages background (match your site’s light bg) */
+html,
+body,
+#app {
+  background: #f7f7f7;
+}
+
+/* Standalone creator pages */
 body.standalone {
-  background: #0b0914; /* customize per creator if you like */
+  background: #0b0914;
 }
 </style>
