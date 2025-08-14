@@ -1,17 +1,44 @@
+<!-- src/App.vue -->
 <template>
-  <router-view v-slot="{ Component }">
-    <component v-if="$route.meta.creator" :is="Component" />
-    <AppLayout v-else>
-      <component :is="Component" />
+  <Transition name="fade" mode="out-in">
+    <!-- Default site shell -->
+    <AppLayout v-if="!isStandalone" :key="`shell:${route.fullPath}`">
+      <RouterView />
     </AppLayout>
-  </router-view>
+
+    <!-- Standalone creator pages (no site shell) -->
+    <RouterView v-else :key="`standalone:${route.fullPath}`" />
+  </Transition>
 </template>
+
 <script setup>
+import { onMounted, watch, computed } from "vue";
+import { useRoute } from "vue-router";
 import AppLayout from "@/features/layout/AppLayout.vue";
+
+const route = useRoute();
+const isStandalone = computed(() => route.meta.layout === "standalone");
+
+const applyBodyClass = () => {
+  document.body.classList.toggle("standalone", isStandalone.value);
+};
+
+onMounted(applyBodyClass);
+watch(isStandalone, applyBodyClass);
 </script>
 
 <style lang="scss">
-/* Clear keyboard focus across the app */
+/* optional fade transition */
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.16s ease;
+}
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+}
+
+/* Focus defaults */
 a:focus-visible,
 button:focus-visible,
 [role="button"]:focus-visible,
@@ -21,7 +48,6 @@ textarea:focus-visible {
   outline: 2px solid rgba(255, 255, 255, 0.85);
   outline-offset: 2px;
 }
-/* Keep mouse focus clean */
 :focus {
   outline: none;
 }
@@ -37,5 +63,10 @@ textarea:focus-visible {
   clip: rect(0, 0, 0, 0);
   white-space: nowrap;
   border: 0;
+}
+
+/* Example: global style hook for standalone creator pages */
+body.standalone {
+  background: #0b0914; /* customize per creator if you like */
 }
 </style>

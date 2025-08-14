@@ -8,9 +8,10 @@ import Home from "@/pages/Home.vue";
 import Community from "@/pages/Community.vue";
 import CreatorKrov from "@/pages/creator/CreatorKrov.vue";
 import CreatorPlaceholder from "@/pages/creator/CreatorPlaceholder.vue";
+import CreatorDemo from "@/pages/creator/CreatorDemo.vue";
 import NotFound from "@/pages/NotFound.vue";
-import InternalLogin from "@/pages/internal/InternalLogin.vue"; // <-- updated path
-import InternalIntake from "@/pages/internal/InternalIntake.vue"; // already multi-word
+import InternalLogin from "@/pages/internal/InternalLogin.vue";
+import InternalIntake from "@/pages/internal/InternalIntake.vue";
 
 // data
 import creators from "@/content/creators.json";
@@ -42,6 +43,8 @@ const routes = [
       ogImage: OG_IMAGE,
     },
   },
+
+  // -------- Standalone creator pages (no site shell) --------
   {
     path: "/krov",
     name: "krov",
@@ -51,11 +54,25 @@ const routes = [
       description:
         "Krov’s space—systematic minimalism, recent work, and projects from the WhispTavern community.",
       ogImage: OG_IMAGE,
+      layout: "standalone",
       creator: "krov",
     },
   },
+  {
+    path: "/demo",
+    name: "creator-demo",
+    component: CreatorDemo,
+    meta: {
+      title: "Creator Demo – WhispTavern",
+      description:
+        "An over-the-top, experimental creator page demo with its own header, footer, and effects.",
+      ogImage: OG_IMAGE,
+      layout: "standalone",
+      creator: "demo",
+    },
+  },
 
-  // Internal tools: login + intake (guarded)
+  // -------- Internal tools (guarded) --------
   {
     path: "/internal/login",
     name: "internal-login",
@@ -79,16 +96,13 @@ const routes = [
     },
     beforeEnter: (to) => {
       if (!isAuthed()) {
-        return {
-          path: "/internal/login",
-          query: { redirect: to.fullPath },
-        };
+        return { path: "/internal/login", query: { redirect: to.fullPath } };
       }
       return true;
     },
   },
 
-  // Dynamic creator placeholder
+  // -------- Dynamic creator placeholder (uses site shell) --------
   {
     path: "/:slug",
     name: "creator-placeholder",
@@ -101,16 +115,19 @@ const routes = [
     },
     beforeEnter: (to) => {
       const slug = String(to.params.slug || "").toLowerCase();
+      // bespoke pages are routed above; send here if someone types them
+      if (slug === "krov") return { path: "/krov" };
+      if (slug === "demo") return { path: "/demo" };
+
       const exists = creators.some(
         (c) => String(c.slug || "").toLowerCase() === slug
       );
       if (!exists) return { path: "/community" };
-      if (slug === "krov") return { path: "/krov" };
       return true;
     },
   },
 
-  // 404
+  // -------- 404 --------
   {
     path: "/:pathMatch(.*)*",
     name: "not-found",
@@ -136,10 +153,8 @@ router.afterEach((to) => {
   const image = meta.ogImage || OG_IMAGE;
   const url = window.location.origin + to.fullPath;
 
-  // Apply robots override if provided
   updateHead({ title, description, image, url, robots: meta.robots });
 
-  // Optional: Plausible pageview (safe if absent)
   if (window.plausible) {
     window.plausible("pageview", { u: url });
   }
