@@ -1,27 +1,9 @@
 <template>
   <div class="community-banner" :style="styleVars">
     <div class="overlay">
-      <div class="crest" aria-hidden="true">
-        <svg viewBox="0 0 64 64" class="crest__svg">
-          <defs>
-            <radialGradient id="glow" cx="50%" cy="0%" r="100%">
-              <stop offset="0%" stop-color="rgba(255,222,160,0.75)" />
-              <stop offset="100%" stop-color="rgba(255,222,160,0)" />
-            </radialGradient>
-          </defs>
-          <circle cx="32" cy="40" r="20" fill="url(#glow)" />
-          <g transform="translate(32,32) scale(1.22) translate(-32,-32)">
-            <path
-              d="M12 38c10-8 24-12 36-10-7 1-11 5-12 8 6-2 9-1 13 2-9 0-14 3-16 7-5-7-12-7-21-7z"
-              fill="rgba(43,36,28,0.92)"
-            />
-          </g>
-        </svg>
-      </div>
-
+      <CrestBadge class="crest" :size="62" />
       <h1>Our Community</h1>
       <p class="subtitle">Creators, collaborators, and friends of the Tavern</p>
-
       <ul class="chips">
         <li>Creator pages</li>
         <li>Events</li>
@@ -33,12 +15,14 @@
 
 <script>
 import { defineComponent, computed } from "vue";
+import CrestBadge from "@/components/CrestBadge.vue";
 import bannerJpg from "@/assets/images/BannerTop.jpg";
 import bannerWebp from "@/assets/images/BannerTop.webp";
 import bannerAvif from "@/assets/images/BannerTop.avif";
 
 export default defineComponent({
   name: "CommunityBanner",
+  components: { CrestBadge },
   setup() {
     const styleVars = computed(() => ({
       "--img-jpg": `url(${bannerJpg})`,
@@ -51,100 +35,79 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
-@use "@/assets/styles/vars" as *;
+@use "@/assets/styles/tokens" as t;
 
-/* Container with small-image safety (no parallax) */
 .community-banner {
   position: relative;
   width: 100%;
-  max-width: 1080px;
-  height: clamp(170px, 28vw, 260px);
-  margin: 0 auto ($sp-4 + $sp-2);
-  border-radius: 1rem;
+  max-width: t.$container-max;
+  height: clamp(230px, 34vw, 380px);
+  margin: 0 auto t.$space-6;
+  border-radius: t.$radius-lg;
   overflow: hidden;
-  box-shadow: 0 18px 38px rgba(0, 0, 0, 0.16);
+  box-shadow: 0 22px 44px rgba(0, 0, 0, 0.22);
   background: #f5f1ea;
-
-  /* blurred cover fill */
-  &::before {
-    content: "";
-    position: absolute;
-    inset: -8%;
-    background-image: var(--img-jpg);
-    background-image: image-set(
-      var(--img-avif) type("image/avif"),
-      var(--img-webp) type("image/webp"),
-      var(--img-jpg) type("image/jpeg")
-    );
-    background-size: cover;
-    background-position: center;
-    filter: blur(16px) saturate(0.95) brightness(0.95);
-    transform: scale(1.06);
-    transition: filter 200ms ease;
-  }
-
-  /* crisp contain layer */
-  &::after {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background-image: var(--img-jpg);
-    background-image: image-set(
-      var(--img-avif) type("image/avif"),
-      var(--img-webp) type("image/webp"),
-      var(--img-jpg) type("image/jpeg")
-    );
-    background-size: contain;
-    background-repeat: no-repeat;
-    background-position: center;
-  }
-
-  .overlay {
-    position: absolute;
-    inset: 0;
-    z-index: 2;
-    display: grid;
-    place-content: center;
-    text-align: center;
-    padding: 0 $sp-3;
-    background: linear-gradient(
-      180deg,
-      rgba(74, 47, 47, 0.28),
-      rgba(74, 47, 47, 0.5)
-    );
-  }
+}
+.community-banner::before {
+  content: "";
+  position: absolute;
+  inset: -8%;
+  background-image: var(--img-jpg);
+  background-image: image-set(
+    var(--img-avif) type("image/avif"),
+    var(--img-webp) type("image/webp"),
+    var(--img-jpg) type("image/jpeg")
+  );
+  background-size: cover;
+  background-position: center;
+  filter: blur(16px) saturate(0.95) brightness(0.95);
+  transform: scale(1.06);
+}
+.community-banner::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: var(--img-jpg);
+  background-image: image-set(
+    var(--img-avif) type("image/avif"),
+    var(--img-webp) type("image/webp"),
+    var(--img-jpg) type("image/jpeg")
+  );
+  background-size: cover;
+  background-position: center;
 }
 
-/* Crest */
-.crest {
-  position: relative;
-  width: 72px;
-  height: 72px;
-  margin: 0 auto $sp-2;
-  border-radius: 999px;
-  background: linear-gradient(140deg, #d9b793, #b98a5e);
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2),
-    inset 0 1px 0 rgba(255, 255, 255, 0.6);
+.overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
   display: grid;
-  place-items: center;
+  place-content: center;
+  text-align: center;
+  padding: 0 t.$space-3;
+  background: linear-gradient(
+    180deg,
+    rgba(35, 28, 23, 0.32),
+    rgba(35, 28, 23, 0.55)
+  );
 }
-.crest__svg {
-  width: 74%;
-  height: 74%;
-  display: block;
-  filter: drop-shadow(0 2px 2px rgba(0, 0, 0, 0.35));
+.crest {
+  position: absolute;
+  top: 22px;
+  left: 50%;
+  transform: translateX(-50%);
+  filter: drop-shadow(0 6px 14px rgba(0, 0, 0, 0.35));
 }
 
 h1 {
-  color: $color-neutral;
-  font-size: clamp(1.6rem, 2.4vw, 2.1rem);
-  margin: 0 0 $sp-1;
+  color: #fff;
+  font-size: clamp(1.8rem, 3.6vw, 2.4rem);
+  margin: 60px 0 t.$space-1 0;
   text-shadow: 0 2px 6px rgba(0, 0, 0, 0.5);
-  letter-spacing: 0.02em;
 }
 .subtitle {
-  color: rgba(255, 255, 255, 0.92);
-  margin: 0 auto $sp-2;
+  color: rgba(255, 255, 255, 0.95);
+  margin: 0 auto t.$space-2;
   max-width: 760px;
   font-size: clamp(0.95rem, 1.2vw, 1.06rem);
   text-shadow: 0 1px 3px rgba(0, 0, 0, 0.45);
@@ -152,47 +115,51 @@ h1 {
 .chips {
   list-style: none;
   display: inline-flex;
-  gap: $sp-2;
+  gap: t.$space-2;
   padding: 0;
-  margin: $sp-1 0 0;
+  margin: t.$space-1 0 0;
   justify-content: center;
   flex-wrap: wrap;
 }
 .chips li {
-  padding: $sp-1 $sp-2;
+  padding: t.$space-1 t.$space-2;
   border-radius: 999px;
   font-weight: 600;
   font-size: 0.85rem;
   color: #2b241c;
-  background: rgba(255, 255, 255, 0.78);
+  background: rgba(255, 255, 255, 0.86);
   border: 1px solid rgba(0, 0, 0, 0.06);
   box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
 }
 
-/* ——— Mobile: drop the heavy filters for faster paint ——— */
-@media (max-width: 600px) {
-  .community-banner {
-    height: 180px;
-    box-shadow: 0 8px 18px rgba(0, 0, 0, 0.12);
+/* --- responsiveness --- */
+@media (max-width: 700px) {
+  h1 {
+    margin-top: 52px;
   }
-  .community-banner::before {
-    display: none;
-  }
-  .community-banner::after {
-    background-size: cover; /* single layer, cheaper to paint */
-  }
-  .overlay {
-    background: linear-gradient(
-      180deg,
-      rgba(50, 35, 24, 0.22),
-      rgba(50, 35, 24, 0.38)
-    );
+  .crest {
+    transform: translateX(-50%) scale(0.9);
+    top: 18px;
   }
 }
-/* 🔻 Hide chips on narrow screens to prevent clipping */
-@media (max-width: 520px) {
+@media (max-width: 560px) {
+  .community-banner {
+    height: 220px;
+  }
   .chips {
     display: none;
+  }
+}
+@media (max-width: 420px) {
+  .crest {
+    display: none;
+  }
+  .subtitle {
+    display: none;
+  }
+  h1 {
+    margin-top: 0;
+    font-size: clamp(1.6rem, 6.2vw, 2rem);
   }
 }
 </style>

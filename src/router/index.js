@@ -1,7 +1,6 @@
 // src/router/index.js
 import { createRouter, createWebHistory } from "vue-router";
 import { updateHead } from "@/utils/meta";
-import { isAuthed } from "@/utils/auth";
 
 // pages
 import Home from "@/pages/Home.vue";
@@ -10,8 +9,6 @@ import CreatorKrov from "@/pages/creator/CreatorKrov.vue";
 import CreatorPlaceholder from "@/pages/creator/CreatorPlaceholder.vue";
 import CreatorDemo from "@/pages/creator/CreatorDemo.vue";
 import NotFound from "@/pages/NotFound.vue";
-import InternalLogin from "@/pages/internal/InternalLogin.vue";
-import InternalIntake from "@/pages/internal/InternalIntake.vue";
 
 // data
 import creators from "@/content/creators.json";
@@ -69,36 +66,6 @@ const routes = [
       ogImage: OG_IMAGE,
       layout: "standalone",
       creator: "demo",
-    },
-  },
-
-  // -------- Internal tools (guarded) --------
-  {
-    path: "/internal/login",
-    name: "internal-login",
-    component: InternalLogin,
-    meta: {
-      title: "Internal Login – WhispTavern",
-      description: "Sign in to view the internal intake dashboard.",
-      ogImage: OG_IMAGE,
-      robots: "noindex, nofollow",
-    },
-  },
-  {
-    path: "/internal/intake",
-    name: "internal-intake",
-    component: InternalIntake,
-    meta: {
-      title: "Creator Intake – WhispTavern",
-      description: "Overview of creator statuses, tags, and missing assets.",
-      ogImage: OG_IMAGE,
-      robots: "noindex, nofollow",
-    },
-    beforeEnter: (to) => {
-      if (!isAuthed()) {
-        return { path: "/internal/login", query: { redirect: to.fullPath } };
-      }
-      return true;
     },
   },
 

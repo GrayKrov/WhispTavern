@@ -15,53 +15,30 @@
 
 <script setup>
 import { RouterLink } from "vue-router";
-
 const props = defineProps({
   to: { type: [String, Object], default: null },
   href: { type: String, default: null },
   variant: { type: String, default: "primary" },
   wide: { type: Boolean, default: false },
 });
-
 const linkAttrs = props.to
   ? { to: props.to }
   : { href: props.href, target: "_blank", rel: "noopener" };
 </script>
 
 <style scoped lang="scss">
-@use "@/assets/styles/vars" as *;
+@use "@/assets/styles/tokens" as t;
 
 .btn {
   display: inline-block;
-  padding: $sp-2 $sp-3;
+  padding: t.$space-2 t.$space-3;
   border-radius: 0.66rem;
   font-weight: 700;
   text-decoration: none;
   border: 1px solid transparent;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.18);
-  transition: transform 0.12s ease, box-shadow 0.12s ease, background 0.12s ease,
-    color 0.12s ease;
-  position: relative;
-  overflow: hidden;
+  box-shadow: 0 10px 22px rgba(0, 0, 0, 0.22);
+  transition: transform 0.12s ease, box-shadow 0.12s ease, filter 0.12s ease;
 }
-.btn::after {
-  content: "";
-  position: absolute;
-  inset: 0 -30%;
-  background: linear-gradient(
-    90deg,
-    transparent,
-    rgba(255, 255, 255, 0.25),
-    transparent
-  );
-  transform: translateX(-100%);
-  transition: transform 0.45s ease;
-  pointer-events: none;
-}
-.btn:hover::after {
-  transform: translateX(100%);
-}
-
 .btn--primary {
   background: linear-gradient(140deg, #b98a5e, #d9b793);
   color: #2b241c;
@@ -69,9 +46,9 @@ const linkAttrs = props.to
 }
 .btn--primary:hover {
   transform: translateY(-2px);
-  box-shadow: 0 12px 26px rgba(0, 0, 0, 0.22);
+  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.28);
+  filter: brightness(1.03);
 }
-
 .btn--ghost {
   background: rgba(255, 255, 255, 0.18);
   color: #fff;
@@ -82,8 +59,15 @@ const linkAttrs = props.to
   transform: translateY(-2px);
   box-shadow: 0 12px 26px rgba(0, 0, 0, 0.22);
 }
-
 .btn--wide {
-  padding: $sp-2 ($sp-4 + $sp-2);
+  padding: t.$space-2 (t.$space-4 + t.$space-2);
+}
+
+/* Responsiveness for stacked CTAs on tiny screens */
+@media (max-width: 420px) {
+  .btn {
+    width: 100%;
+    text-align: center;
+  }
 }
 </style>

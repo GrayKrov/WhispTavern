@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link rel="preconnect" href="https://api.github.com" />
     <meta charset="UTF-8" />
@@ -30,6 +30,15 @@
       content="A cozy, creator-friendly community."
     />
     <meta name="twitter:image" content="/og-default.jpg" />
+
+    <!-- Cozy theme color for mobile address bars -->
+    <meta name="theme-color" content="#f6efe6" />
+
+    <!-- Cozy Fantasy fonts -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fraunces:wght@700;800;900&family=Inter:wght@400;600;800&display=swap"
+      rel="stylesheet"
+    />
   </head>
   <body>
     <noscript>
@@ -37,11 +46,12 @@
       browser.
     </noscript>
     <div id="app"></div>
+
     <!-- Cloudflare Web Analytics -->
     <script
       defer
       src="https://static.cloudflareinsights.com/beacon.min.js"
-      data-cf-beacon='{"token":"89c0c2187a184b06ace71322db8074ab","spa":true}'
+      data-cf-beacon='{"token": "89c0c2187a184b06ace71322db8074ab"}'
     ></script>
     <!-- End Cloudflare Web Analytics -->
   </body>

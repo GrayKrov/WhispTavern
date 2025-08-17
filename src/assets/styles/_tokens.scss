@@ -2,32 +2,32 @@
 @use "sass:color";
 
 /* ===== Palette (canonical) ===== */
-$color-primary: #4a2f2f !default; /* deep wood */
+$color-primary: #2a241f !default; /* deep wood */
 $color-secondary: #a68f7f !default; /* warm amber */
 $color-neutral: #f5f1ea !default; /* parchment */
 $color-dark: #222 !default;
 $color-white: #fff !default;
 $color-black: #000 !default;
 
-/* Helpful aliases (some components prefer these) */
+/* Helpful aliases */
 $c-parchment: $color-neutral !default;
 $c-wood: $color-primary !default;
 $c-amber-1: #b98a5e !default;
 $c-amber-2: #d9b793 !default;
 $c-bg: #f7f7f7 !default;
 
-/* ===== Spacing (rem scale) ===== */
-$sp-1: 0.25rem !default; /*  4px */
-$sp-2: 0.5rem !default; /*  8px */
-$sp-3: 1rem !default; /* 16px */
-$sp-4: 1.5rem !default; /* 24px */
-$sp-5: 2rem !default; /* 32px */
-$sp-6: 2.5rem !default; /* 40px */
-$sp-8: 3rem !default; /* 48px */
-$sp-10: 3.5rem !default; /* 56px */
-$sp-12: 4rem !default; /* 64px */
+/* ===== Spacing ===== */
+$sp-1: 0.25rem !default;
+$sp-2: 0.5rem !default;
+$sp-3: 1rem !default;
+$sp-4: 1.5rem !default;
+$sp-5: 2rem !default;
+$sp-6: 2.5rem !default;
+$sp-8: 3rem !default;
+$sp-10: 3.5rem !default;
+$sp-12: 4rem !default;
 
-/* Spacing aliases for newer API */
+/* Newer aliases */
 $space-1: $sp-1 !default;
 $space-2: $sp-2 !default;
 $space-3: $sp-3 !default;
@@ -38,8 +38,9 @@ $space-8: $sp-8 !default;
 $space-10: $sp-10 !default;
 $space-12: $sp-12 !default;
 
-/* ===== Type scale (light touch) ===== */
-$font-sans: "Helvetica Neue", Arial, sans-serif !default;
+/* ===== Type ===== */
+$font-sans: "Inter", system-ui, -apple-system, Segoe UI, Roboto, Arial,
+  sans-serif !default;
 $fs-sm: 0.875rem !default;
 $fs-base: 1rem !default;
 $fs-lg: 1.25rem !default;
@@ -57,12 +58,10 @@ $shadow-lift: 0 12px 26px rgba(0, 0, 0, 0.18) !default;
 $shadow-hard: 0 18px 38px rgba(0, 0, 0, 0.16) !default;
 
 /* ===== Layout helpers ===== */
-$bp-sm: 480px !default;
-$bp-md: 768px !default;
-$bp-lg: 1024px !default;
-$container-max: 1100px !default;
+/* Align everything to the same width as the hero (fixes “off-center” look) */
+$container-max: 1080px !default;
 
-/* ===== Mixins (kept from your version) ===== */
+/* ===== Mixins ===== */
 @mixin parchment($tone: 2%) {
   $paper: color.adjust($c-parchment, $lightness: $tone);
   background: linear-gradient($paper, $paper) padding-box,
@@ -73,19 +72,15 @@ $container-max: 1100px !default;
   box-shadow: $shadow-soft;
 }
 
-/* subtle paper “noise” */
-@mixin noise($opacity1: 0.015, $opacity2: 0.01) {
+@mixin noise($o1: 0.012, $o2: 0.008) {
   position: relative;
   overflow: hidden;
   &::before {
     content: "";
     position: absolute;
     inset: 0;
-    background-image: radial-gradient(
-        rgba(0, 0, 0, $opacity1) 1px,
-        transparent 1.5px
-      ),
-      radial-gradient(rgba(0, 0, 0, $opacity2) 1px, transparent 1.5px);
+    background-image: radial-gradient(rgba(0, 0, 0, $o1) 1px, transparent 1.5px),
+      radial-gradient(rgba(0, 0, 0, $o2) 1px, transparent 1.5px);
     background-size: 4px 4px, 6px 6px;
     background-position: 0 0, 3px 2px;
     border-radius: inherit;
@@ -93,44 +88,7 @@ $container-max: 1100px !default;
   }
 }
 
-@mixin lantern($width: 72%) {
-  position: relative;
-  &::after {
-    content: "";
-    position: absolute;
-    left: 50%;
-    transform: translateX(-50%);
-    bottom: -8px;
-    width: $width;
-    height: 90px;
-    background: radial-gradient(
-      60% 120% at 50% 0%,
-      rgba(255, 222, 160, 0.6),
-      rgba(255, 200, 120, 0.42) 40%,
-      transparent 72%
-    );
-    filter: blur(16px);
-    pointer-events: none;
-    z-index: -1;
-  }
-}
-
 @mixin focus-ring() {
   outline: 2px solid rgba(255, 255, 255, 0.85);
   outline-offset: 2px;
-}
-
-/* Optional fluid heading helpers (kept from your vars) */
-@mixin type-h1() {
-  font-size: clamp(1.6rem, 2.5vw, 2.2rem);
-  line-height: 1.15;
-  letter-spacing: 0.01em;
-}
-@mixin type-h2() {
-  font-size: clamp(1.25rem, 1.5vw, 1.5rem);
-  line-height: 1.2;
-}
-@mixin type-h3() {
-  font-size: clamp(1.125rem, 1.3vw, 1.35rem);
-  line-height: 1.25;
 }

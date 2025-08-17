@@ -1,8 +1,9 @@
 <template>
-  <div class="home-page">
+  <div class="home">
     <!-- HERO -->
     <section class="hero" :style="heroStyle">
       <div class="hero__overlay">
+        <CrestBadge class="hero__crest" :size="74" />
         <p class="kicker">A cozy corner of the internet</p>
         <h1>Welcome to WhispTavern</h1>
         <p class="tagline">
@@ -40,18 +41,18 @@
         laughter.
       </p>
       <p>
-        We’re a community of players and creators who like things handcrafted:
-        thoughtful conversations, small-group sessions that don’t feel like
-        shouty lobbies, and creator pages built to fit each person’s aesthetic.
+        We like things handcrafted: thoughtful conversations, small-group
+        sessions that don’t feel like shouty lobbies, and creator pages built to
+        fit each person’s aesthetic.
       </p>
       <p>
-        What sets us apart isn’t just the games; it’s the way we show up. We
-        keep it kind, inclusive, and genuinely cozy. New folks get welcomed,
-        small victories get celebrated, and collaboration is the default.
+        What sets us apart isn’t just the games; it’s the way we show up—kind,
+        inclusive, and genuinely cozy. New folks get welcomed, small victories
+        get celebrated, and collaboration is the default.
       </p>
       <p class="mission">
-        <strong>Our mission:</strong> Foster lasting friendships through play
-        and creation—keeping it cozy, kind, and real.
+        <strong>Our mission:</strong> Friendships through play & creation—kept
+        real.
       </p>
       <h3 class="subhead">How we live it</h3>
       <ul class="values">
@@ -94,12 +95,13 @@ import { defineComponent } from "vue";
 import bannerJpg from "@/assets/images/BannerTop.webp";
 import bannerWebp from "@/assets/images/BannerTop.webp";
 import bannerAvif from "@/assets/images/BannerTop.avif";
+import CrestBadge from "@/components/CrestBadge.vue";
 import AnnouncementsList from "@/components/AnnouncementsList.vue";
 import LinkButton from "@/components/ui/LinkButton.vue";
 
 export default defineComponent({
   name: "HomePage",
-  components: { AnnouncementsList, LinkButton },
+  components: { CrestBadge, AnnouncementsList, LinkButton },
   data() {
     return {
       heroStyle: {
@@ -114,22 +116,24 @@ export default defineComponent({
 
 <style lang="scss" scoped>
 @use "sass:color";
-@use "@/assets/styles/vars" as *;
+@use "@/assets/styles/tokens" as t;
 
-.home-page {
-  padding: calc(3.5rem + #{$sp-2}) 0 $sp-4;
+.home {
+  padding: calc(3.5rem + #{t.$space-2}) 0 t.$space-6;
 }
 
-/* HERO */
+/* ---------- HERO ---------- */
 .hero {
+  --crest-top: 22px;
+
   position: relative;
   width: 100%;
-  max-width: 1080px;
-  height: clamp(170px, 28vw, 300px);
-  margin: 0 auto ($sp-4 + $sp-2);
-  border-radius: 1rem;
+  max-width: t.$container-max;
+  height: clamp(240px, 34vw, 480px);
+  margin: 0 auto t.$space-6;
+  border-radius: t.$radius-lg;
   overflow: hidden;
-  box-shadow: 0 18px 38px rgba(0, 0, 0, 0.14);
+  box-shadow: 0 22px 44px rgba(0, 0, 0, 0.22);
   background: #f5f1ea;
 }
 .hero::before {
@@ -145,7 +149,7 @@ export default defineComponent({
   background-size: cover;
   background-position: center;
   filter: blur(16px) saturate(0.95) brightness(0.95);
-  transform: scale(1.08);
+  transform: scale(1.06);
 }
 .hero::after {
   content: "";
@@ -157,10 +161,10 @@ export default defineComponent({
     var(--hero-webp) type("image/webp"),
     var(--hero-jpg) type("image/jpeg")
   );
-  background-size: contain;
-  background-repeat: no-repeat;
+  background-size: cover;
   background-position: center;
 }
+
 .hero__overlay {
   position: absolute;
   inset: 0;
@@ -168,36 +172,45 @@ export default defineComponent({
   display: grid;
   place-content: center;
   text-align: center;
-  padding: 0 $sp-3;
+  padding: 0 t.$space-3;
   background: linear-gradient(
     180deg,
-    rgba(50, 35, 24, 0.26),
-    rgba(50, 35, 24, 0.46)
+    rgba(35, 28, 23, 0.32),
+    rgba(35, 28, 23, 0.55)
   );
 }
+
+.hero__crest {
+  position: absolute;
+  top: var(--crest-top);
+  left: 50%;
+  transform: translateX(-50%);
+  filter: drop-shadow(0 6px 14px rgba(0, 0, 0, 0.35));
+}
+
 .kicker {
-  margin: 0 0 $sp-1;
-  color: rgba(255, 255, 255, 0.88);
-  letter-spacing: 0.08em;
+  margin: calc(var(--crest-top) + 48px) 0 t.$space-1 0;
+  color: rgba(255, 255, 255, 0.9);
+  letter-spacing: 0.12em;
   text-transform: uppercase;
-  font-size: 0.82rem;
+  font-size: 0.92rem;
 }
 .hero__overlay h1 {
-  color: $color-neutral;
-  font-size: clamp(1.8rem, 2.6vw, 2.25rem);
-  margin: 0 0 $sp-2;
-  text-shadow: 0 2px 6px rgba(0, 0, 0, 0.5);
+  color: #fff;
+  font-size: clamp(2rem, 4.2vw, 3.25rem);
+  margin: 0 0 t.$space-2;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.6);
 }
 .tagline {
-  color: rgba(255, 255, 255, 0.92);
-  margin: 0 auto $sp-2;
-  max-width: 760px;
-  font-size: clamp(0.95rem, 1.2vw, 1.08rem);
+  color: rgba(255, 255, 255, 0.96);
+  margin: 0 auto t.$space-2;
+  max-width: 860px;
+  font-size: clamp(1rem, 1.4vw, 1.15rem);
   text-shadow: 0 1px 3px rgba(0, 0, 0, 0.45);
 }
 .hero__ctas {
   display: inline-flex;
-  gap: $sp-2;
+  gap: t.$space-2;
   flex-wrap: wrap;
   justify-content: center;
 }
@@ -206,127 +219,159 @@ export default defineComponent({
 .trust {
   list-style: none;
   display: flex;
-  gap: $sp-2;
+  gap: t.$space-2;
   padding: 0;
-  margin: $sp-3 0 0;
+  margin: t.$space-3 0 0;
   justify-content: center;
   flex-wrap: wrap;
 }
 .trust li {
-  padding: $sp-1 $sp-2;
-  border-radius: 999px;
-  font-weight: 600;
-  font-size: 0.85rem;
+  padding: t.$space-1 t.$space-2;
+  border-radius: t.$radius-pill;
+  font-weight: 700;
+  font-size: 0.9rem;
   color: #2b241c;
-  background: rgba(255, 255, 255, 0.78);
+  background: rgba(255, 255, 255, 0.88);
   border: 1px solid rgba(0, 0, 0, 0.06);
-  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
 }
 
-/* ABOUT */
+/* ---------- ABOUT ---------- */
 .about {
-  --paper: #{color.adjust($color-neutral, $lightness: 2%)};
-  max-width: 900px;
-  margin: 0 auto ($sp-4 + $sp-3);
-  padding: $sp-4 $sp-3;
+  --paper: #{color.adjust(t.$c-parchment, $lightness: 2%)};
+  max-width: t.$container-max;
+  margin: 0 auto t.$space-6;
+  padding: t.$space-6 t.$space-4;
   background: linear-gradient(var(--paper), var(--paper)) padding-box,
     linear-gradient(140deg, rgba(120, 93, 68, 0.28), rgba(180, 150, 120, 0.28))
       border-box;
   border: 1px solid transparent;
-  border-radius: 1rem;
-  box-shadow: 0 10px 26px rgba(0, 0, 0, 0.12),
+  border-radius: t.$radius-lg;
+  box-shadow: 0 14px 34px rgba(0, 0, 0, 0.16),
     0 1px 0 rgba(255, 255, 255, 0.35) inset;
-  line-height: 1.8;
+  line-height: 1.85;
   color: #2b241c;
   text-align: left;
 }
 .about p {
-  margin-bottom: $sp-3;
+  margin-bottom: t.$space-3;
 }
-.about .mission {
-  margin-top: $sp-2;
-  font-size: $fs-lg;
+.mission {
+  margin-top: t.$space-2;
+  font-size: t.$fs-lg;
   text-align: center;
   font-style: italic;
-  padding: $sp-3 $sp-2;
+  padding: t.$space-3 t.$space-2;
   border-radius: 0.75rem;
   background: rgba(255, 228, 185, 0.28);
   box-shadow: inset 0 0 0 1px rgba(120, 93, 68, 0.25);
 }
 .subhead {
-  margin: $sp-3 0 $sp-2;
+  margin: t.$space-3 0 t.$space-2;
   text-align: center;
 }
 .values {
   margin: 0 auto;
   padding-left: 1.1rem;
-  max-width: 780px;
+  max-width: 820px;
 }
 
-/* INVITE */
+/* ---------- INVITE (container controls width, card fills it) ---------- */
 .invite {
+  width: 100%;
+  max-width: t.$container-max; /* same container width as About/Hero */
+  margin: 0 auto; /* center like the others */
+  padding: t.$space-6 t.$space-3 t.$space-6;
   display: grid;
   place-items: center;
-  padding: ($sp-4 + $sp-2) $sp-3 $sp-4;
 }
 .invite__card {
-  width: 100%;
-  max-width: 980px;
+  width: 100%; /* fill the section width */
+  max-width: none; /* no self-constraining */
   text-align: center;
-  padding: ($sp-4 + $sp-2) $sp-3;
-  border-radius: 1rem;
-  background: radial-gradient(
-      120% 120% at 50% 0%,
-      rgba(255, 220, 170, 0.22),
-      transparent 60%
-    ),
-    linear-gradient(140deg, #f9f5ee, #f7f1e8);
-  border: 1px solid rgba(120, 93, 68, 0.26);
-  box-shadow: 0 14px 30px rgba(0, 0, 0, 0.12);
+  padding: t.$space-6 t.$space-4;
+
+  /* identical visual language */
+  @include t.parchment(2%);
+  @include t.noise(0.012, 0.008);
+  border-radius: t.$radius-lg;
+  box-shadow: t.$shadow-soft;
 }
 .invite__card p {
-  margin: 0 0 $sp-3;
+  margin: 0 0 t.$space-3;
   color: #4b3f33;
 }
 
-/* ——— Mobile: drop blur layer, smaller paddings, lighter shadows ——— */
-@media (max-width: 600px) {
-  .home-page {
-    padding: 3rem 0 $sp-3;
-  }
-  .hero {
-    height: 190px;
-    box-shadow: 0 12px 22px rgba(0, 0, 0, 0.12);
-  }
-  .hero::before {
+/* ---------- RESPONSIVE CUTS ---------- */
+@media (max-width: 980px) {
+  .hero__crest {
     display: none;
-  }
-  .hero::after {
-    background-size: cover;
-  }
-  .hero__overlay {
-    padding: 0 $sp-2;
-    background: linear-gradient(
-      180deg,
-      rgba(50, 35, 24, 0.22),
-      rgba(50, 35, 24, 0.38)
-    );
-  }
-  .invite {
-    padding: $sp-4 $sp-2;
-  }
-  .invite__card {
-    padding: $sp-4 $sp-2;
-    box-shadow: 0 10px 22px rgba(0, 0, 0, 0.1);
-  }
-  .about {
-    padding: $sp-3 $sp-2;
-    box-shadow: 0 8px 18px rgba(0, 0, 0, 0.1),
-      0 1px 0 rgba(255, 255, 255, 0.3) inset;
+  } /* no overlap */
+  .kicker {
+    margin: t.$space-1 0;
   }
 }
-@media (max-width: 520px) {
+@media (max-width: 960px) {
+  .hero {
+    height: clamp(220px, 42vw, 420px);
+  }
+}
+@media (max-width: 720px) {
+  .hero {
+    height: clamp(210px, 48vw, 360px);
+  }
+  .kicker {
+    font-size: 0.85rem;
+    letter-spacing: 0.1em;
+  }
+  .hero__overlay h1 {
+    font-size: clamp(1.8rem, 6vw, 2.4rem);
+  }
+  .tagline {
+    font-size: 0.98rem;
+    max-width: 640px;
+  }
+}
+@media (max-width: 560px) {
+  .hero {
+    height: 220px;
+  }
+  .tagline {
+    font-size: 0.94rem;
+  }
   .trust {
+    display: none;
+  }
+  .invite__card {
+    padding: t.$space-4 t.$space-3;
+  } /* compact on small screens */
+}
+@media (max-width: 420px) {
+  .hero {
+    height: 200px;
+  }
+  .kicker {
+    display: none;
+  }
+  .hero__overlay h1 {
+    font-size: clamp(1.6rem, 7vw, 2rem);
+    margin-bottom: 0.6rem;
+  }
+  .tagline {
+    font-size: 0.9rem;
+    margin-bottom: 0.8rem;
+  }
+  .hero__ctas {
+    flex-direction: column;
+    width: min(100%, 320px);
+    margin: 0 auto;
+  }
+}
+@media (max-width: 360px) {
+  .hero {
+    height: 190px;
+  }
+  .tagline {
     display: none;
   }
 }

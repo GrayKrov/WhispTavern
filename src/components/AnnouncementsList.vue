@@ -15,11 +15,9 @@
 <script setup>
 import { computed } from "vue";
 import announcements from "@/content/announcements.json";
-
 const latest = computed(() =>
   [...announcements].sort((a, b) => (a.date < b.date ? 1 : -1)).slice(0, 3)
 );
-
 function format(iso) {
   const d = new Date(iso);
   return d.toLocaleDateString(undefined, {
@@ -35,44 +33,61 @@ function format(iso) {
 
 .announcements {
   width: 100%;
-  max-width: 900px; /* match About section width */
-  margin: t.$space-4 auto 0;
+  max-width: t.$container-max;
+  margin: t.$space-6 auto 0;
+  padding: t.$space-4;
+  background: linear-gradient(#fbf8f2, #f7efe6) padding-box;
+  border: 1px solid rgba(120, 93, 68, 0.22);
+  border-radius: t.$radius-lg;
+  box-shadow: 0 14px 34px rgba(0, 0, 0, 0.14);
+}
+h2 {
+  margin: 0 0 t.$space-3;
+  letter-spacing: 0.02em;
+  color: #3b2f25;
+}
+.list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: t.$space-3;
+}
+.item {
   padding: t.$space-3;
-  @include t.parchment(2%);
-  @include t.noise(0.015, 0.008);
+  border-radius: t.$radius-md;
+  background: #fff;
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+.date {
+  display: inline-block;
+  opacity: 0.75;
+  margin-bottom: 0.25rem;
+}
+.title {
+  margin: 0.1rem 0 0.25rem;
+  font-size: 1.08rem;
+}
+.body {
+  margin: 0;
+  line-height: 1.7;
+}
 
-  > h2 {
-    @include t.lantern(66%);
-    margin: 0 0 t.$space-2;
-    letter-spacing: 0.02em;
+@media (max-width: 560px) {
+  .announcements {
+    padding: t.$space-3;
   }
-
-  .list {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    display: grid;
-    gap: t.$space-2;
-  }
-
   .item {
     padding: t.$space-2;
-    border-radius: t.$radius-md;
-    background: rgba(255, 255, 255, 0.72);
   }
-
-  .date {
-    display: inline-block;
-    opacity: 0.75;
-    margin-bottom: 0.25rem;
-  }
-  .title {
-    margin: 0 0 0.25rem;
+}
+@media (max-width: 360px) {
+  h2 {
     font-size: 1.05rem;
   }
-  .body {
-    margin: 0;
-    line-height: 1.7;
+  .title {
+    font-size: 1rem;
   }
 }
 </style>

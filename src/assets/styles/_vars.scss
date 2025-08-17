@@ -3,5 +3,5 @@
 @forward "tokens";
 @use "tokens" as *;
 
-/* If something ever referenced $paper explicitly, keep a safe alias: */
+/* Legacy alias kept safe */
 $paper: $color-neutral !default;

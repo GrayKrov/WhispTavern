@@ -8,18 +8,13 @@
 const props = defineProps({
   src: { type: String, required: true },
   alt: { type: String, default: "" },
-  size: { type: Number, default: 96 }, // pixels
-  ring: { type: String, default: "#b98a5e" }, // ring color
+  size: { type: Number, default: 96 },
+  ring: { type: String, default: "#b98a5e" },
 });
-const styleVars = {
-  "--size": `${props.size}px`,
-  "--ring": props.ring,
-};
+const styleVars = { "--size": `${props.size}px`, "--ring": props.ring };
 </script>
 
 <style scoped lang="scss">
-@use "@/assets/styles/tokens" as t;
-
 .avatar {
   width: var(--size);
   height: var(--size);

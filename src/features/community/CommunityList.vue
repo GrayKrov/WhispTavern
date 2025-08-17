@@ -35,14 +35,12 @@ function fromAvatars(file) {
     return null;
   }
 }
-
 function resolveAvatar(entry) {
   const val = entry.avatar && String(entry.avatar).trim();
   if (!val) return placeholder;
   const exact = fromAvatars(val);
   if (exact) return exact;
   const stem = val.replace(/\.(png|jpe?g|webp|avif)$/i, "");
-  /* ✅ prefer webp, then avif, then png/jpg */
   return (
     fromAvatars(stem + ".webp") ||
     fromAvatars(stem + ".avif") ||
@@ -58,10 +56,7 @@ export default defineComponent({
   components: { CommunityCard },
   setup() {
     const cards = computed(() =>
-      creators.map((c) => ({
-        ...c,
-        avatarSrc: resolveAvatar(c),
-      }))
+      creators.map((c) => ({ ...c, avatarSrc: resolveAvatar(c) }))
     );
     return { cards };
   },
@@ -69,11 +64,20 @@ export default defineComponent({
 </script>
 
 <style scoped lang="scss">
-@use "@/assets/styles/vars" as *;
+@use "@/assets/styles/tokens" as t;
 
 .grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-  gap: $sp-3;
+  /* roomier on desktop, tighter on mobile */
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: t.$space-3;
+}
+
+/* extra-small phones */
+@media (max-width: 420px) {
+  .grid {
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: t.$space-2;
+  }
 }
 </style>

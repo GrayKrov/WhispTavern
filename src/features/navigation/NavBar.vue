@@ -1,232 +1,138 @@
-<!-- src/features/navigation/NavBar.vue -->
 <template>
-  <!-- Accessible skip link -->
-  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="nav">
+    <a class="skip-link" href="#main">Skip to content</a>
 
-  <nav :class="['navbar', `navbar--${theme}`]">
-    <div
-      ref="wrapper"
-      class="menu-wrapper"
-      @pointerenter="onEnter"
-      @pointerleave="onLeave"
-      @focusin="onEnter"
-      @focusout="onFocusOut"
-    >
-      <button
-        class="menu-trigger"
-        type="button"
-        aria-haspopup="menu"
-        :aria-expanded="showMenu ? 'true' : 'false'"
-        @click="onToggle"
-      >
-        <span aria-hidden="true">☰</span>
-        <span class="sr-only">Open menu</span>
-      </button>
+    <div class="nav__inner">
+      <!-- Left nav -->
+      <nav class="nav__side nav__side--left" aria-label="Primary">
+        <RouterLink class="pill" to="/">Home</RouterLink>
+      </nav>
 
-      <transition name="fade">
-        <div v-if="showMenu" class="dropdown" role="menu">
-          <RouterLink role="menuitem" to="/">Home</RouterLink>
-          <RouterLink role="menuitem" to="/community">Community</RouterLink>
+      <!-- Blu centerpiece (non-clickable) -->
+      <div class="nav__center" aria-hidden="true">
+        <div class="badge">
+          <picture>
+            <source
+              srcset="@/assets/branding/blu/badge/blu-badge.webp"
+              type="image/webp"
+            />
+            <img src="@/assets/branding/blu/badge/blu-badge.png" alt="" />
+          </picture>
         </div>
-      </transition>
+      </div>
+
+      <!-- Right nav -->
+      <nav class="nav__side nav__side--right" aria-label="Primary">
+        <RouterLink class="pill" to="/community">Community</RouterLink>
+      </nav>
     </div>
-  </nav>
+  </header>
 </template>
 
 <script setup>
-import { ref, computed, onMounted, onBeforeUnmount } from "vue";
-import { useRoute, RouterLink } from "vue-router";
-
-const route = useRoute();
-const theme = computed(() => route.meta.creator || "default");
-
-const wrapper = ref(null);
-const showMenu = ref(false);
-const pinnedByClick = ref(false); // when true, stays open until click outside/toggle
-
-function onEnter() {
-  showMenu.value = true; // open as soon as pointer/focus is within wrapper (button or dropdown)
-}
-function onLeave() {
-  if (!pinnedByClick.value) showMenu.value = false; // close only when leaving both, unless pinned
-}
-function onToggle() {
-  pinnedByClick.value = !pinnedByClick.value;
-  showMenu.value = pinnedByClick.value ? true : false;
-}
-function onFocusOut() {
-  // Close if focus leaves the wrapper entirely (not pinned)
-  setTimeout(() => {
-    if (
-      !pinnedByClick.value &&
-      wrapper.value &&
-      !wrapper.value.contains(document.activeElement)
-    ) {
-      showMenu.value = false;
-    }
-  }, 0);
-}
-function onDocClick(e) {
-  if (!wrapper.value) return;
-  if (!wrapper.value.contains(e.target)) {
-    pinnedByClick.value = false;
-    showMenu.value = false;
-  }
-}
-onMounted(() => document.addEventListener("click", onDocClick));
-onBeforeUnmount(() => document.removeEventListener("click", onDocClick));
+import { RouterLink } from "vue-router";
 </script>
 
-<style lang="scss" scoped>
-@use "@/assets/styles/vars" as *;
+<style scoped lang="scss">
+@use "@/assets/styles/tokens" as t;
 
-$nav-h: 52px;
-
-/* Screen-reader-only helper */
-.sr-only {
-  position: absolute !important;
-  width: 1px;
-  height: 1px;
-  padding: 0;
-  margin: -1px;
-  overflow: hidden;
-  clip: rect(0, 0, 0, 0);
-  white-space: nowrap;
-  border: 0;
+.nav {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background: linear-gradient(#1e1813, #17120e);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.35);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.35);
 }
 
-/* Skip link */
+/* keeps everything aligned to your site width */
+.nav__inner {
+  max-width: t.$container-max;
+  margin: 0 auto;
+  padding: t.$space-2 t.$space-3;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: t.$space-2;
+}
+
+/* sides align text toward Blu for symmetry */
+.nav__side {
+  display: flex;
+  gap: t.$space-2;
+}
+.nav__side--left {
+  justify-content: flex-end;
+}
+.nav__side--right {
+  justify-content: flex-start;
+}
+
+/* center badge */
+.nav__center {
+  display: grid;
+  place-items: center;
+}
+.badge {
+  width: clamp(48px, 7vw, 72px);
+  height: clamp(48px, 7vw, 72px);
+  border-radius: 999px;
+  overflow: hidden;
+  position: relative;
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.5),
+    inset 0 2px 6px rgba(255, 255, 255, 0.25);
+  isolation: isolate;
+}
+.badge img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover; /* your art is framed nicely */
+}
+
+/* rounded “pill” links that don’t flash */
+.pill {
+  display: inline-block;
+  padding: t.$space-2 t.$space-3;
+  border-radius: 0.7rem;
+  background: rgba(255, 255, 255, 0.08);
+  color: #fff;
+  text-decoration: none;
+  font-weight: 700;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.25);
+}
+.pill:hover {
+  background: rgba(255, 255, 255, 0.14);
+}
+.pill.router-link-active {
+  background: linear-gradient(140deg, #b98a5e, #d9b793);
+  color: #2b241c;
+  border-color: rgba(0, 0, 0, 0.08);
+}
+
+/* a11y helper */
 .skip-link {
   position: absolute;
   left: -9999px;
-  top: auto;
-  z-index: 10001;
+  top: 0;
 }
 .skip-link:focus {
-  left: 1rem;
-  top: 1rem;
+  left: t.$space-3;
+  top: t.$space-2;
   background: #fff;
   color: #000;
-  padding: 0.5rem 1rem;
+  padding: 0.5rem 0.75rem;
   border-radius: 0.5rem;
-  outline: 2px solid #000;
 }
 
-/* Navbar */
-.navbar {
-  position: fixed;
-  inset: 0 0 auto 0;
-  height: $nav-h;
-  z-index: 10000;
-  display: flex;
-  align-items: center;
-  padding: 0 $sp-2;
-  background: rgba(245, 241, 234, 0.7);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
-}
-
-/* Wrapper encloses trigger + dropdown so hover stays continuous */
-.menu-wrapper {
-  position: relative;
-  margin-left: $sp-2;
-  padding: $sp-1 $sp-2;
-}
-
-/* Trigger */
-.menu-trigger {
-  background: transparent;
-  border: 1px solid rgba(0, 0, 0, 0.1);
-  border-radius: 0.5rem;
-  padding: 0.35rem 0.6rem;
-  font-size: 1.15rem;
-  line-height: 1;
-  color: $color-dark;
-  cursor: pointer;
-}
-.menu-trigger:focus-visible {
-  outline: 2px solid rgba(0, 0, 0, 0.8);
-  outline-offset: 2px;
-}
-
-/* Dropdown */
-.dropdown {
-  position: absolute;
-  top: calc(100% + 6px);
-  left: 0;
-  min-width: 13rem;
-  padding: $sp-3;
-  border-radius: 0.7rem;
-  box-shadow: 0 14px 30px rgba(0, 0, 0, 0.18);
-  background: linear-gradient(
-        rgba(255, 255, 255, 0.7),
-        rgba(255, 255, 255, 0.6)
-      )
-      padding-box,
-    linear-gradient(140deg, rgba(120, 93, 68, 0.35), rgba(180, 150, 120, 0.35))
-      border-box;
-  border: 1px solid transparent;
-  backdrop-filter: blur(12px);
-  z-index: 10002;
-
-  /* invisible bridge to avoid any hover gap */
-  &::before {
-    content: "";
-    position: absolute;
-    bottom: 100%;
-    left: -$sp-1;
-    right: -$sp-1;
-    height: 8px;
+/* mobile: keep Blu visible, tuck pills closer */
+@media (max-width: 640px) {
+  .nav__inner {
+    gap: t.$space-1;
   }
-
-  a {
-    display: block;
-    font-weight: 700;
-    text-decoration: none;
-    color: $color-dark;
-    padding: $sp-2 0;
-    position: relative;
-    transition: color 0.18s ease;
-  }
-  a::after {
-    content: "";
-    position: absolute;
-    left: 0;
-    bottom: 6px;
-    height: 2px;
-    width: 0;
-    background: linear-gradient(
-      90deg,
-      rgba(120, 93, 68, 1),
-      rgba(180, 150, 120, 1)
-    );
-    transition: width 0.18s ease;
-  }
-  a:hover {
-    color: $color-primary;
-  }
-  a:hover::after {
-    width: 100%;
-  }
-}
-
-/* Fade transition */
-.fade-enter-active,
-.fade-leave-active {
-  transition: opacity 0.16s ease;
-}
-.fade-enter-from,
-.fade-leave-to {
-  opacity: 0;
-}
-
-/* Small screens: keep panel fully visible */
-@media (max-width: 600px) {
-  .dropdown {
-    left: 0;
-    right: auto;
-    transform: translateX(0);
+  .pill {
+    padding: t.$space-1 t.$space-2;
   }
 }
 </style>

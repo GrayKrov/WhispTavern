@@ -1,48 +1,30 @@
+<!-- src/features/layout/AppLayout.vue -->
 <template>
-  <div id="app-layout">
+  <div class="app-shell">
     <NavBar />
-    <main id="main" class="content">
+    <main class="main">
       <slot />
     </main>
-    <AppFooter />
+    <TavernFooter />
   </div>
 </template>
 
 <script setup>
 import NavBar from "@/features/navigation/NavBar.vue";
-import AppFooter from "@/features/layout/Footer.vue";
+import TavernFooter from "@/features/layout/TavernFooter.vue";
 </script>
 
-<style lang="scss" scoped>
+<style scoped lang="scss">
 @use "@/assets/styles/vars" as *;
 
-#app-layout {
+.app-shell {
   min-height: 100vh;
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
 }
 
-.content {
-  flex: 1 0 auto;
-  padding: 3.5rem $sp-3 $sp-3;
-  background: radial-gradient(
-      1200px 380px at 50% -200px,
-      rgba(255, 210, 120, 0.08),
-      transparent 70%
-    ),
-    radial-gradient(
-      900px 260px at 50% 100%,
-      rgba(0, 0, 0, 0.04),
-      transparent 70%
-    );
-  background-attachment: fixed, scroll;
-}
-
-/* Mobile: leaner background + tighter padding */
-@media (max-width: 600px) {
-  .content {
-    padding: 3rem $sp-2 $sp-2;
-    background: #faf8f4;
-  }
+.main {
+  /* subtle center gutter to match hero/banner width exactly */
+  padding: $sp-4 $sp-2 $sp-6;
 }
 </style>

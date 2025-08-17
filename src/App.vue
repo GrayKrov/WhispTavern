@@ -1,15 +1,12 @@
 <!-- src/App.vue -->
 <template>
-  <!-- Overlapping, ultra-short crossfade -->
-  <Transition name="route-xfade">
-    <!-- Default site shell -->
-    <AppLayout v-if="!isStandalone">
-      <RouterView />
-    </AppLayout>
+  <!-- No route transitions = no flash/flicker -->
+  <AppLayout v-if="!isStandalone">
+    <RouterView />
+  </AppLayout>
 
-    <!-- Standalone creator pages (no site shell) -->
-    <RouterView v-else />
-  </Transition>
+  <!-- Standalone creator pages (no site shell) -->
+  <RouterView v-else />
 </template>
 
 <script setup>
@@ -29,32 +26,7 @@ watch(isStandalone, applyBodyClass);
 </script>
 
 <style lang="scss">
-/* ---- Ultra-short overlap fade (no blank frame) ---- */
-.route-xfade-enter-active,
-.route-xfade-leave-active {
-  transition: opacity 80ms linear;
-  /* Stack so leaving view sits over entering view briefly (no flash) */
-  position: relative;
-  display: block;
-}
-.route-xfade-leave-active {
-  position: absolute;
-  inset: 0;
-}
-.route-xfade-enter-from,
-.route-xfade-leave-to {
-  opacity: 0;
-}
-
-/* Respect reduced motion: zero animation */
-@media (prefers-reduced-motion: reduce) {
-  .route-xfade-enter-active,
-  .route-xfade-leave-active {
-    transition: none;
-  }
-}
-
-/* Focus defaults */
+/* Keep focus styles; no transitions to avoid flicker */
 a:focus-visible,
 button:focus-visible,
 [role="button"]:focus-visible,
@@ -79,14 +51,6 @@ textarea:focus-visible {
   clip: rect(0, 0, 0, 0);
   white-space: nowrap;
   border: 0;
-}
-
-/* ---- Background stabilization (prevents white blink) ---- */
-/* Default site pages background (match your site’s light bg) */
-html,
-body,
-#app {
-  background: #f7f7f7;
 }
 
 /* Standalone creator pages */
